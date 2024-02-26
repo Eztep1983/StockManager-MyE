@@ -1,0 +1,553 @@
+@import url('https://rsms.me/inter/inter-ui.css');
+::selection {
+  background: #2D2F36;
+}
+::-webkit-selection {
+  background: #2D2F36;
+}
+::-moz-selection {
+  background: #2D2F36;
+}
+body {
+  background: rgb(53, 53, 53);
+  font-family: 'Inter UI', sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+.page {
+  background: #b6b6b6;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 40px);
+  position: absolute;
+  place-content: center;
+  width: calc(100% - 40px);
+}
+@media (max-width: 767px) {
+  .page {
+    height: auto;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+}
+.container {
+  display: flex;
+  height: 60%;
+  margin: 0 auto;
+  width: 640px;
+}
+@media (max-width: 767px) {
+  .container {
+    flex-direction: column;
+    height: 630px;
+    width: 320px;
+  }
+}
+.left {
+  background: white;
+  height: calc(100% - 40px);
+  top: 20px;
+  position: relative;
+  width: 50%;
+}
+@media (max-width: 767px) {
+  .left {
+    height: 100%;
+    left: 20px;
+    width: calc(100% - 40px);
+    max-height: 270px;
+  }
+}
+.crearcuenta{
+  font-size: x-small;
+  font-weight: 900;
+  margin: 50px 40px 40px;
+}
+.volver{
+  font-size: x-small;
+  font-weight: 900;
+  margin: 50px 40px 40px;
+}
+.registro{
+  font-size: 30px;
+  font-weight: 900;
+  margin: 50px 40px 40px;
+}
+.login {
+  font-size: 50px;
+  font-weight: 500;
+  margin: 30px 40px 40px;
+}
+.eula {
+  color: #999;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 40px;
+}
+.right {
+  background: #474A59;
+  box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
+  color: #F1F1F2;
+  position: relative;
+  width: 60%;
+}
+@media (max-width: 767px) {
+  .right {
+    flex-shrink: 0;
+    height: 100%;
+    width: 100%;
+    max-height: 350px;
+  }
+}
+svg {
+  position: absolute;
+  width: 320px;
+}
+path {
+  fill: none;
+  stroke: url(#linearGradient);;
+  stroke-width: 4;
+  stroke-dasharray: 240 1386;
+}
+.form {
+  margin: 40px;
+  position: absolute;
+}
+label {
+  color:  #000000;
+  display: block;
+  font-size: 14px;
+  height: 16px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+input {
+  background: transparent;
+  border: 0;
+  color: #f2f2f2;
+  font-size: 20px;
+  height: 30px;
+  line-height: 30px;
+  outline: none !important;
+  width: 100%;
+}
+input::-moz-focus-inner { 
+  border: 0; 
+}
+#submit {
+  color: #ffffff;
+  margin-top: 40px;
+  transition: color 300ms;
+  position:left;
+}
+#submit:focus {
+  color: rgb(10, 30, 95);
+}
+#submit:active {
+  color: #006dd3;
+}
+
+#agregarProducto1 {
+  background-color: #f9f9f9; 
+  padding: 20px; 
+  border-radius: 8px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+#agregarProducto1 h3 {
+  font-size: 24px; 
+  margin-bottom: 15px; 
+  color: #333; 
+}
+
+#agregarProducto1 label {
+  color: #555; 
+  font-size: 16px; 
+  margin-bottom: 8px; 
+}
+
+#agregarProducto1 input[type="text"],
+#agregarProducto1 textarea {
+  width: calc(100% - 40px); 
+  padding: 10px; 
+  margin-bottom: 15px; 
+  border: 1px solid #000000; 
+  border-radius: 5px; 
+  box-sizing: border-box; 
+}
+
+#agregarProducto1 input[type="submit"] {
+  background-color: #2D2F36; 
+  color: white; 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+#agregarProducto1 input[type="submit"]:hover {
+  background-color: #2D2F36; }
+
+section {
+  background-color: #ffffff; 
+  color: #000000; 
+  padding: 20px; 
+  border-radius: 8px; 
+  margin-bottom: 20px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+section h2 {
+  font-size: 24px; 
+  margin-bottom: 15px; 
+}
+
+section ul {
+  list-style-type: none; 
+  padding: 0; 
+}
+
+section ul li {
+  font-size: 16px; 
+  margin-bottom: 5px; 
+}
+
+
+.header-content {
+  display: flex;
+  align-items: center; 
+}
+
+h1 {
+  margin-right: 20px; 
+}
+
+.logo {
+  max-width: 200px; 
+}
+
+nav {
+  background-color: #001c80;
+  overflow: hidden;
+  z-index: 2;
+  border-bottom: 1px solid #ddd;
+}
+
+nav a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: right;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: rgba(7, 168, 231, 0.986);
+}
+
+
+.content {
+  margin-left: 170px; 
+  padding: 20px;
+  z-index: 0; 
+}
+
+.button {
+  background-color: #2D2F36;
+  
+}
+
+#generar-producto {
+  margin-top: 30px;
+}
+
+#generar-producto h2 {
+  color: #2D2F36;
+}
+
+#generar-producto form {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #4d4d4d;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#generar-producto label {
+  display: block;
+  margin-bottom: 8px;
+  color: #000000;
+}
+
+#generar-producto input,
+#generar-producto textarea,
+#generar-producto button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+#generar-producto button {
+  background-color: #f5f5f5;
+  color: rgb(43, 31, 31);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#generar-producto button:hover {
+  background-color: #1E2027;
+}
+
+#lista-productos {
+  margin-top: 30px;
+}
+
+#lista-productos h2 {
+  color: #2D2F36;
+}
+
+#lista-productos ul {
+  list-style: none;
+  padding: 0;
+}
+
+#lista-productos li {
+  background-color: #ffffff;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#lista-productos li h3 {
+  color: #2D2F36;
+}
+
+#lista-productos li p {
+  color: #777777;
+}
+
+#lista-proveedores li {
+  background-color: #272e6d;
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  opacity: 0; 
+  transform: translateY(20px); 
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+#lista-proveedores li:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+#lista-proveedores li.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#boton_volver {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  background-color: #545864;
+  color: #fff;
+  border: 2px solid #545864;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#boton_volver:hover {
+  background-color: #545864;
+  color: #fff;
+}
+.funciones-enlaces {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.funciones-enlaces a {
+  display: block;
+  padding: 10px;
+  margin: 5px;
+  text-decoration: none;
+  color: #333;
+  background-color: #f5f5f5; 
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  transition: background-color 0.3s, color 0.3s; 
+
+}
+
+.funciones-enlaces a:hover {
+  background-color: #3498db; 
+  color: #fff; 
+}
+
+		#boton_vender {
+			background-color: #3498db; 
+			color: #fff; 
+			padding: 10px 20px; 
+			font-size: 16px; 
+			border: none; 
+			border-radius: 5px; 
+			cursor: pointer; 
+			transition: background-color 0.3s; 
+		}
+		
+		#boton_vender:hover {
+			background-color: #2980b9; 
+		}
+
+    /* Estilos base para el formulario de facturación */
+#formulario-facturacion {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los campos de entrada y etiquetas */
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: 21px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+/* Estilos para el botón de facturar */
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para la tabla de detalles de productos/servicios */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table th,
+table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+/* Estilos para el botón de agregar producto */
+#agregar-producto {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#agregar-producto:hover {
+  background-color: #007bff;
+}
+
+@media (max-width: 768px) {
+  #formulario-facturacion {
+      padding: 10px;
+  }
+
+
+  table {
+      font-size: 14px;
+  }
+
+  button[type="submit"],
+  #agregar-producto {
+      padding: 8px 16px;
+      font-size: 14px;
+  }
+}
+
+
+h3 {
+  font-size: 24px; 
+  font-weight: bold; 
+  color: #333; 
+  margin-bottom: 10px; 
+}
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#chat-container {
+  width: 1200px;
+  margin: auto;
+  padding: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+}
+
+#chat-area {
+  height: 200px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+  border: 1px solid #aaa9a9;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#user-input {
+  width: calc(100% - 70px);
+  margin-right: 10px;
+  color: #F1F1F2;
+}
+
+.body-ia{
+  background-image: url('azuldegradado.jpg');
+  background-size: cover; 
+  background-position: center; 
+}
+.custom-color{
+  color: #F1F1F2;
+}
