@@ -7,6 +7,19 @@
 {% endblock %}
 
 {% block body %}
+{% with messages = get_flashed_messages() %}
+
+{% if messages %}
+<br />
+{% for message in messages %}
+
+<div class="alert-primary alert-dismissible" role="alert">
+<strong>{{message}} </strong>
+<button type="button" class="btn-close" data-bs-dismiss= "alert" aria-label="Close"></button>
+
+{% endfor %}
+{% endif %}
+{% endwith %}
 <div class="page">
   <div class="container">
     <div class="left">
@@ -40,7 +53,7 @@
       </svg>
       <form class="form" action="/login" method="POST">
         <label for="identification">Cédula</label>
-        <input type="text" id="identification" name="identification"> 
+        <input type="int" id="identification" name="identification"> 
         <label for="password">Contraseña</label>
         <input type="password" id="password" name="password"> 
         <input type="submit" id="submit" value="Ingresar">

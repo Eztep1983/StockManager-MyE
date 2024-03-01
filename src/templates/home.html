@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href= "{{url_for('static', filename='css/Style.css')}}">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<link href="src/static/css/favicon.ico" rel="icon">
+{% endblock %}
+
+{% block body %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="Style/Style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="Style/css_1/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <a href="home.html">Inicio</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="productos.html">Productos</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="configuracion.html">Configuración</a>
+        <a href="logout.html">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+    </nav>
+
+    <main>
+        <section id="funciones-clave">
+            <h2>Atajos</h2>
+            <div class="funciones-enlaces">
+                <a href="assistant.html">Asistente IA</a><br>
+                <a href="productos.html">Gestión de Productos</a><br>
+                <a href="proveedores.html">Gestión de Proveedores</a><br>
+                <a href="ventas.html">Registro de Ventas</a><br>
+                <a href="#reportes">Generar Reportes</a>
+            </div>
+        </section>
+
+        <section id="actualizaciones-stock">
+            <h2>Últimas Actualizaciones de Stock</h2>
+            <ul>
+                <li>Camisetas: +218</li>
+                <li>Pantalonetas: +300</li>
+                <li>Zapatos deportivos: -50</li>
+                <li>Chaquetas: +80</li>
+                <li>Vestidos: +120</li>
+                <li>Gorras: +45</li>
+                <li>Calcetines: +150</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 StockManager JyE</p>
+    </footer>
+</body>
+</html>
+{% endblock %}
