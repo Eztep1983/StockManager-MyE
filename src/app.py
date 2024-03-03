@@ -30,9 +30,9 @@ def login():
                 login_user(logged_user)
                 return redirect(url_for('home'))
             else:
-                flash("Contraseña inválida")
+                flash("Usuario no encontrado")
         else:
-            flash("Usuario no encontrado")
+            flash("Contraseña invalida")
     return render_template('auth/login.html')
 
 @app.route('/logout')
@@ -45,9 +45,45 @@ def logout():
 def home():
     return render_template('home.html')
 
-
 def status404(error):
-    return "<center><h1> No se pudo encontrar la pagina </h1></center>", 404
+    return """<html>
+                <head>
+                    <title>Página no encontrada</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                        }
+                        .container {
+                            margin-top: 50px;
+                        }
+                        .button {
+                            background-color: #007bff; /* Azul */
+                            border: none;
+                            color: white;
+                            padding: 15px 32px;
+                            text-align: center;
+                            text-decoration: none;
+                            display: inline-block;
+                            font-size: 16px;
+                            margin-top: 20px;
+                            cursor: pointer;
+                            border-radius: 5px;
+                        }
+                        .button:hover {
+                            background-color: #0056b3; /* Azul oscuro al pasar el ratón */
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <center>
+                            <h1>No se pudo encontrar la página</h1>
+                            <button class="button" onclick="window.location.href='/login'">Ir a login</button>
+                        </center>
+                    </div>
+                </body>
+            </html>""", 404
+
 
 def status401(error):
     return redirect(url_for('login'))
@@ -57,4 +93,4 @@ if __name__ == '__main__':
     csrf.init_app(app)
     app.register_error_handler(404, status404)
     app.register_error_handler(401, status401)
-    app.run()
+    app.run(host="0.0.0.0", port=5000)
