@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="Style/Style.css">
+    <link href="Style/favicon.ico" rel="icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuracion</title>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/sweetalert2.css">
+	<link rel="stylesheet" href="css/material.min.css">
+	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+	<script src="js/material.min.js" ></script>
+	<script src="js/sweetalert2.min.js" ></script>
+	<script src="js/jquery.mCustomScrollbar.concat.min.js" ></script>
+	<script src="js/main.js" ></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        section {
+            max-width: 600px; 
+            margin: auto; 
+            text-align: center; 
+            padding: 20px; 
+        }
+
+        img {
+            max-width: 30%; 
+            height:fit-content; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+        }
+
+        li {
+            list-style: none; 
+            font-size: 18px; 
+            margin-bottom: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="home.html">Inicio</a>
+		<a href="inventario.html">Inventario</a>
+        <a href="productos.html">Productos</a>
+        <a href="ventas.html">Ventas</a>
+		<a href="proveedores.html">Proveedores</a>
+		<a href="clientes.html">Clientes</a>
+        <a href="configuracion.html">Configuracion</a>
+        <a href="logout.html">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+
+    </nav>
+    <main>
+        <br>
+        <center><h4>Configuracion General</h4></center>
+        <center><section>
+            <h2>Perfil de usuario</h2>
+            <ol>
+                <img src="Style/favicon.ico" alt="">
+                <br>
+                <br>
+                <li>Nombre: Esteban Zambrano</li>
+                <li>Rol: Administrador</li>
+                <li>Fecha de nacimiento: 19/12/02</li>
+                <li>E-mail: extep1983@gmail.com</li>
+                <li>Telefono: +57 310-7981736</li>
+            </ol>
+        </section></center>
+        <br>
+
+        <section>
+            <h2>Preferencias</h2>
+            <ol>
+                <button id="boton_volver" onclick="window.location.href='cambiarcontra.html'">Cambiar contraseña</button>
+                <br>
+                <br>
+                <button id="boton_volver" onclick="window.location.href='cambiarusuario.html'">Cambiar nombre de usario</button>
+                <br>
+                <br>
+                <button id="boton_volver" onclick="window.location.href='cambiaremail.html'">Modificar Correo electronico</button>
+            </ol>
+        </section>
+    
+        <section>
+            <h2>Configuración de Seguridad</h2>
+            <ol>
+                <li>
+                    <button id="boton_volver">Respaldo y Recuperación de Datos</button>
+                </li>
+            </ol>
+        </section>
+    </main>
+    
+<footer>
+    <p>&copy; 2024 StockManager JyE</p>
+</footer>
+</body>
+</html>

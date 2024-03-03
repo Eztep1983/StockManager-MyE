@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar Email</title>
+    <link rel="stylesheet" href="Style/Style.css">
+    <link href="Style/favicon.ico" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+    <link href="Style/css_1/style.css" rel="stylesheet">
+    <style>
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #333; 
+        }       
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: black;
+            background-color: rgb(201, 245, 245);
+        }
+    </style>
+</head>
+<body>
+    <section id="preferencias-cuenta">
+        <h2>Cambiar E-mail</h2>
+
+        <label for="current-email">Correo Electrónico actual:</label>
+        <input type="email" id="current-email" name="current-email" required>
+        
+        <label for="new-email">Nuevo Correo Electrónico:</label>
+        <input type="email" id="new-email" name="new-email" required>
+        
+        <label for="confirm-email">Confirmar Nuevo Correo Electrónico:</label>
+        <input type="email" id="confirm-email" name="confirm-email" required>
+        
+        <button id="boton_volver">Guardar Cambios</button>
+
+        <button id="boton_volver" onclick="window.location.href = 'configuracion.html'">Volver</button>
+</body>
+</html>

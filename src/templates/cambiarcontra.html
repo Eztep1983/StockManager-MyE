@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar contraseña</title>
+    <link rel="stylesheet" href="Style/Style.css">
+    <link href="Style/favicon.ico" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+    <link href="Style/css_1/style.css" rel="stylesheet">
+    <style>
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #333; 
+        }       
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: black;
+            background-color: rgb(201, 245, 245);
+        }
+    </style>
+</head>
+<body>
+    <section id="preferencias-cuenta">
+        <h2>Cambiar contraseña</h2>
+        
+        <label for="current-password">Contraseña actual:</label>
+        <input type="password" id="current-password" name="current-password" required>
+        
+        <label for="new-password">Nueva Contraseña:</label>
+        <input type="password" id="new-password" name="new-password" required>
+        
+        <label for="confirm-password">Confirmar Nueva Contraseña:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+        
+        <button id="boton_volver">Guardar Cambios</button>
+
+        <button id="boton_volver" onclick="window.location.href = 'configuracion.html'">Volver</button>
+</body>
+</html>

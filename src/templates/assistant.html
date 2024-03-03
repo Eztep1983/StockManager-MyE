@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="Style/Style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/sweetalert2.css">
+    <link rel="stylesheet" href="css/material.min.css">
+    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+</head>
+<body class="body-ia">
+    <nav>
+        <a href="home.html">Inicio</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="productos.html">Productos</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="configuracion.html">Configuracion</a>
+        <a href="logout.html">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+    </nav>
+<br>
+    <center><h5 class="custom-color">Chatea con la Base de Datos!</h5></center>
+    <br>
+    <br>
+    <div id="chat-container">
+        <div id="chat-area"></div>
+        <input type="text" id="user-input" placeholder="Preguntame lo que necesites!">
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

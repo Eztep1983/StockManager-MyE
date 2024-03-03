@@ -18,10 +18,30 @@ class ModelUser:
                     user = User(row[0], row[1], row[3])  # Assuming User doesn't store the password
                     return user
                 else:
-                    return None  # Password doesn't match
+                    return None  # Si la contraseña no coincide
             else:
-                return None  # User not found
+                return None  # Si el usuario no se encuentra
         except Exception as ex:
             raise Exception("Error al intentar iniciar sesión: {}".format(ex))
         finally:
             cursor.close()
+            
+            
+    @classmethod
+    def get_by_id(cls, db, id):
+        try:
+            cursor = db.connection.cursor()
+            sql = "SELECT id, identification, fullname FROM users WHERE id = %s"
+            cursor.execute(sql, (id,))
+            row = cursor.fetchone()
+            if row is not None:
+                return User(row[0], row[1], None, row[2])
+            else:
+                return None
+        except Exception as ex:
+            raise Exception("Error fetching user by ID: {}".format(ex))
+        finally:
+            cursor.close()
+
+
+            

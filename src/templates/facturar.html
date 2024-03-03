@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="Style/Style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vender</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/sweetalert2.css">
+    <link rel="stylesheet" href="css/material.min.css">
+    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+</head>
+<body id="color-facturar">
+    <nav>
+        <a href="home.html">Inicio</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="productos.html">Productos</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="configuracion.html">Configuracion</a>
+        <a href="logout.html">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+    </nav>
+    <header>
+        <center><h3>FACTURACION</h3></center>
+    </header>
+    <main>
+        <form id="formulario-facturacion">
+            <div>
+                <label for="cliente">Seleccionar Cliente:</label>
+                <select id="cliente" name="cliente">
+                    <option value="cliente1">Cliente generico</option>
+                    <option value="cliente2">Juan David</option>
+                    <option value="cliente3">Goku Bolaños</option>
+                </select>
+            </div>
+            <br>
+            <div>
+                <table id="tabla-productos">
+                    <thead>
+                        <tr>
+                            <th>Producto/Servicio</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fila-producto">
+                            <td><input type="text" name="producto"></td>
+                            <td><input type="number" name="cantidad"></td>
+                            <td><input type="number" name="precio"></td>
+                            <td><input type="number" name="subtotal" readonly></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" id="agregar-producto">Agregar Producto</button>
+            </div>
+            <br>
+            <tbody>
+                <h5>Total</h5>
+                <section>
+                    <tr class="total">
+                        <td><input type="number" name="total" readonly></td>
+                    </tr>
+                </section>
+            </tbody>
+
+            <div>
+                <label for="metodo-pago">Método de Pago:</label>
+                <select id="metodo-pago" name="metodo-pago">
+                    <option value="efectivo">Efectivo</option>
+                    <option value="tarjeta">Tarjeta de Crédito</option>
+                    <option value="transferencia">Transferencia Bancaria</option>
+                </select>
+            </div>
+            <div>
+                <label for="notas">Nota:</label>
+                <textarea id="notas" name="notas"></textarea>
+            </div>
+            <button type="button" id="facturar">Facturar</button>    
+            </form>
+    </main>
+
+    <script>
+        document.getElementById("facturar").addEventListener("click", function() {
+
+            swal.fire({
+                title: '¡Facturación exitosa!',
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: 'Imprimir factura',
+                cancelButtonText: 'Cerrar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.print();
+                }
+            });
+        });
+        const totalInput = document.querySelector("input[name='total']");
+    
+        function actualizarTotal() {
+            let total = 0;
+            document.querySelectorAll("input[name='subtotal']").forEach(function(subtotalInput) {
+                total += parseFloat(subtotalInput.value) || 0;
+            });
+            totalInput.value = total.toFixed(2);
+        }
+    
+        function actualizarSubtotal(input) {
+            const cantidadInput = input.closest("tr").querySelector("input[name='cantidad']");
+            const precioInput = input.closest("tr").querySelector("input[name='precio']");
+            const subtotalInput = input.closest("tr").querySelector("input[name='subtotal']");
+        
+            const cantidad = parseInt(cantidadInput.value) || 0;
+            const precio = parseFloat(precioInput.value) || 0;
+        
+            const subtotal = cantidad * precio;
+        
+            subtotalInput.value = subtotal.toFixed(2);
+            actualizarTotal();
+        }
+    
+        document.getElementById("agregar-producto").addEventListener("click", function() {
+            const filaProducto = document.querySelector(".fila-producto");
+            const nuevaFila = filaProducto.cloneNode(true);
+    
+            const campos = nuevaFila.querySelectorAll("input[type='text'], input[type='number']");
+            campos.forEach(function(campo) {
+                campo.value = "";
+            });
+    
+            const tabla = document.getElementById("tabla-productos").querySelector("tbody");
+            tabla.appendChild(nuevaFila);
+    
+            // Asignar event listeners a los nuevos campos de cantidad y precio
+            nuevaFila.querySelectorAll("input[name='cantidad'], input[name='precio']").forEach(function(input) {
+                input.addEventListener("input", function() {
+                    actualizarSubtotal(input);
+                });
+            });
+        });
+    
+        // Asignar event listeners a los campos de cantidad y precio existentes
+        document.querySelectorAll("input[name='cantidad'], input[name='precio']").forEach(function(input) {
+            input.addEventListener("input", function() {
+                actualizarSubtotal(input);
+            });
+        });
+    
+    </script>
+    
+</body>
+</html>
+

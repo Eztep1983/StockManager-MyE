@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="Style/Style.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Proveedores</title>
+	<link href="Style/favicon.ico" rel="icon">
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/sweetalert2.css">
+	<link rel="stylesheet" href="css/material.min.css">
+	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+	<script src="js/material.min.js" ></script>
+	<script src="js/sweetalert2.min.js" ></script>
+	<script src="js/jquery.mCustomScrollbar.concat.min.js" ></script>
+	<script src="js/main.js" ></script>
+</head>
+<body>
+    <nav>
+        <a href="home.html">Inicio</a>
+		<a href="inventario.html">Inventario</a>
+        <a href="productos.html">Productos</a>
+        <a href="ventas.html">Ventas</a>
+		<a href="proveedores.html">Proveedores</a>
+		<a href="clientes.html">Clientes</a>
+        <a href="configuracion.html">Configuracion</a>
+        <a href="logout.html">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+
+    </nav>
+
+	<section>
+		<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+			<div class="mdl-tabs__tab-bar">
+				<a href="#tabNewProvider" class="mdl-tabs__tab is-active">Nuevo Proveedor</a>
+				<a href="#tabListProvider" class="mdl-tabs__tab">Lista de Proveedores</a>
+			</div>
+			<div class="mdl-tabs__panel is-active" id="tabNewProvider">
+				<div class="mdl-grid">
+					<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+						<div class="full-width panel mdl-shadow--2dp">
+							<div class="full-width panel-tittle bg-primary text-center tittles">
+								Nuevo proovedor
+							</div>
+							<div class="full-width panel-content">
+								<form>
+									<h5 class="text-condensedLight">Informacion del proveedor</h5>
+									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+										<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="DNIProvider">
+										<label class="mdl-textfield__label" for="DNIProvider">Identificacion</label>
+										<span class="mdl-textfield__error">Numero invalido</span>
+									</div>
+									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+										<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-z0-9 ]*(\.[0-9]+)?" id="NameProvider">
+										<label class="mdl-textfield__label" for="NameProvider">Nombres</label>
+										<span class="mdl-textfield__error">Nombres invalidos</span>
+									</div>
+									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+										<input class="mdl-textfield__input" type="text" id="addressProvider">
+										<label class="mdl-textfield__label" for="addressProvider">Direccion</label>
+										<span class="mdl-textfield__error">Direccion Invalida</span>
+									</div>
+									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+										<input class="mdl-textfield__input" type="tel" pattern="-?[0-9+()- ]*(\.[0-9]+)?" id="phoneProvider">
+										<label class="mdl-textfield__label" for="phoneProvider">Telefono</label>
+										<span class="mdl-textfield__error">Numero de telefono invalido</span>
+									</div>
+									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+										<input class="mdl-textfield__input" type="email" id="emailProvider">
+										<label class="mdl-textfield__label" for="emailProvider">Correo electronico</label>
+										<span class="mdl-textfield__error">Correo electronico invalido</span>
+									</div>
+									<p class="text-center">
+										<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProvider">
+											<i class="zmdi zmdi-plus"></i>
+										</button>
+										<div class="mdl-tooltip" for="btn-addProvider">Añadir proveedor</div>
+									</p>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mdl-tabs__panel" id="tabListProvider">
+				<div class="mdl-grid">
+					<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+						<div class="full-width panel mdl-shadow--2dp">
+							<div class="full-width panel-tittle bg-success text-center tittles">
+								Lista de proveedores
+							</div>
+							<div class="full-width panel-content">
+								<form action="#">
+									<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+										<label class="mdl-button mdl-js-button mdl-button--icon" for="searchProvider">
+											<i class="zmdi zmdi-search"></i>
+										</label>
+										<div class="mdl-textfield__expandable-holder">
+											<input class="mdl-textfield__input" type="text" id="searchProvider">
+											<label class="mdl-textfield__label"></label>
+										</div>
+									</div>
+								</form>
+								<div class="mdl-list">
+									<div class="mdl-list__item mdl-list__item--two-line">
+										<span class="mdl-list__item-primary-content">
+											<i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+											<span>1. CocaCola</span>
+											<span class="mdl-list__item-sub-title">Identificacion</span>
+										</span>
+										<a class="mdl-list__item-secondary-action" href="#!"><i class="zmdi zmdi-more"></i></a>
+									</div>
+									<li class="full-width divider-menu-h"></li>
+									<div class="mdl-list__item mdl-list__item--two-line">
+										<span class="mdl-list__item-primary-content">
+											<i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+											<span>2. Postobon</span>
+											<span class="mdl-list__item-sub-title">Identificacion</span>
+										</span>
+										<a class="mdl-list__item-secondary-action" href="#!"><i class="zmdi zmdi-more"></i></a>
+									</div>
+									<li class="full-width divider-menu-h"></li>
+									<div class="mdl-list__item mdl-list__item--two-line">
+										<span class="mdl-list__item-primary-content">
+											<i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+											<span>3. Pepsi</span>
+											<span class="mdl-list__item-sub-title">Identificacion</span>
+										</span>
+										<a class="mdl-list__item-secondary-action" href="#!"><i class="zmdi zmdi-more"></i></a>
+									</div>
+									<li class="full-width divider-menu-h"></li>
+									<div class="mdl-list__item mdl-list__item--two-line">
+										<span class="mdl-list__item-primary-content">
+											<i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+											<span>4. Vive 100</span>
+											<span class="mdl-list__item-sub-title">Identificacion</span>
+										</span>
+										<a class="mdl-list__item-secondary-action" href="#!"><i class="zmdi zmdi-more"></i></a>
+									</div>
+									<li class="full-width divider-menu-h"></li>
+									<div class="mdl-list__item mdl-list__item--two-line">
+										<span class="mdl-list__item-primary-content">
+											<i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+											<span>5. SpeedMax</span>
+											<span class="mdl-list__item-sub-title">Identificacion</span>
+										</span>
+										<a class="mdl-list__item-secondary-action" href="#!"><i class="zmdi zmdi-more"></i></a>
+									</div>
+									<li class="full-width divider-menu-h"></li>
+									<div class="mdl-list__item mdl-list__item--two-line">
+										<span class="mdl-list__item-primary-content">
+											<i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+											<span>6. SevenUp</span>
+											<span class="mdl-list__item-sub-title">Identificacion</span>
+										</span>
+										<a class="mdl-list__item-secondary-action" href="#!"><i class="zmdi zmdi-more"></i></a>
+									</div>
+									<li class="full-width divider-menu-h"></li>
+									<div class="mdl-list__item mdl-list__item--two-line">
+										<span class="mdl-list__item-primary-content">
+											<i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+											<span>7. Spartan</span>
+											<span class="mdl-list__item-sub-title">Identificacion</span>
+										</span>
+										<a class="mdl-list__item-secondary-action" href="#!"><i class="zmdi zmdi-more"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+    <footer>
+        <p>&copy; 2024 StockManager JyE</p>
+    </footer>
+

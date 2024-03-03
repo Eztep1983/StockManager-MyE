@@ -22,27 +22,28 @@
 </head>
 <body>
     <nav>
-        <a href="home.html">Inicio</a>
-        <a href="inventario.html">Inventario</a>
-        <a href="productos.html">Productos</a>
-        <a href="ventas.html">Ventas</a>
-        <a href="proveedores.html">Proveedores</a>
-        <a href="clientes.html">Clientes</a>
-        <a href="configuracion.html">Configuración</a>
-        <a href="logout.html">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        <a href="/home">Inicio</a>
+        <a href="/inventario">Inventario</a>
+        <a href="/productos">Productos</a>
+        <a href="/ventas">Ventas</a>
+        <a href="/proveedores">Proveedores</a>
+        <a href="/clientes">Clientes</a>
+        <a href="/configuracion">Configuracion</a>
+        <a href="{{ url_for('logout') }}"> 
+            <i class="fas fa-sign-out-alt"></i> Salir
         </a>
-    </nav>
 
+    </nav>
     <main>
         <section id="funciones-clave">
-            <h2>Atajos</h2>
+
+            <center><h2>Bienvenido, {{ current_user.fullname }}</h2></center>
             <div class="funciones-enlaces">
-                <a href="assistant.html">Asistente IA</a><br>
-                <a href="productos.html">Gestión de Productos</a><br>
-                <a href="proveedores.html">Gestión de Proveedores</a><br>
-                <a href="ventas.html">Registro de Ventas</a><br>
-                <a href="#reportes">Generar Reportes</a>
+                <a href="/assistant">Asistente IA</a><br>
+                <a href="/productos">Gestión de Productos</a><br>
+                <a href="/proveedores">Gestión de Proveedores</a><br>
+                <a href="/ventas">Registro de Ventas</a><br>
+                <a href="/reportes">Generar Reportes</a>
             </div>
         </section>
 
