@@ -35,15 +35,54 @@ def login():
             flash("Contraseña invalida")
     return render_template('auth/login.html')
 
-@app.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
+
 
 @app.route('/home')
 @login_required
 def home():
     return render_template('home.html')
+
+@app.route('/inventario')
+@login_required
+def inventario():
+    return render_template('inventario.html')
+
+@app.route('/productos')
+@login_required
+def productos():
+    return render_template('productos.html')
+
+
+@app.route('/ventas')
+@login_required
+def ventas():
+    return render_template('ventas.html')
+
+@app.route('/proveedores')
+@login_required
+def proveedores():
+    return render_template('proveedores.html')
+
+@app.route('/clientes')
+@login_required
+def clientes():
+    return render_template('clientes.html')
+
+@app.route('/configuracion')
+@login_required
+def configuracion():
+    return render_template('configuracion.html')
+
+@app.route('/facturar')
+@login_required
+def facturar():
+    return render_template('facturar.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return render_template('logout.html')
 
 def status404(error):
     return """<html>

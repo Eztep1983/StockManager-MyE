@@ -1,35 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %} Productos {% endblock %}
+
+{% block body %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="Style/Style.css">
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Proveedores</title>
-	<link href="Style/favicon.ico" rel="icon">
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/sweetalert2.css">
-	<link rel="stylesheet" href="css/material.min.css">
-	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
-	<link rel="stylesheet" href="css/main.css">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
-	<script src="js/material.min.js" ></script>
-	<script src="js/sweetalert2.min.js" ></script>
-	<script src="js/jquery.mCustomScrollbar.concat.min.js" ></script>
-	<script src="js/main.js" ></script>
-</head>
+
 <body>
     <nav>
-        <a href="home.html">Inicio</a>
-		<a href="inventario.html">Inventario</a>
-        <a href="productos.html">Productos</a>
-        <a href="ventas.html">Ventas</a>
-		<a href="proveedores.html">Proveedores</a>
-		<a href="clientes.html">Clientes</a>
-        <a href="configuracion.html">Configuracion</a>
-        <a href="logout.html">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        <a href="/home">Inicio</a>
+        <a href="/inventario">Inventario</a>
+        <a href="/productos">Productos</a>
+        <a href="/ventas">Ventas</a>
+        <a href="/proveedores">Proveedores</a>
+        <a href="/clientes">Clientes</a>
+        <a href="/configuracion">Configuracion</a>
+        <a href="{{ url_for('logout') }}"> 
+            <i class="fas fa-sign-out-alt"></i> Salir
         </a>
 
     </nav>
@@ -182,3 +170,4 @@
         <p>&copy; 2024 StockManager JyE</p>
     </footer>
 
+{% endblock %}

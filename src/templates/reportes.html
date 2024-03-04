@@ -21,15 +21,15 @@
 </head>
 <body>
     <nav>
-        <a href="home.html">Inicio</a>
-		<a href="inventario.html">Inventario</a>
-        <a href="productos.html">Productos</a>
-        <a href="ventas.html">Ventas</a>
-		<a href="proveedores.html">Proveedores</a>
-		<a href="clientes.html">Clientes</a>
-        <a href="configuracion.html">Configuracion</a>
-        <a href="logout.html">
-            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        <a href="/home">Inicio</a>
+        <a href="/inventario">Inventario</a>
+        <a href="/productos">Productos</a>
+        <a href="/ventas">Ventas</a>
+        <a href="/proveedores">Proveedores</a>
+        <a href="/clientes">Clientes</a>
+        <a href="/configuracion">Configuracion</a>
+        <a href="{{ url_for('logout') }}"> 
+            <i class="fas fa-sign-out-alt"></i> Salir
         </a>
 
     </nav>
