@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %} Home {% endblock %}
+{% block title %} Inventario {% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
-<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Inventario</title>
+
+</head>
 <body style="background-color: white;">
     <nav>
         <a href="/home">Inicio</a>
@@ -19,7 +24,8 @@
         </a>
 
     </nav>
-    <section>
+	<center><h5>Inventario y stock</h5></center>
+    <section class="table-container">
 		<div class="full-width divider-menu-h"></div>
 		<div class="mdl-grid">
 			<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">

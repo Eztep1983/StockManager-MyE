@@ -551,3 +551,19 @@ button {
 .custom-color{
   color: #F1F1F2;
 }
+
+#cedula {
+  color: #000000; 
+
+  background-color: rgba(245, 245, 245, 0.9);
+}
+
+.option {
+  color: #000000;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch; 
+}

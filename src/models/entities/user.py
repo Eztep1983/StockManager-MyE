@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class User:
     def __init__(self, id, identification, password, fullname="", active=True):
         self.id = id
@@ -20,3 +21,5 @@ class User:
 
     def get_id(self):
         return str(self.id)
+
+

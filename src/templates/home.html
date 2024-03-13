@@ -2,14 +2,6 @@
 
 {% block title %} Home {% endblock %}
 
-{% block customCSS %}
-<link rel="stylesheet" href= "{{url_for('static', filename='Style/css_1/style.css')}}">
-<link rel="stylesheet" href= "{{url_for('static', filename='css/Style.css')}}">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-<link href="src/static/css/favicon.ico" rel="icon">
-{% endblock %}
-
 {% block body %}
 <html lang="es">
 <head>
@@ -34,7 +26,7 @@
     <main>
         <section id="funciones-clave">
 
-            <center><h2>Bienvenido, {{ current_user.fullname }}</h2></center>
+            <center><h2>Bienvenido, {{ current_user.fullname }}!</h2></center>
             <div class="funciones-enlaces">
                 <a href="/assistant">Asistente IA</a><br>
                 <a href="/productos">Gestión de Productos</a><br>

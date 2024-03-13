@@ -1,10 +1,12 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, jsonify, render_template, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
 from config import config
 from models.ModelUser import ModelUser 
 from models.entities.user import User
+from models.cliente import *
 from flask_wtf import CSRFProtect
+from models.producto import *
 app = Flask(__name__)
 
 # Configuración de la base de datos y del login manager
@@ -73,11 +75,25 @@ def clientes():
 def configuracion():
     return render_template('configuracion.html')
 
-@app.route('/facturar')
+#RUTA PARA LA FACTURACION
+
+@app.route('/facturar', methods=['POST', 'GET'])
 @login_required
 def facturar():
-    return render_template('facturar.html')
+    lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes 
+    if request.method =='POST':
+        #PARA PROCESAR LA FACTURA
+        pass
+    return render_template('facturar.html', lista_clientes=lista_clientes)
 
+
+#RUTA PARA OBTENER PRODUCTOS EN DISPONIBILIDAD
+app.route('/producto', methods=['GET'])
+def añadir():
+    lista_productos= obtener_lista_productos    
+    return render_template('facturar.html', lista_productos=lista_productos)
+
+#RUTA PARA CERRAR SESION
 @app.route('/logout')
 @login_required
 def logout():

@@ -8,7 +8,7 @@ class DevelopmentConfig(Config):
     MYSQL_HOST = "localhost"
     MYSQL_USER = "root"
     MYSQL_PASSWORD = "1004193541"
-    MYSQL_DB = "flask_login"
+    MYSQL_DB = "stock_manager"
 
 config = {
     'development': DevelopmentConfig

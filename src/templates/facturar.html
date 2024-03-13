@@ -1,26 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %} Productos {% endblock %}
+{% block title %} Facturar {% endblock %}
 
 {% block body %}
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="stylesheet" href="Style/Style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vender</title>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/sweetalert2.css">
-    <link rel="stylesheet" href="css/material.min.css">
-    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" href="css/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
 </head>
 <body id="color-facturar">
     <nav>
@@ -34,7 +22,6 @@
         <a href="{{ url_for('logout') }}"> 
             <i class="fas fa-sign-out-alt"></i> Salir
         </a>
-
     </nav>
     <header>
         <center><h3>FACTURACION</h3></center>
@@ -42,12 +29,12 @@
     <main>
         <form id="formulario-facturacion">
             <div>
-                <label for="cliente">Seleccionar Cliente:</label>
-                <select id="cliente" name="cliente">
-                    <option value="cliente1">Cliente generico</option>
-                    <option value="cliente2">Juan David</option>
-                    <option value="cliente3">Goku Bolaños</option>
-                </select>
+                <label for="clientes">Seleccionar Cliente:</label>
+                <select id="cedula" name="clientes">
+                    {% for cliente in lista_clientes %}
+                    <option value="{{ cliente.cedula }}">{{ cliente.nombres }} {{ cliente.apellidos }}</option>
+                    {% endfor %}
+                </select>                
             </div>
             <br>
             <div>
@@ -60,14 +47,20 @@
                             <th>Subtotal</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="fila-producto">
-                            <td><input type="text" name="producto"></td>
-                            <td><input type="number" name="cantidad"></td>
-                            <td><input type="number" name="precio"></td>
-                            <td><input type="number" name="subtotal" readonly></td>
-                        </tr>
-                    </tbody>
+                    <tr class="fila-producto">
+                        <td>
+                            <select id="producto" name="productos">
+                                <option value="">Seleccionar producto</option>
+                                {% for producto in lista_productos %}
+                                <option value="{{ producto.id }}">{{ producto.nombre }} {{ producto.descripcion }} {{producto.precio}} {{producto.stock}} {{producto.id_categoria}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td><input type="number" name="cantidad"></td>
+                        <td><input type="int" name="precio"></td>
+                        <td><input type="number" name="subtotal" readonly></td>
+                    </tr>
+                    
                 </table>
                 <button type="button" id="agregar-producto">Agregar Producto</button>
             </div>
@@ -80,7 +73,7 @@
                     </tr>
                 </section>
             </tbody>
-
+        
             <div>
                 <label for="metodo-pago">Método de Pago:</label>
                 <select id="metodo-pago" name="metodo-pago">
@@ -94,12 +87,36 @@
                 <textarea id="notas" name="notas"></textarea>
             </div>
             <button type="button" id="facturar">Facturar</button>    
-            </form>
+        </form>
     </main>
 
     <script>
-        document.getElementById("facturar").addEventListener("click", function() {
+        // Llamada AJAX para obtener los productos disponibles desde el servidor
+            $.ajax({
+                url: "/obtener_productos_disponibles",
+                type: "GET",
+                success: function(response) {
+                    if (response.error) {
+                        console.error("Error al obtener los productos disponibles");
+                    } else {
+                        const productos = response.productos;
+                        const selectProducto = document.getElementById("producto");
+                        // Llenar el menú desplegable con los productos disponibles
+                        productos.forEach(producto => {
+                            const option = document.createElement("option");
+                            option.value = producto.id;
+                            option.text = producto.nombre;
+                            selectProducto.appendChild(option);
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error de conexión al obtener los productos disponibles:", error);
+                }
+            });
 
+
+        document.getElementById("facturar").addEventListener("click", function() {
             swal.fire({
                 title: '¡Facturación exitosa!',
                 icon: 'success',
@@ -112,6 +129,7 @@
                 }
             });
         });
+        
         const totalInput = document.querySelector("input[name='total']");
     
         function actualizarTotal() {
@@ -148,7 +166,7 @@
             const tabla = document.getElementById("tabla-productos").querySelector("tbody");
             tabla.appendChild(nuevaFila);
     
-            // Asignar event listeners a los nuevos campos de cantidad y precio
+            // Para asignar event listeners a los nuevos campos de cantidad y precio
             nuevaFila.querySelectorAll("input[name='cantidad'], input[name='precio']").forEach(function(input) {
                 input.addEventListener("input", function() {
                     actualizarSubtotal(input);
@@ -156,7 +174,7 @@
             });
         });
     
-        // Asignar event listeners a los campos de cantidad y precio existentes
+        // Event listeners a los campos de cantidad y precio existentes
         document.querySelectorAll("input[name='cantidad'], input[name='precio']").forEach(function(input) {
             input.addEventListener("input", function() {
                 actualizarSubtotal(input);
@@ -164,7 +182,6 @@
         });
     
     </script>
-    
 </body>
 </html>
 {% endblock %}

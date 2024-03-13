@@ -4,24 +4,28 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     {% block customCSS %}
-    <link rel="stylesheet" href= "{{url_for('static', filename='Style/css_1/style.css')}}">
-    <link rel="stylesheet" href= "{{url_for('static', filename='css/Style.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/material.min.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/sweetalert2.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/normalize.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/material_design_iconic_font.min.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/jquery.mCustomScrollbar.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style/css_1/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/material.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweetalert2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/material_design_iconic_font.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.mCustomScrollbar.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zmdicons@latest/dist/css/material-design-iconic-font.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="src/static/css/favicon.ico" rel="icon">
-
-    <script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
-    <script src="js/material.min.js" ></script>
-    <script src="js/sweetalert2.min.js" ></script>
-    <script src="js/jquery.mCustomScrollbar.concat.min.js" ></script>
-    <script src="js/main.js" ></script>
+    <link href="{{ url_for('static', filename='css/favicon.ico') }}" rel="icon">
 {% endblock %}
+
+{% block customJS %}
+    <script src="{{ url_for('static', filename='js/jquery-1.11.2.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/material.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
+
   </head>
 
 <body>
