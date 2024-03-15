@@ -25,3 +25,18 @@ def obtener_lista_clientes():
         clientes.append(cliente)
     cursor.close()
     return clientes
+
+def añadir_cliente(cedula, nombres, apellidos, direccion, telefono, correo_electronico):
+    conn = mysql.connection
+    cursor = conn.cursor()
+    try:
+        sql = "INSERT INTO clientes (cedula, nombres, apellidos, direccion, telefono, correo_electronico) VALUES (%s, %s, %s, %s, %s, %s)"
+        cursor.execute(sql, (cedula, nombres, apellidos, direccion, telefono, correo_electronico))
+        conn.commit()
+        cursor.close()
+        return True
+    except Exception as e:
+        conn.rollback()
+        cursor.close()
+        print("Error al añadir cliente:", str(e))
+        return False

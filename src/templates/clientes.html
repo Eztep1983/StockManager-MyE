@@ -40,40 +40,36 @@
 								Nuevo Cliente
 							</div>
 							<div class="full-width panel-content">
-								<form>
+								<form id="clientForm" action="/cliente" method="POST">
+									<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 									<h5 class="text-condensedLight">Informacion del cliente</h5>
 									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="DNIClient">
+										<input class="mdl-textfield__input" type="text" pattern="[0-9]{1,15}" id="DNIClient" name="DNIClient">
 										<label class="mdl-textfield__label" for="DNIClient">Cedula</label>
 										<span class="mdl-textfield__error">Numero Invalido</span>
 									</div>
 									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-záéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="NameClient">
+										<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-záéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="NameClient" name="NameClient">
 										<label class="mdl-textfield__label" for="NameClient">Nombres</label>
 										<span class="mdl-textfield__error">Nombres invalidos</span>
 									</div>
 									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-záéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="LastNameClient">
+										<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-záéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="LastNameClient" name="LastNameClient">
 										<label class="mdl-textfield__label" for="LastNameClient">Apellidos</label>
 										<span class="mdl-textfield__error">Apellido Invalido</span>
 									</div>
 									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="text" id="addressClient1">
-										<label class="mdl-textfield__label" for="addressClient1">Direccion 1</label>
+										<input class="mdl-textfield__input" type="text" id="addressClient1" name="addressClient1">
+										<label class="mdl-textfield__label" for="addressClient1">Direccion</label>
 										<span class="mdl-textfield__error">Direccion Invalida</span>
 									</div>
 									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="text" id="addressClient2">
-										<label class="mdl-textfield__label" for="addressClient2">Direccion 2</label>
-										<span class="mdl-textfield__error">Direccion Invalida</span>
-									</div>
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="tel" pattern="-?[0-9+()- ]*(\.[0-9]+)?" id="phoneClient">
+										<input class="mdl-textfield__input" type="tel" pattern="-?[0-9+()- ]*(\.[0-9]+)?" id="phoneClient" name="phoneClient">
 										<label class="mdl-textfield__label" for="phoneClient">Telefono</label>
 										<span class="mdl-textfield__error">Numero de telefono invalido</span>
 									</div>
 									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="email" id="emailClient">
+										<input class="mdl-textfield__input" type="email" id="emailClient" name="emailClient">
 										<label class="mdl-textfield__label" for="emailClient">Correo electronico</label>
 										<span class="mdl-textfield__error">Correo electronico invalido</span>
 									</div>
@@ -81,9 +77,10 @@
 										<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addClient">
 											<i class="zmdi zmdi-plus"></i>
 										</button>
-										<div class="mdl-tooltip" for="btn-addClient">Añadir cliente</div>
+										<div class="mdl-tooltip" for="btn-addClient" id ="add">Añadir cliente</div>
 									</p>
 								</form>
+								
 							</div>
 						</div>
 					</div>
@@ -179,8 +176,29 @@
 				</div>
 			</div>
 		</div>
-	</section>
 
+		
+	</section>
+	<script>
+		document.getElementById("btn-addClient").addEventListener("click", function(event) {
+			// Evita que el formulario se envíe automáticamente
+			event.preventDefault();
+	
+			swal.fire({
+				title: '¡Se guardó el cliente con éxito!',
+				icon: 'success',
+				confirmButtonText: 'OK',  // Cambiado el nombre del botón de confirmación
+				showCancelButton: false,  // Ocultar el botón Cancelar
+			}).then((result) => {
+				// Envía manualmente el formulario solo si el usuario hizo clic en "OK"
+				if (result.isConfirmed) {
+					document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
+				}
+			});
+	
+		});  // Agregado el cierre de la función addEventListener
+	</script>
+	
     <footer>
         <p>&copy; 2024 StockManager JyE</p>
     </footer>

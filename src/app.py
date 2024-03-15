@@ -75,6 +75,31 @@ def clientes():
 def configuracion():
     return render_template('configuracion.html')
 
+#RUTA PARA AÑADIR CLIENTES 
+@app.route('/cliente', methods=['GET', 'POST'])
+@login_required
+def nuevo_cliente():
+    if request.method == 'POST':
+        cedula = request.form.get('DNIClient')
+        nombres = request.form.get('NameClient')
+        apellidos = request.form.get('LastNameClient')
+        direccion = request.form.get('addressClient1')
+        telefono = request.form.get('phoneClient')
+        email = request.form.get('emailClient')
+        
+        # Verificar si alguno de los campos requeridos está vacío
+        if not cedula or not nombres or not apellidos or not direccion or not telefono or not email:
+            return "Por favor, complete todos los campos del formulario."
+
+        # Llama a la función añadir_cliente() con los datos del nuevo cliente
+        if añadir_cliente(cedula, nombres, apellidos, direccion, telefono, email):
+            
+            return render_template('clientes.html')
+        else:
+            return "Error al añadir cliente"
+    # Si el método de solicitud no es POST, simplemente renderiza el formulario
+    return render_template('clientes.html')
+
 #RUTA PARA LA FACTURACION
 
 @app.route('/facturar', methods=['POST', 'GET'])
@@ -86,7 +111,6 @@ def facturar():
         # PARA PROCESAR LA FACTURA
         pass
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos)
-
 
 #RUTA PARA CERRAR SESION
 @app.route('/logout')
