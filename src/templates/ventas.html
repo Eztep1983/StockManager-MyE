@@ -10,6 +10,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Ventas</title>
+	<style>
+        @media only screen and (max-width: 600px) {
+            .mdl-cell {
+                width: 100% !important; 
+				margin : 0 auto;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -25,12 +33,12 @@
         </a>
 
     </nav>
-
+	<center><div class="titulo">LISTA DE VENTAS</center>
+		<br>
     <section class="table-container">
-		<center><h4>Lista de ventas</h4></center>
-		<div class="full-width divider-menu-h"></div>
 		<div class="mdl-grid">
 			<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+			<ol>
 				<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
 					<thead>
 						<tr>
@@ -71,8 +79,8 @@
 							<td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i class="zmdi zmdi-more"></i></button></td>
 						</tr>
 					</tbody>
-			
 				</table>
+			</ol>
 			</div>
 		</div>
 	</section>

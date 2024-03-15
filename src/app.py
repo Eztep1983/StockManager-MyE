@@ -80,18 +80,13 @@ def configuracion():
 @app.route('/facturar', methods=['POST', 'GET'])
 @login_required
 def facturar():
-    lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes 
+    lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes
+    lista_productos = obtener_lista_productos()  # Obtener la lista de productos
     if request.method =='POST':
-        #PARA PROCESAR LA FACTURA
+        # PARA PROCESAR LA FACTURA
         pass
-    return render_template('facturar.html', lista_clientes=lista_clientes)
+    return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos)
 
-
-#RUTA PARA OBTENER PRODUCTOS EN DISPONIBILIDAD
-app.route('/producto', methods=['GET'])
-def añadir():
-    lista_productos= obtener_lista_productos    
-    return render_template('facturar.html', lista_productos=lista_productos)
 
 #RUTA PARA CERRAR SESION
 @app.route('/logout')
@@ -138,7 +133,7 @@ def status404(error):
                     </div>
                 </body>
             </html>""", 404
-
+ 
 
 def status401(error):
     return redirect(url_for('login'))

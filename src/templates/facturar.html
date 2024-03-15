@@ -24,13 +24,14 @@
         </a>
     </nav>
     <header>
-        <center><h3>FACTURACION</h3></center>
+        <center><div class="titulo">FACTURACION</center>
+            <br>
     </header>
     <main>
-        <form id="formulario-facturacion">
+  <form id="formulario-facturacion">
             <div>
-                <label for="clientes">Seleccionar Cliente:</label>
                 <select id="cedula" name="clientes">
+                    <option value="">Seleccionar Cliente</option>
                     {% for cliente in lista_clientes %}
                     <option value="{{ cliente.cedula }}">{{ cliente.nombres }} {{ cliente.apellidos }}</option>
                     {% endfor %}
@@ -52,17 +53,18 @@
                             <select id="producto" name="productos">
                                 <option value="">Seleccionar producto</option>
                                 {% for producto in lista_productos %}
-                                <option value="{{ producto.id }}">{{ producto.nombre }} {{ producto.descripcion }} {{producto.precio}} {{producto.stock}} {{producto.id_categoria}}</option>
+                                <option value="{{ producto.id }}">{{ producto.nombre }}</option>
                                 {% endfor %}
                             </select>
+                            <input type="text" id="servicio" name="servicio" placeholder="Describir servicio">
                         </td>
                         <td><input type="number" name="cantidad"></td>
-                        <td><input type="int" name="precio"></td>
+                        <td><input type="number" name="precio"></td>
                         <td><input type="number" name="subtotal" readonly></td>
                     </tr>
                     
                 </table>
-                <button type="button" id="agregar-producto">Agregar Producto</button>
+                <center>  <button type="button" id="agregar-producto">Agregar Producto</button></center>
             </div>
             <br>
             <tbody>
@@ -85,38 +87,23 @@
             <div>
                 <label for="notas">Nota:</label>
                 <textarea id="notas" name="notas"></textarea>
+                <center><button type="button" id="facturar" style ="color: white">Facturar</button></center>
+             
             </div>
-            <button type="button" id="facturar">Facturar</button>    
-        </form>
+        </form>    
     </main>
 
     <script>
-        // Llamada AJAX para obtener los productos disponibles desde el servidor
-            $.ajax({
-                url: "/obtener_productos_disponibles",
-                type: "GET",
-                success: function(response) {
-                    if (response.error) {
-                        console.error("Error al obtener los productos disponibles");
-                    } else {
-                        const productos = response.productos;
-                        const selectProducto = document.getElementById("producto");
-                        // Llenar el menú desplegable con los productos disponibles
-                        productos.forEach(producto => {
-                            const option = document.createElement("option");
-                            option.value = producto.id;
-                            option.text = producto.nombre;
-                            selectProducto.appendChild(option);
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error de conexión al obtener los productos disponibles:", error);
-                }
-            });
 
+        document.getElementById("producto").addEventListener("change", function() {
+            const productoSelect = this;
+            const precioInput = document.querySelector("input[name='precio']");
+            const precio = productoSelect.options[productoSelect.selectedIndex].getAttribute("precio");
+            precioInput.value = precio;
+        });
 
         document.getElementById("facturar").addEventListener("click", function() {
+
             swal.fire({
                 title: '¡Facturación exitosa!',
                 icon: 'success',
@@ -129,6 +116,7 @@
                 }
             });
         });
+        
         
         const totalInput = document.querySelector("input[name='total']");
     
@@ -157,24 +145,21 @@
         document.getElementById("agregar-producto").addEventListener("click", function() {
             const filaProducto = document.querySelector(".fila-producto");
             const nuevaFila = filaProducto.cloneNode(true);
-    
-            const campos = nuevaFila.querySelectorAll("input[type='text'], input[type='number']");
-            campos.forEach(function(campo) {
+        
+            nuevaFila.querySelectorAll("input[type='text'], input[type='number']").forEach(function(campo) {
                 campo.value = "";
             });
-    
+        
             const tabla = document.getElementById("tabla-productos").querySelector("tbody");
             tabla.appendChild(nuevaFila);
-    
-            // Para asignar event listeners a los nuevos campos de cantidad y precio
+        
             nuevaFila.querySelectorAll("input[name='cantidad'], input[name='precio']").forEach(function(input) {
                 input.addEventListener("input", function() {
                     actualizarSubtotal(input);
                 });
             });
         });
-    
-        // Event listeners a los campos de cantidad y precio existentes
+        
         document.querySelectorAll("input[name='cantidad'], input[name='precio']").forEach(function(input) {
             input.addEventListener("input", function() {
                 actualizarSubtotal(input);
