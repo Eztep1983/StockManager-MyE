@@ -46,15 +46,16 @@
 							<div class="full-width panel-content">
 								<form>
 									<div class="mdl-grid">
-										<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
-											<h5 class="text-condensedLight">Descripcion</h5>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" pattern="-?[0-9- ]*(\.[0-9]+)?" id="BarCode">
-											</div>
 											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 												<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="NameProduct">
 												<label class="mdl-textfield__label" for="NameProduct">Nombre</label>
 												<span class="mdl-textfield__error">Nombre invalido</span>
+
+												<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+													<h5 class="text-condensedLight" style="margin-top: 80px;">Descripcion</h5>
+													<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+														<input class="mdl-textfield__input" type="text" pattern="-?[0-9- ]*(\.[0-9]+)?" id="BarCode">
+													</div>
 											</div>
 											<div class="mdl-textfield mdl-js-textfield">
 												<select class="mdl-textfield__input">
@@ -63,18 +64,16 @@
 													<option value="">Categoria 2</option>
 												</select>
 											</div>
-											<h5 class="text-condensedLight">Unidades y precio</h5>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="StrockProduct">
-												<label class="mdl-textfield__label" for="StrockProduct">Unidades</label>
-												<span class="mdl-textfield__error">Numero invalido</span>
-											</div>
 											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 												<input class="mdl-textfield__input" type="text" pattern="-?[0-9.]*(\.[0-9]+)?" id="PriceProduct">
 												<label class="mdl-textfield__label" for="PriceProduct">Precio</label>
 												<span class="mdl-textfield__error">Precio invalido</span>
 											</div>
-
+											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+												<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="StrockProduct">
+												<label class="mdl-textfield__label" for="StrockProduct">Unidades</label>
+												<span class="mdl-textfield__error">Numero invalido</span>
+											</div>
 										</div>
 										<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
 											<h5 class="text-condensedLight">Informacion y modelo</h5>
@@ -95,16 +94,9 @@
 												<label class="mdl-textfield__label" for="markProduct">Marca</label>
 												<span class="mdl-textfield__error">Marca Invalida</span>
 											</div>
-											<h5 class="text-condensedLight">Otros datos</h5>
+											<h5 class="text-condensedLight">Fecha de ingreso del producto</h5>
 											<div class="mdl-textfield mdl-js-textfield">
 												<input type="date" class="mdl-textfield__input">
-											</div>
-											<div class="mdl-textfield mdl-js-textfield">
-												<select class="mdl-textfield__input">
-													<option value="" disabled="" selected="">Seleccionar estado</option>
-													<option value="">Activado</option>
-													<option value="">Desactivado</option>
-												</select>
 											</div>
 										</div>
 									</div>

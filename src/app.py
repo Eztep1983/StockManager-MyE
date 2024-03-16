@@ -68,7 +68,8 @@ def proveedores():
 @app.route('/clientes')
 @login_required
 def clientes():
-    return render_template('clientes.html')
+    lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes
+    return render_template('clientes.html', clientes=lista_clientes)
 
 @app.route('/configuracion')
 @login_required
@@ -91,13 +92,13 @@ def nuevo_cliente():
         if not cedula or not nombres or not apellidos or not direccion or not telefono or not email:
             return "Por favor, complete todos los campos del formulario."
 
-        # Llama a la función añadir_cliente() con los datos del nuevo cliente
+        # Llamado a la función con los datos del nuevo cliente
         if añadir_cliente(cedula, nombres, apellidos, direccion, telefono, email):
             
-            return render_template('clientes.html')
+            return redirect('/clientes')
         else:
             return "Error al añadir cliente"
-    # Si el método de solicitud no es POST, simplemente renderiza el formulario
+
     return render_template('clientes.html')
 
 #RUTA PARA LA FACTURACION

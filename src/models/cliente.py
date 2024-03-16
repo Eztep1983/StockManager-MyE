@@ -26,6 +26,7 @@ def obtener_lista_clientes():
     cursor.close()
     return clientes
 
+
 def añadir_cliente(cedula, nombres, apellidos, direccion, telefono, correo_electronico):
     conn = mysql.connection
     cursor = conn.cursor()
