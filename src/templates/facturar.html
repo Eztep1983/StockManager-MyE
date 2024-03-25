@@ -11,18 +11,44 @@
     <title>Vender</title>
 </head>
 <body id="color-facturar">
-    <nav>
-        <a href="/home">Inicio</a>
-        <a href="/inventario">Inventario</a>
-        <a href="/productos">Productos</a>
-        <a href="/ventas">Ventas</a>
-        <a href="/proveedores">Proveedores</a>
-        <a href="/clientes">Clientes</a>
-        <a href="/configuracion">Configuracion</a>
-        <a href="{{ url_for('logout') }}"> 
-            <i class="fas fa-sign-out-alt"></i> Salir
-        </a>
-    </nav>
+    <div class="mdl-layout mdl-js-layout">
+    
+		<!-- Navegación -->
+		<nav class="mdl-navigation">
+			<button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+				<span class="gg-menu"></span>
+			</button>
+			<div style="flex-grow: 1; text-align: center; margin-top:10px;">
+				<span style="font-family: 'Great Vibes', cursive; font-style: italic; font-size: 24px;">StockManager</span>
+			</div>
+			<a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+				<i class="fas fa-sign-out-alt"></i> Salir
+			</a>
+		</nav>
+		
+		
+		<div class="mdl-layout__drawer">
+			
+			<i class="mdi--user-tie"></i>
+			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+			<nav class="mdl-navigation">
+				<a href="/home">Inicio</a><br>
+				<br>
+				<a href="/inventario">Inventario</a><br>
+				<br>
+				<a href="/productos">Productos</a><br>
+				<br>
+				<a href="/ventas">Ventas</a><br>
+				<br>
+				<a href="/proveedores">Proveedores</a><br>
+				<br>
+				<a href="/clientes">Clientes</a><br>
+				<br>
+				<a href="/configuracion">Configuracion</a><br>
+			</nav>
+		</div>
+		<!-- Contenido principal -->
+<main class="mdl-layout__content">
     <header>
         <center><div class="titulo">FACTURACION</center>
             <br>
@@ -88,7 +114,6 @@
                 <label for="notas">Nota:</label>
                 <textarea id="notas" name="notas"></textarea>
                 <center><button type="button" id="facturar" style ="color: white">Facturar</button></center>
-             
             </div>
         </form>    
     </main>

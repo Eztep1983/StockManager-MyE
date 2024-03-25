@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
 from config import config
@@ -119,6 +119,12 @@ def facturar():
 def logout():
     logout_user()
     return render_template('logout.html')
+
+@app.route('/actualizar_cliente')
+@login_required
+def actualizar_cliente():
+    return render_template('actualizar_cliente.html')
+
 
 def status404(error):
     return """<html>

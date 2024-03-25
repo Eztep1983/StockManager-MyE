@@ -13,20 +13,44 @@
 
 </head>
 <body style="background-color: white;">
-    <nav>
-        <a href="/home">Inicio</a>
-        <a href="/inventario">Inventario</a>
-        <a href="/productos">Productos</a>
-        <a href="/ventas">Ventas</a>
-        <a href="/proveedores">Proveedores</a>
-        <a href="/clientes">Clientes</a>
-        <a href="/configuracion">Configuracion</a>
-        <a href="{{ url_for('logout') }}"> 
-            <i class="fas fa-sign-out-alt"></i> Salir
-        </a>
-
-    </nav>
-    <main>
+	<div class="mdl-layout mdl-js-layout">
+    
+		<!-- Navegación -->
+		<nav class="mdl-navigation">
+			<button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+				<span class="gg-menu"></span>
+			</button>
+			<div style="flex-grow: 1; text-align: center; margin-top:10px;">
+				<span style="font-family: 'Great Vibes', cursive; font-style: italic; font-size: 24px;">StockManager</span>
+			</div>
+			<a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+				<i class="fas fa-sign-out-alt"></i> Salir
+			</a>
+		</nav>
+		
+		
+		<div class="mdl-layout__drawer">
+			
+			<i class="mdi--user-tie"></i>
+			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+			<nav class="mdl-navigation">
+				<a href="/home">Inicio</a><br>
+				<br>
+				<a href="/inventario">Inventario</a><br>
+				<br>
+				<a href="/productos">Productos</a><br>
+				<br>
+				<a href="/ventas">Ventas</a><br>
+				<br>
+				<a href="/proveedores">Proveedores</a><br>
+				<br>
+				<a href="/clientes">Clientes</a><br>
+				<br>
+				<a href="/configuracion">Configuracion</a><br>
+			</nav>
+		</div>
+		<!-- Contenido principal -->
+<main class="mdl-layout__content">
     </section>
 
 		<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
@@ -125,82 +149,8 @@
 									<label class="mdl-textfield__label"></label>
 								</div>
 							</div>
+							
 						</form>
-						<nav class="full-width menu-categories">
-							<ul class="list-unstyle text-center">
-								<li><a href="#!">Categoria 1</a></li>
-								<li><a href="#!">Categoria 2</a></li>
-								<li><a href="#!">Categoria 3</a></li>
-								<li><a href="#!">Categoria 4</a></li>
-							</ul>
-						</nav>
-						<div class="full-width text-center" style="padding: 30px 0;">
-							<div class="mdl-card mdl-shadow--2dp full-width product-card">
-								<div class="mdl-card__title">
-									<img src="static/images/logo.png" alt="product" class="img-responsive">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<small>Stock</small><br>
-									<small>Categoria</small>
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-									Nombre del producto
-									<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-										<i class="zmdi zmdi-more"></i>
-									</button>
-								</div>
-							</div>
-							<div class="mdl-card mdl-shadow--2dp full-width product-card">
-								<div class="mdl-card__title">
-									<img src="static/images/logo.png" alt="product" class="img-responsive">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<small>Stock</small><br>
-									<small>Categoria</small>
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-									Nombre del producto
-									<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-										<i class="zmdi zmdi-more"></i>
-									</button>
-								</div>
-							</div>
-							<div class="mdl-card mdl-shadow--2dp full-width product-card">
-								<div class="mdl-card__title">
-									<img src="static/images/logo.png" alt="product" class="img-responsive">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<small>Stock</small><br>
-									<small>Categoria</small>
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-									Nombre del producto
-									<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-										<i class="zmdi zmdi-more"></i>
-									</button>
-								</div>
-							</div>
-							<div class="mdl-card mdl-shadow--2dp full-width product-card">
-								<div class="mdl-card__title">
-									<img src="static/images/logo.png" alt="product" class="img-responsive">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<small>Stock</small><br>
-									<small>Categoria</small>
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-                                    Nombre del producto
-									<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-										<i class="zmdi zmdi-more"></i>
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
 
     </main>
 

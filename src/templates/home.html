@@ -10,25 +10,48 @@
     <title>Inicio</title>
 </head>
 <body style="background-color: white;">
-    <nav>
-        <a href="/home">Inicio</a>
-        <a href="/inventario">Inventario</a>
-        <a href="/productos">Productos</a>
-        <a href="/ventas">Ventas</a>
-        <a href="/proveedores">Proveedores</a>
-        <a href="/clientes">Clientes</a>
-        <a href="/configuracion">Configuracion</a>
-        <a href="{{ url_for('logout') }}"> 
-            <i class="fas fa-sign-out-alt"></i> Salir
-        </a>
-
-    </nav>
-    <main>
+    <div class="mdl-layout mdl-js-layout">
+    
+		<!-- Navegación -->
+		<nav class="mdl-navigation">
+			<button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+				<span class="gg-menu"></span>
+			</button>
+			<div style="flex-grow: 1; text-align: center; margin-top:10px;">
+				<span style="font-family: 'Great Vibes', cursive; font-style: italic; font-size: 24px;">StockManager</span>
+			</div>
+			<a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+				<i class="fas fa-sign-out-alt"></i> Salir
+			</a>
+		</nav>
+		
+		
+		<div class="mdl-layout__drawer">
+			
+			<i class="mdi--user-tie"></i>
+			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+			<nav class="mdl-navigation">
+				<a href="/home">Inicio</a><br>
+				<br>
+				<a href="/inventario">Inventario</a><br>
+				<br>
+				<a href="/productos">Productos</a><br>
+				<br>
+				<a href="/ventas">Ventas</a><br>
+				<br>
+				<a href="/proveedores">Proveedores</a><br>
+				<br>
+				<a href="/clientes">Clientes</a><br>
+				<br>
+				<a href="/configuracion">Configuracion</a><br>
+			</nav>
+		</div>
+		<!-- Contenido principal -->
+<main class="mdl-layout__content">
         <section id="funciones-clave">
 
             <center><h2>Bienvenido, {{ current_user.fullname }}!</h2></center>
             <div class="funciones-enlaces">
-                <a href="/assistant">Asistente IA</a><br>
                 <a href="/productos">Gestión de Productos</a><br>
                 <a href="/proveedores">Gestión de Proveedores</a><br>
                 <a href="/ventas">Registro de Ventas</a><br>
@@ -37,15 +60,15 @@
         </section>
 
         <section id="actualizaciones-stock">
-            <h2>Últimas Actualizaciones de Stock</h2>
+            <center><h2>Últimas Actualizaciones de Stock</h2></center>
             <ul>
-                <li>Camisetas: +218</li>
-                <li>Pantalonetas: +300</li>
-                <li>Zapatos deportivos: -50</li>
-                <li>Chaquetas: +80</li>
-                <li>Vestidos: +120</li>
-                <li>Gorras: +45</li>
-                <li>Calcetines: +150</li>
+                <Section><li>Camisetas: +218</li></Section>
+                <Section><li>Pantalonetas: +300</li></Section>
+                <Section> <li>Zapatos deportivos: -50</li></Section>
+                <Section><li>Chaquetas: +80</li></Section>
+                <Section><li>Vestidos: +120</li></Section>
+                <Section><li>Gorras: +45</li></Section>
+                <Section><li>Calcetines: +150</li></Section>
             </ul>
         </section>
     </main>

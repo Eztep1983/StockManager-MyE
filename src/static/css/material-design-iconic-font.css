@@ -756,6 +756,7 @@
 }
 .zmdi-search:before {
   content: '\f1c3';
+  margin-left: 20px;
 }
 .zmdi-seat:before {
   content: '\f1c4';
@@ -3085,9 +3086,7 @@
 .zmdi-search-replace:before {
   content: '\f1c2';
 }
-.zmdi-search:before {
-  content: '\f1c3';
-}
+
 .zmdi-seat:before {
   content: '\f1c4';
 }

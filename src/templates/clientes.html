@@ -12,18 +12,46 @@
     <title>Clientes</title>
 </head>
 <body>
-    <nav>
-        <a href="/home">Inicio</a>
-        <a href="/inventario">Inventario</a>
-        <a href="/productos">Productos</a>
-        <a href="/ventas">Ventas</a>
-        <a href="/proveedores">Proveedores</a>
-        <a href="/clientes">Clientes</a>
-        <a href="/configuracion">Configuración</a>
-        <a href="{{ url_for('logout') }}"> 
-            <i class="fas fa-sign-out-alt"></i> Salir
-        </a>
-    </nav>
+    <body style="background-color: white;">
+        <div class="mdl-layout mdl-js-layout">
+    
+            <!-- Navegación -->
+            <nav class="mdl-navigation">
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+                    <span class="gg-menu"></span>
+                </button>
+                <div style="flex-grow: 1; text-align: center; margin-top:10px;">
+                    <span style="font-family: 'Great Vibes', cursive; font-style: italic; font-size: 24px;">StockManager</span>
+                </div>
+                <a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </a>
+            </nav>
+            
+            
+            <div class="mdl-layout__drawer">
+                
+                <i class="mdi--user-tie"></i>
+                <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+                <nav class="mdl-navigation">
+                    <a href="/home">Inicio</a><br>
+                    <br>
+                    <a href="/inventario">Inventario</a><br>
+                    <br>
+                    <a href="/productos">Productos</a><br>
+                    <br>
+                    <a href="/ventas">Ventas</a><br>
+                    <br>
+                    <a href="/proveedores">Proveedores</a><br>
+                    <br>
+                    <a href="/clientes">Clientes</a><br>
+                    <br>
+                    <a href="/configuracion">Configuracion</a><br>
+                </nav>
+            </div>
+            <!-- Contenido principal -->
+    <main class="mdl-layout__content">
+    
 
     <section>
         <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
@@ -114,7 +142,7 @@
                                                 <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Identificación: {{ cliente.cedula }}</span>
                                                 <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ cliente.telefono }}</span>
                                             </span>
-                                            <a class="mdl-list__item-secondary-action" href="#!"><i class="zmdi zmdi-more"></i></a>
+                                            <a class="mdl-list__item-secondary-action" href="#!"><i class="mdi--account-edit"></i></a>
                                         </div>
                                         <li class="full-width divider-menu-h"></li>
                                     {% endfor %}
@@ -127,28 +155,129 @@
         </div>
     </section>
     <script>
-        document.getElementById("btn-addClient").addEventListener("click", function(event) {
-            // Evita que el formulario se envíe automáticamente
-            event.preventDefault();
 
-            swal.fire({
-                title: '¡Se guardó el cliente con éxito!',
-                icon: 'success',
-                confirmButtonText: 'OK',  // Cambiado el nombre del botón de confirmación
-                showCancelButton: false,  // Ocultar el botón Cancelar
-            }).then((result) => {
-                // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
-                if (result.isConfirmed) {
-                    document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
+        document.addEventListener("DOMContentLoaded", function() {
+            // Inicializar el menú desplegable
+            var menuButton = document.getElementById("menuButton");
+            var menu = document.querySelector(".mdl-menu");
+            var menuInstance = new mdc.menu.MDCMenu(menu);
+            menuButton.addEventListener("click", function() {
+                menuInstance.open = !menuInstance.open;
+            });
+        });
+            document.getElementById("btn-addClient").addEventListener("click", function(event) {
+                // Evita que el formulario se envíe automáticamente
+                event.preventDefault();
+        
+                // Validar que todos los campos obligatorios estén llenos
+                var dni = document.getElementById("DNIClient").value.trim();
+                var nombre = document.getElementById("NameClient").value.trim();
+                var apellido = document.getElementById("LastNameClient").value.trim();
+                var direccion = document.getElementById("addressClient1").value.trim();
+                var telefono = document.getElementById("phoneClient").value.trim();
+                var email = document.getElementById("emailClient").value.trim();
+        
+                if (dni === "" || nombre === "" || apellido === "" || direccion === "" || telefono === "" || email === "") {
+                    // Mostrar mensaje de advertencia si algún campo está vacío
+                    swal.fire({
+                        title: '¡Advertencia!',
+                        text: 'Por favor completa todos los campos antes de agregar el cliente.',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    // Mostrar confirmación y enviar el formulario si todos los campos están llenos
+                    swal.fire({
+                        title: '¡Se guardó el cliente con éxito!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        showCancelButton: false
+                    }).then((result) => {
+                        // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
+                        if (result.isConfirmed) {
+                            document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
+                        }
+                    });
                 }
             });
 
-        });  // Agregado el cierre de la función addEventListener
+            document.addEventListener("DOMContentLoaded", function() {
+                var secondaryActions = document.querySelectorAll(".mdl-list__item-secondary-action");
+            
+                secondaryActions.forEach(function(action) {
+                    action.addEventListener("click", function(event) {
+                        var updateOption = action.querySelector(".update-client-option");
+                        var deleteOption = action.querySelector(".delete-client-option");
+            
+                        if (updateOption && event.target === updateOption) {
+                            // Aquí redirige al usuario a la página de actualización del cliente
+                            window.location.href = "/actualizar-cliente?id=" + clienteId;
+                        } else if (deleteOption && event.target === deleteOption) {
+                            // Aquí muestra un mensaje de confirmación antes de borrar el cliente
+                            if (confirm("¿Estás seguro de que deseas borrar este cliente?")) {
+                                // Aquí puedes hacer una solicitud para borrar el cliente del servidor
+                            }
+                        }
+                    });
+                });
+            });
+            
+
+            
+                // Obtener el campo de teléfono
+    var phoneInput = document.getElementById("phoneClient");
+
+    // Agregar evento keydown al campo de teléfono para permitir solo números
+    phoneInput.addEventListener("keydown", function(event) {
+        // Permitir solo números y teclas especiales como Backspace, Delete, Flechas, etc.
+        if (!(event.key >= "0" && event.key <= "9") &&
+            event.key !== "Backspace" &&
+            event.key !== "Delete" &&
+            event.key !== "ArrowLeft" &&
+            event.key !== "ArrowRight" &&
+            event.key !== "ArrowUp" &&
+            event.key !== "ArrowDown" &&
+            event.key !== "Tab" &&
+            event.key !== "Home" &&
+            event.key !== "End") {
+            // Evitar la acción predeterminada si la tecla presionada no es un número o una tecla especial permitida
+            event.preventDefault();
+        }
+    });
+
+        // Obtener el campo de búsqueda
+        var searchInput = document.getElementById("searchClient");
+
+        // Obtener la lista de clientes
+        var clientList = document.getElementsByClassName("mdl-list")[0];
+
+        // Agregar evento keyup al campo de búsqueda
+        searchInput.addEventListener("keyup", function(event) {
+            // Obtener el valor del campo de búsqueda
+            var searchTerm = event.target.value.toLowerCase();
+
+            // Obtener todos los elementos de clientes
+            var clients = clientList.getElementsByClassName("mdl-list__item");
+
+            // Iterar sobre los elementos de clientes
+            Array.from(clients).forEach(function(client) {
+                // Obtener el contenido de cliente
+                var clientContent = client.textContent.toLowerCase();
+
+                // Mostrar u ocultar el cliente según el término de búsqueda
+                if (clientContent.includes(searchTerm)) {
+                    client.style.display = "block";
+                } else {
+                    client.style.display = "none";
+                }
+            });
+        });
     </script>
     
     <footer>
         <p>&copy; 2024 StockManager JyE</p>
     </footer>
+</main>
 </body>
 </html>
 {% endblock %}

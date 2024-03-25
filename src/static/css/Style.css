@@ -147,48 +147,6 @@ input::-moz-focus-inner {
   color: #006dd3;
 }
 
-#agregarProducto1 {
-  background-color: #f9f9f9; 
-  padding: 20px; 
-  border-radius: 8px; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-}
-
-#agregarProducto1 h3 {
-  font-size: 24px; 
-  margin-bottom: 15px; 
-  color: #333; 
-}
-
-#agregarProducto1 label {
-  color: #555; 
-  font-size: 16px; 
-  margin-bottom: 8px; 
-}
-
-#agregarProducto1 input[type="text"],
-#agregarProducto1 textarea {
-  width: calc(100% - 40px); 
-  padding: 10px; 
-  margin-bottom: 15px; 
-  border: 1px solid #000000; 
-  border-radius: 5px; 
-  box-sizing: border-box; 
-}
-
-#agregarProducto1 input[type="submit"] {
-  background-color: #2D2F36; 
-  color: white; 
-  padding: 10px 20px; 
-  border: none; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  transition: background-color 0.3s ease; 
-}
-
-#agregarProducto1 input[type="submit"]:hover {
-  background-color: #2D2F36; }
-
 section {
   background-color: #ffffff; 
   color: #000000; 
@@ -228,12 +186,10 @@ h1 {
 }
 
 nav {
-  background-color: #001c80;
-  overflow: hidden;
+  background-color: #0066ff;
   z-index: 2;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #000000;
   white-space: nowrap; /* Evita el salto de línea */
-  overflow-x: auto; /* Habilita el desplazamiento horizontal */
   -webkit-overflow-scrolling: touch; /* Desplazamiento suave en dispositivos iOS */
 }
 
@@ -574,7 +530,74 @@ button {
   font-size: 20px; 
   font-weight: bold; 
   letter-spacing: 0.5px; 
-  color: #001c80;
+  color: #000000;
   margin-top: 20px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+.mdi--account-edit {
+  content: "Editar cliente";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='m21.7 13.35l-1 1l-2.05-2.05l1-1a.55.55 0 0 1 .77 0l1.28 1.28c.21.21.21.56 0 .77M12 18.94l6.06-6.06l2.05 2.05L14.06 21H12zM12 14c-4.42 0-8 1.79-8 4v2h6v-1.89l4-4c-.66-.08-1.33-.11-2-.11m0-10a4 4 0 0 0-4 4a4 4 0 0 0 4 4a4 4 0 0 0 4-4a4 4 0 0 0-4-4'/%3E%3C/svg%3E");
+  background-color: black;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+
+.mdi--user-tie {
+  display: inline-block;
+  width: 4em;
+  margin-left: 35%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  height: 4em;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.gg-menu {
+  transform: scale(var(--ggs,1))
+}
+.gg-menu,
+.gg-menu::after,
+.gg-menu::before {
+  margin-left: 5px;
+  margin-bottom: 5%;
+  box-sizing: border-box;
+  position:center;
+  display: block;
+  width: 30px;
+  height: 3px;
+  border-radius: 3px;
+  background: currentColor
+  
+  
+}
+.gg-menu::after,
+.gg-menu::before {
+  content: "";
+  position:fixed;
+  top: -6px
+}
+.gg-menu::after {
+  top: 6px
+}
+
+@font-face {
+  font-family: 'Dancing Script';
+  src: url('src/static/fonts/GreatVibes-Regular.ttf') format('truetype');
 }

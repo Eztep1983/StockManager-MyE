@@ -1,7 +1,7 @@
 import bcrypt
 
 # Genera una contraseña
-password = "esteban"
+password = "javier"
 
 # Hashea la contraseña
 hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
