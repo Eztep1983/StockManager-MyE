@@ -45,10 +45,10 @@ body {
 }
 .left {
   background: white;
-  height: calc(100% - 40px);
+  height: calc(70% - 40px);
   top: 20px;
   position: relative;
-  width: 50%;
+  width: 40%;
 }
 @media (max-width: 767px) {
   .left {
@@ -74,7 +74,7 @@ body {
   margin: 50px 40px 40px;
 }
 .login {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 500;
   margin: 30px 40px 40px;
 }
@@ -84,12 +84,28 @@ body {
   line-height: 1.5;
   margin: 40px;
 }
-.right {
-  background: #474A59;
+
+.register {
+  background: #008cff;
   box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
   color: #F1F1F2;
   position: relative;
-  width: 60%;
+  height: 130%;
+  width: 100%;
+  margin-top: -85px; 
+  border-radius: 15px;
+}
+
+
+.right {
+  background: #008cff;
+  box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
+  color: #F1F1F2;
+  position: relative;
+  height: 85%;
+  width: 70%;
+  margin-top: -25px;
+  border-radius: 15px;
 }
 @media (max-width: 767px) {
   .right {
@@ -570,34 +586,55 @@ button {
 }
 
 .gg-menu {
-  transform: scale(var(--ggs,1))
+  transform: scale(var(--ggs, 1));
+  position: relative;
+  text-align: center; /* Añadido para centrar horizontalmente el contenido */
 }
+
 .gg-menu,
 .gg-menu::after,
 .gg-menu::before {
-  margin-left: 5px;
-  margin-bottom: 5%;
+  margin-left: auto; /* Cambiado para centrar horizontalmente */
+  margin-right: auto; /* Cambiado para centrar horizontalmente */
+  margin-bottom: 40%;
   box-sizing: border-box;
-  position:center;
   display: block;
   width: 30px;
   height: 3px;
   border-radius: 3px;
-  background: currentColor
-  
-  
+  background: currentColor;
 }
+
 .gg-menu::after,
 .gg-menu::before {
   content: "";
-  position:fixed;
-  top: -6px
+  position: absolute;
+  top: -6px;
 }
+
+.gg-menu::before {
+  left: 50%; 
+  transform: translateX(-50%); 
+}
+
 .gg-menu::after {
-  top: 6px
+  left: 50%; 
+  top: 6px;
+  transform: translateX(-50%); 
 }
 
 @font-face {
   font-family: 'Dancing Script';
   src: url('src/static/fonts/GreatVibes-Regular.ttf') format('truetype');
+}
+
+
+.añadir_users{
+  background-color: #007bff;
+  color: #000;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
 }

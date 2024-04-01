@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
 from config import config
 from models.ModelUser import ModelUser 
+from models.register import *
 from models.entities.user import User
 from models.cliente import *
 from flask_wtf import CSRFProtect
@@ -22,6 +23,7 @@ def load_user(id):
 def index():
     return redirect(url_for('login'))
 
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == 'POST':
@@ -36,6 +38,31 @@ def login():
         else:
             flash("Contraseña invalida")
     return render_template('auth/login.html')
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        identification = request.form['identification']
+        password = request.form['password']
+        fullname = request.form['fullname']
+        for i in identification, password, fullname:
+            if i is not None:
+                # Crear un objeto User con los datos del formulario
+                user = User(None, identification, password, fullname)  # El ID se establecerá automáticamente al registrar el usuario
+                
+                # Llamar al método register de la clase Register para registrar al usuario
+                registered_user = Register.register(db, user)
+                if registered_user:
+                    return redirect(url_for('login'))
+                else:
+                    flash("Error al registrar usuario")
+            else:
+                flash("Debes llenar los campos")
+            
+    else:
+        # Si la solicitud no es POST, renderizar el formulario de registro
+        return render_template('auth/register.html')
 
 
 

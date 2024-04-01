@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %} Registrar usuario {% endblock %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/Style.css')}}">
+{% endblock %}
+
+{% block body %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<br />
+{% for message in messages %}
+<div class="alert-primary alert-dismissible" role="alert">
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<!DOCTYPE html>
+<html lang="en">
+<body style="background-color:white;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <style>
+        /* Estilos para el gradiente lineal debajo de los inputs */
+        input[type="int"],
+        input[type="password"],
+        input[type="fullname"] {
+            border: none;
+            border-bottom: 2px solid #ccc; /* Línea inferior del input */
+            background-image: linear-gradient(to bottom, #96a0d8, #f9f9f9); /* Gradiente lineal */
+            background-repeat: no-repeat;
+            background-position: bottom; 
+            background-size: 100% 2px; 
+            padding-bottom: 5px; 
+            margin-bottom: 20px; 
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Estilos adicionales para el formulario */
+        .form {
+            margin-top: 20px;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+        
+        #submit {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body style="background-color:white;">
+    <div class="page">
+        <div class="container">
+            <div class="left">
+                <div class="registro">Registrarse</div>
+                <a href="/login" class="volver">Ya tienes cuenta? Inicia Sesion</a>
+            </div>
+            <div class="register">
+                <!-- Tu SVG y otros elementos -->
+                <form id="formulario_registro" class="form" action="/register" method="POST">
+                    <!-- Etiquetas y campos de entrada -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <label for="identification">Cédula</label>
+                    <input type="text" id="identification" name="identification" inputmode="numeric" pattern="[0-9]*" maxlength="10">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password">
+                    <label for="confirm_password">Confirmar Contraseña</label>
+                    <input type="password" id="confirm_password">
+                    <!-- Mensaje de error para la validación de contraseña -->
+                    <div id="password_error" style="color: red;"></div>
+                    <label for="fullname">Nombres:</label>
+                    <input type="fullname" id="fullname" name="fullname">
+                    <!-- Botón de submit -->
+                    <br>
+                    <br>
+                    <center><button class="añadir_users"id="añadir_user" style="background-color:white;">Registrarse</button></center>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Obtener los elementos del DOM
+        var passwordInput = document.getElementById("password");
+        var confirmPasswordInput = document.getElementById("confirm_password");
+        var passwordError = document.getElementById("password_error");
+
+        // Agregar un evento keyup al input de contraseña
+        passwordInput.addEventListener("keyup", function() {
+            // Verificar si la longitud de la contraseña es suficiente
+            if (passwordInput.value.length < 8) {
+                passwordError.textContent = "La contraseña debe tener al menos 8 caracteres";
+            } else {
+                passwordError.textContent = "";
+            }
+        });
+
+        // Agregar un evento keyup al input de confirmación de contraseña
+        confirmPasswordInput.addEventListener("keyup", function() {
+            // Verificar si las contraseñas coinciden
+            if (confirmPasswordInput.value !== passwordInput.value) {
+                passwordError.textContent = "Las contraseñas no coinciden";
+            } else {
+                passwordError.textContent = "";
+            }
+        });
+
+        // Agregar evento click al botón de envío del formulario
+        document.getElementById("añadir_user").addEventListener("click", function(event) {
+            // Evita que el formulario se envíe automáticamente
+            event.preventDefault();
+
+            // Validar que todos los campos obligatorios estén llenos
+            var identification = document.getElementById("identification").value.trim();
+            var password = document.getElementById("password").value.trim();
+            var confirm_password = document.getElementById("confirm_password").value.trim();
+            var fullname = document.getElementById("fullname").value.trim();
+
+            if (identification === "" || password === "" || confirm_password === "" || fullname === "") {
+                swal.fire({
+                    title: '¡Advertencia!',
+                    text: 'Por favor completa todos los campos para registrarte.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                // Mostrar confirmación y enviar el formulario si todos los campos están llenos
+                swal.fire({
+                    title: '¡Se ha registrado al usuario!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    showCancelButton: false
+                }).then((result) => {
+                    // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
+                    if (result.isConfirmed) {
+                        document.getElementById("formulario_registro").submit();  // Envía el formulario con JavaScript
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
+{% endblock %}

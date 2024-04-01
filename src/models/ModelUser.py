@@ -15,7 +15,7 @@ class ModelUser:
             if row:
                 stored_password = row[2]
                 if bcrypt.checkpw(user.password.encode('utf-8'), stored_password.encode('utf-8')):
-                    user = User(row[0], row[1], row[3])  # Assuming User doesn't store the password
+                    user = User(row[0], row[1], row[3])  # Asume que si el usuario no existe guarde la contraseña
                     return user
                 else:
                     return None  # Si la contraseña no coincide
@@ -27,6 +27,7 @@ class ModelUser:
             cursor.close()
             
             
+    #Obtener usuario por medio de id
     @classmethod
     def get_by_id(cls, db, id):
         try:
