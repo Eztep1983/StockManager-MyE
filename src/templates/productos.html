@@ -7,158 +7,155 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Productos</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
 </head>
 <body style="background-color: white;">
-	<div class="mdl-layout mdl-js-layout">
+    <div class="mdl-layout mdl-js-layout">
     
-		<!-- Navegación -->
-		<nav class="mdl-navigation">
-			<button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
-				<span class="gg-menu"></span>
-			</button>
-			<div style="flex-grow: 1; text-align: center; margin-top:10px;">
-				<span style="font-family: 'Great Vibes', cursive; font-style: italic; font-size: 24px;">StockManager</span>
-			</div>
-			<a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
-				<i class="fas fa-sign-out-alt"></i> Salir
-			</a>
-		</nav>
-		
-		
-		<div class="mdl-layout__drawer">
-			
-			<i class="mdi--user-tie"></i>
-			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
-			<nav class="mdl-navigation">
-				<a href="/home">Inicio</a><br>
-				<br>
-				<a href="/inventario">Inventario</a><br>
-				<br>
-				<a href="/productos">Productos</a><br>
-				<br>
-				<a href="/ventas">Ventas</a><br>
-				<br>
-				<a href="/proveedores">Proveedores</a><br>
-				<br>
-				<a href="/clientes">Clientes</a><br>
-				<br>
-				<a href="/configuracion">Configuracion</a><br>
-			</nav>
-		</div>
-		<!-- Contenido principal -->
-<main class="mdl-layout__content">
-    </section>
+        <!-- Navegación -->
+        <nav class="mdl-navigation">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+                <span class="gg-menu"></span>
+            </button>
+            <a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </nav>
+        
+        
+        <div class="mdl-layout__drawer">
+            
+            <i class="mdi--user-tie"></i>
+            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>      
+            <nav class="mdl-navigation">
+                <a href="/home">Inicio</a><br>
+                <br>
+                <a href="/productos">Productos</a><br>
+                <br>
+                <a href="/ventas">Ventas</a><br>
+                <br>
+                <a href="/proveedores">Proveedores</a><br>
+                <br>
+                <a href="/clientes">Clientes</a><br>
+                <br>
+                <a href="/configuracion">Configuracion</a><br>
+            </nav>
+        </div>
+        <!-- Contenido principal -->
+        <main class="mdl-layout__content">
+    
+            <section>
+                <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                    <div class="mdl-tabs__tab-bar">
+                        <a href="#tabNewProduct" class="mdl-tabs__tab is-active">Agregar Nuevo Producto</a>
+                        <a href="#tabListProducts" class="mdl-tabs__tab">Lista de productos</a>
+                    </div>
+                    <div class="mdl-tabs__panel is-active" id="tabNewProduct">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+                                <div class="full-width panel mdl-shadow--2dp">
+                                    <div class="full-width panel-tittle bg-primary text-center tittles">
+                                        Agregar producto
+                                    </div>
+                                    <div class="full-width panel-content">
+                                        <form>
+                                            <div class="mdl-grid">
+                                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                        <input class="mdl-textfield__input" type="text" pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="NameProduct">
+                                                        <label class="mdl-textfield__label" for="NameProduct">Nombre</label>
+                                                        <span class="mdl-textfield__error">Nombre invalido</span>
+                                                    </div>
+                                                    <h5 class="text-condensedLight" style="margin-top: 80px;">Descripcion</h5>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9- ]*(\.[0-9]+)?" id="BarCode">
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield">
+                                                        <select class="mdl-textfield__input">
+                                                            <option value="" disabled="" selected="">Seleccionar Categoria</option>
+                                                            <option value="">Categoria 1</option>
+                                                            <option value="">Categoria 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9.]*(\.[0-9]+)?" id="PriceProduct">
+                                                        <label class="mdl-textfield__label" for="PriceProduct">Precio</label>
+                                                        <span class="mdl-textfield__error">Precio invalido</span>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                        <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="StrockProduct">
+                                                        <label class="mdl-textfield__label" for="StrockProduct">Unidades</label>
+                                                        <span class="mdl-textfield__error">Numero invalido</span>
+                                                    </div>
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
+                                                    <h5 class="text-condensedLight">Informacion y modelo</h5>
+                                                    <div class="mdl-textfield mdl-js-textfield">
+                                                        <select class="mdl-textfield__input">
+                                                            <option value="" disabled="" selected="">Seleccionar proveedores</option>
+                                                            <option value="">Proveedor 1</option>
+                                                            <option value="">Proveedor 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                        <input class="mdl-textfield__input" type="text"  id="modelProduct">
+                                                        <label class="mdl-textfield__label" for="modelProduct">Modelo</label>
+                                                        <span class="mdl-textfield__error">Modelo Invalido</span>
+                                                    </div>
+                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                        <input class="mdl-textfield__input" type="text" id="markProduct">
+                                                        <label class="mdl-textfield__label" for="markProduct">Marca</label>
+                                                        <span class="mdl-textfield__error">Marca Invalida</span>
+                                                    </div>
+                                                    <h5 class="text-condensedLight">Fecha de ingreso del producto</h5>
+                                                    <div class="mdl-textfield mdl-js-textfield">
+                                                        <input type="date" class="mdl-textfield__input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="text-center">
+                                                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProduct">
+                                                    <i class="zmdi zmdi-plus"></i>
+                                                </button>
+                                                <div class="mdl-tooltip" for="btn-addProduct">Añadir producto</div>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-tabs__panel" id="tabListProducts">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+                                <form action="#">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                                        <label class="mdl-button mdl-js-button mdl-button--icon" for="searchProduct">
+                                            <i class="zmdi zmdi-search"></i>
+                                        </label>
+                                        <div class="mdl-textfield__expandable-holder">
+                                            <input class="mdl-textfield__input" type="text" id="searchProduct">
+                                            <label class="mdl-textfield__label"></label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-		<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-			<div class="mdl-tabs__tab-bar">
-				<a href="#tabNewProduct" class="mdl-tabs__tab is-active">Agregar Nuevo Producto</a>
+        </main>
 
-			<!-- Aqui empieza la lista de los prodcutos-->
-				<a href="#tabListProducts" class="mdl-tabs__tab">Lista de productos</a>
-			</div>
-			<div class="mdl-tabs__panel is-active" id="tabNewProduct">
-				<div class="mdl-grid">
-					<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
-						<div class="full-width panel mdl-shadow--2dp">
-							<div class="full-width panel-tittle bg-primary text-center tittles">
-								Agregar producto
-							</div>
-							<div class="full-width panel-content">
-								<form>
-									<div class="mdl-grid">
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="NameProduct">
-												<label class="mdl-textfield__label" for="NameProduct">Nombre</label>
-												<span class="mdl-textfield__error">Nombre invalido</span>
+        <!-- Pie de página -->
+        <footer>
+            <p>&copy; 2024 StockManager JyE</p>
+        </footer>
 
-												<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
-													<h5 class="text-condensedLight" style="margin-top: 80px;">Descripcion</h5>
-													<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-														<input class="mdl-textfield__input" type="text" pattern="-?[0-9- ]*(\.[0-9]+)?" id="BarCode">
-													</div>
-											</div>
-											<div class="mdl-textfield mdl-js-textfield">
-												<select class="mdl-textfield__input">
-													<option value="" disabled="" selected="">Seleccionar Categoria</option>
-													<option value="">Categoria 1</option>
-													<option value="">Categoria 2</option>
-												</select>
-											</div>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" pattern="-?[0-9.]*(\.[0-9]+)?" id="PriceProduct">
-												<label class="mdl-textfield__label" for="PriceProduct">Precio</label>
-												<span class="mdl-textfield__error">Precio invalido</span>
-											</div>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="StrockProduct">
-												<label class="mdl-textfield__label" for="StrockProduct">Unidades</label>
-												<span class="mdl-textfield__error">Numero invalido</span>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
-											<h5 class="text-condensedLight">Informacion y modelo</h5>
-											<div class="mdl-textfield mdl-js-textfield">
-												<select class="mdl-textfield__input">
-													<option value="" disabled="" selected="">Seleccionar proveedores</option>
-													<option value="">Proveedor 1</option>
-													<option value="">Proveedor 2</option>
-												</select>
-											</div>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text"  id="modelProduct">
-												<label class="mdl-textfield__label" for="modelProduct">Modelo</label>
-												<span class="mdl-textfield__error">Modelo Invalido</span>
-											</div>
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" id="markProduct">
-												<label class="mdl-textfield__label" for="markProduct">Marca</label>
-												<span class="mdl-textfield__error">Marca Invalida</span>
-											</div>
-											<h5 class="text-condensedLight">Fecha de ingreso del producto</h5>
-											<div class="mdl-textfield mdl-js-textfield">
-												<input type="date" class="mdl-textfield__input">
-											</div>
-										</div>
-									</div>
-									<p class="text-center">
-										<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProduct">
-											<i class="zmdi zmdi-plus"></i>
-										</button>
-										<div class="mdl-tooltip" for="btn-addProduct">Añadir producto</div>
-									</p>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="mdl-tabs__panel" id="tabListProducts">
-				<div class="mdl-grid">
-					<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
-						<form action="#">
-							<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-								<label class="mdl-button mdl-js-button mdl-button--icon" for="searchProduct">
-									<i class="zmdi zmdi-search"></i>
-								</label>
-								<div class="mdl-textfield__expandable-holder">
-									<input class="mdl-textfield__input" type="text" id="searchProduct">
-									<label class="mdl-textfield__label"></label>
-								</div>
-							</div>
-							
-						</form>
-
-    </main>
-
-    <!-- Pie de página -->
-    <footer>
-        <p>&copy; 2024 StockManager JyE</p>
-    </footer>
+    </div>
 
 </body>
 </html>
-{% endblock %} 
+{% endblock %}

@@ -52,7 +52,22 @@
               <input type="submit" id="submit" value="Ingresar">
           </form>          
         </div>
+        
     </div>
+    <script>
+        // Sanitización en el cliente
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.querySelector(".form");
+            form.addEventListener("submit", function(event) {
+                var identificationInput = document.getElementById("identification");
+                var passwordInput = document.getElementById("password");
+                // Limpiar los datos antes de enviar el formulario
+                identificationInput.value = identificationInput.value.trim();
+                passwordInput.value = passwordInput.value.trim();
+            });
+        });
+    </script>
+    
 </div>
 </body>
 {% endblock %}

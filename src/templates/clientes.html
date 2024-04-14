@@ -20,9 +20,7 @@
                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
                     <span class="gg-menu"></span>
                 </button>
-                <div style="flex-grow: 1; text-align: center; margin-top:10px;">
-                    <span style="font-family: 'Great Vibes', cursive; font-style: italic; font-size: 24px;">StockManager</span>
-                </div>
+
                 <a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
                     <i class="fas fa-sign-out-alt"></i> Salir
                 </a>
@@ -35,8 +33,6 @@
                 <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
                 <nav class="mdl-navigation">
                     <a href="/home">Inicio</a><br>
-                    <br>
-                    <a href="/inventario">Inventario</a><br>
                     <br>
                     <a href="/productos">Productos</a><br>
                     <br>
@@ -135,18 +131,62 @@
                                 </form>
                                 <div class="mdl-list">
                                     {% for cliente in clientes %}
-                                        <div class="mdl-list__item mdl-list__item--two-line">
-                                            <span class="mdl-list__item-primary-content">
-                                                <i class="zmdi zmdi-account mdl-list__item-avatar"></i>
-                                                <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Nombres: {{ cliente.nombres }} {{ cliente.apellidos }}</span>
-                                                <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Identificación: {{ cliente.cedula }}</span>
-                                                <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ cliente.telefono }}</span>
+                                    <div class="mdl-list__item mdl-list__item--two-line">
+                                        <span class="mdl-list__item-primary-content">
+                                            <i class="zmdi zmdi-account mdl-list__item-avatar"></i>
+                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Nombres: {{ cliente.nombres }} {{ cliente.apellidos }}</span>
+                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Identificación: {{ cliente.cedula }}</span>
+                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ cliente.telefono }}</span>
+                                        </span>
+                                            <!-- Botón para mostrar el formulario de edición -->
+                                            <span> 
+                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.cedula }}')">
+                                                    <i class="mdi--account-edit"></i>
+                                                </button>
                                             </span>
-                                            <a class="mdl-list__item-secondary-action" href="#!"><i class="mdi--account-edit"></i></a>
+                                    </div>
+                                    <li class="full-width divider-menu-h"></li>
+                                    <!-- Formulario de edición para cada cliente -->
+                                    <form id="editForm{{ cliente.cedula }}" action="/editar_cliente" method="POST" style="display: none;">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="cliente_id" value="{{ cliente.cedula }}">
+                                    
+                                        <!-- Campo de edición para nombres -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" name="edit_NameClient" id="edit_NameClient" value="{{ cliente.nombres }}">
+                                            <label class="mdl-textfield__label" for="edit_NameClient">Nombres:</label>
+                                            <span class="mdl-textfield__error">Nombres Inválidos</span>
                                         </div>
-                                        <li class="full-width divider-menu-h"></li>
+                                        <!-- Campo de edición para apellidos -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" name="edit_LastNameClient" id="edit_LastNameClient" value="{{ cliente.apellidos }}">
+                                            <label class="mdl-textfield__label" for="edit_LastNameClient">Apellidos:</label>
+                                            <span class="mdl-textfield__error">Apellido Inválido</span>
+                                        </div>
+                                        <!-- Campo de edición para dirección -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" name="edit_addressClient" id="edit_addressClient" value="{{ cliente.direccion }}">
+                                            <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
+                                            <span class="mdl-textfield__error">Dirección Inválida</span>
+                                        </div>
+                                        <!-- Campo de edición para teléfono -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ cliente.telefono }}">
+                                            <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
+                                            <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
+                                        </div>   
+                                        <!-- Campo de edición para correo electrónico -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="email" name="edit_emailClient" id="edit_emailClient" value="{{ cliente.correo_electronico }}">
+                                            <label class="mdl-textfield__label" for="edit_emailClient">Correo Electrónico:</label>
+                                            <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
+                                        </div>                               
+                                        <!-- Botón para guardar cambios -->
+                                        <center><button type="submit">Guardar cambios</button></center>
+                                                    
+                                    </form>                                         
                                     {% endfor %}
-                                </div>
+                                </div>                                
                             </div>
                         </div>
                     </div>
@@ -155,7 +195,86 @@
         </div>
     </section>
     <script>
-
+        function showEditForm(clienteId) {
+            // Ocultar todos los formularios de edición
+            var editForms = document.querySelectorAll('[id^="editForm"]');
+            editForms.forEach(function(form) {
+                form.style.display = 'none';
+            });
+            
+            // Mostrar el formulario de edición del cliente seleccionado
+            var editForm = document.getElementById('editForm' + clienteId);
+            if (editForm) {
+                editForm.style.display = 'block';
+            }
+        }
+            // Función para recargar la página y mostrar la alerta
+            function reloadPageAndShowAlert() {
+                // Mostrar la alerta utilizando SweetAlert
+                swal.fire({
+                    title: '¡Cliente actualizado con éxito!',
+                    text: 'La información del cliente se ha modificado correctamente.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    // Verificar si el usuario hizo clic en "OK"
+                    if (result.isConfirmed) {
+                        // Recargar la página
+                        location.reload();
+            
+                        // Esperar un breve momento antes de redirigir para asegurarse de que la página se haya recargado completamente
+                        setTimeout(function () {
+                            // Redirigir a #tabListClient después de recargar la página
+                            window.location.href = "#tabListClient";
+                        }); 
+                    }
+                });
+            }
+            
+        // Agregar evento submit al formulario de edición
+        document.addEventListener("DOMContentLoaded", function() {
+            var editForms = document.querySelectorAll('[id^="editForm"]');
+            editForms.forEach(function(form) {
+                form.addEventListener("submit", function(event) {
+                    // Evitar que el formulario se envíe automáticamente
+                    event.preventDefault();
+                    
+                    // Enviar el formulario manualmente utilizando Fetch API o AJAX
+                    var formId = form.getAttribute("id");
+                    var formData = new FormData(form);
+                    fetch('/editar_cliente', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(function(response) {
+                        // Verificar si la respuesta fue exitosa
+                        if (response.ok) {
+                            // Recargar la página y mostrar la alerta
+                            reloadPageAndShowAlert();
+                        } else {
+                            // Mostrar mensaje de error si la respuesta no fue exitosa
+                            swal.fire({
+                                title: 'Error',
+                                text: 'Hubo un problema al actualizar el cliente. Por favor, inténtalo de nuevo.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                        // Mostrar mensaje de error en caso de error en la solicitud
+                        swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al actualizar el cliente. Por favor, inténtalo de nuevo.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+                });
+            });
+        });
+        
         document.addEventListener("DOMContentLoaded", function() {
             // Inicializar el menú desplegable
             var menuButton = document.getElementById("menuButton");

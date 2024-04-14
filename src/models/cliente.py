@@ -41,3 +41,33 @@ def añadir_cliente(cedula, nombres, apellidos, direccion, telefono, correo_elec
         cursor.close()
         print("Error al añadir cliente:", str(e))
         return False
+    
+def actualizr_cliente(cedula, nombres, apellidos, direccion, telefono, correo_electronico):
+    try:
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql = "UPDATE clientes SET nombres=%s, apellidos=%s, direccion=%s, telefono=%s, correo_electronico=%s WHERE cedula=%s"
+        cursor.execute(sql, (nombres, apellidos, direccion, telefono, correo_electronico, cedula))
+        conn.commit()
+        cursor.close()
+        return True
+    except Exception as e:
+        conn.rollback()
+        cursor.close()
+        print("Error al actualizar cliente:", str(e))
+        return False
+
+def eliminar_cliente(cedula):
+    try:
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql="DELETE from clientes WHERE cedula = %s"
+        cursor.execute(sql,(cedula))
+        conn.commit()
+        cursor.close()
+        return True
+    except Exception as e:
+        conn.rollback()
+        cursor.close()
+        print("Error al eliminar el Cliente", str(e))
+        return False

@@ -1,7 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, abort, render_template, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
 from config import config
+from models.proveedor import *
 from models.ModelUser import ModelUser 
 from models.register import *
 from models.entities.user import User
@@ -71,10 +72,36 @@ def register():
 def home():
     return render_template('home.html')
 
-@app.route('/inventario')
+#RUTA PARA PROVEEDORES
+@app.route('/proveedores')
 @login_required
-def inventario():
-    return render_template('inventario.html')
+def proveedores():
+    return render_template('proveedores.html')
+
+# RUTA PARA AÑADIR PROVEEDORES
+@app.route('/proveedor', methods=['POST','DELETE'])
+@login_required
+def provedorees():
+    if request.method == 'POST':
+        nombre_empresa = request.form.get("NameProvider")
+        direccion = request.form.get("addressProvider")
+        telefono = request.form.get("phoneProvider")
+        correo_electronico = request.form.get("emailProvider")
+        
+        añadir_proveedor(nombre_empresa=nombre_empresa, direccion=direccion, telefono=telefono, correo_electronico=correo_electronico)
+    return render_template('proveedores.html')
+
+#RUTA PARA ELIMINAR PROVEEDORES
+@app.route('/proveedores/<int:id_proveedor>', methods=['DELETE'])
+@login_required
+def eliminar_proveedor(id_proveedor):
+    if request.method == 'DELETE':
+        eliminar_proveedor(id_proveedor)
+        # Puedes redirigir a otra página o devolver algún mensaje JSON si es necesario
+        return jsonify({'message': 'Proveedor eliminado correctamente'})
+    else:
+        return abort(405)  # Método no permitido
+
 
 @app.route('/productos')
 @login_required
@@ -87,21 +114,12 @@ def productos():
 def ventas():
     return render_template('ventas.html')
 
-@app.route('/proveedores')
-@login_required
-def proveedores():
-    return render_template('proveedores.html')
 
 @app.route('/clientes')
 @login_required
 def clientes():
     lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes
     return render_template('clientes.html', clientes=lista_clientes)
-
-@app.route('/configuracion')
-@login_required
-def configuracion():
-    return render_template('configuracion.html')
 
 #RUTA PARA AÑADIR CLIENTES 
 @app.route('/cliente', methods=['GET', 'POST'])
@@ -127,6 +145,32 @@ def nuevo_cliente():
             return "Error al añadir cliente"
 
     return render_template('clientes.html')
+
+#RUTA PARA EDITAR CLIENTES
+@app.route('/editar_cliente', methods=['POST'])
+@login_required
+def editar_cliente():
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        cedula = request.form.get('cliente_id')
+        nombre = request.form.get('edit_NameClient')
+        apellido = request.form.get('edit_LastNameClient')
+        direccion = request.form.get('edit_addressClient')
+        telefono = request.form.get('edit_phoneClient')
+        email = request.form.get('edit_emailClient')
+        
+        if actualizr_cliente(cedula, nombre, apellido, direccion, telefono, email):
+            flash('Cliente actualizado con éxito!', 'success')
+        else:
+            flash('Error al actualizar el cliente.', 'error')
+    return render_template('clientes.html')
+
+
+@app.route('/configuracion')
+@login_required
+def configuracion():
+    return render_template('configuracion.html')
+
 
 #RUTA PARA LA FACTURACION
 

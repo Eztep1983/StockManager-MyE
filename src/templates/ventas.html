@@ -27,9 +27,7 @@
 			<button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
 				<span class="gg-menu"></span>
 			</button>
-			<div style="flex-grow: 1; text-align: center; margin-top:10px;">
-				<span style="font-family: 'Great Vibes', cursive; font-style: italic; font-size: 24px;">StockManager</span>
-			</div>
+
 			<a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
 				<i class="fas fa-sign-out-alt"></i> Salir
 			</a>
@@ -42,8 +40,6 @@
 			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
 			<nav class="mdl-navigation">
 				<a href="/home">Inicio</a><br>
-				<br>
-				<a href="/inventario">Inventario</a><br>
 				<br>
 				<a href="/productos">Productos</a><br>
 				<br>

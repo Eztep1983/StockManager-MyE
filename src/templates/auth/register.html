@@ -86,6 +86,22 @@
     </div>
 </body>
 <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var form = document.querySelector(".form");
+        form.addEventListener("submit", function(event) {
+            var identificationInput = document.getElementById("identification");
+            var passwordInput = document.getElementById("password");
+            var confirm_passwordInput = document.getElementById("confirm_password");
+            var fullnameInput = document.getElementById("fullname");
+            // Limpiar los datos antes de enviar el formulario
+            identificationInput.value = identificationInput.value.trim();
+            passwordInput.value = passwordInput.value.trim();
+            confirmPasswordInput.value = confirm_passwordInput.value.trim()
+            fullnameInput.value =fullnameInput.value.trim()
+        });
+    });
+
     document.addEventListener("DOMContentLoaded", function() {
         // Obtener los elementos del DOM
         var passwordInput = document.getElementById("password");
