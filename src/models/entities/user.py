@@ -5,7 +5,7 @@ class User:
     def __init__(self, id, identification, password, fullname="", active=True):
         self.id = id
         self.identification = identification
-        self.password = password  # Hash the password upon initialization
+        self.password = password  # Hash de la contraseña
         self.fullname = fullname
         self.active = active
 
@@ -17,7 +17,7 @@ class User:
         return self.active
     
     def is_authenticated(self):
-        return True  # Aquí podrías implementar la lógica para verificar si el usuario está autenticado
+        return True  
 
     def get_id(self):
         return str(self.id)

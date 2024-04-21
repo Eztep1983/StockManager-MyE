@@ -166,6 +166,14 @@ def editar_cliente():
     return render_template('clientes.html')
 
 
+@app.route('/eliminar_cliente/<int:cliente_id>', methods=['DELETE'])
+@login_required
+def eliminar_client(cliente_id):
+    if request.method == "DELETE":
+        eliminar_cliente(cliente_id)
+    
+    return render_template("clientes.html")
+
 @app.route('/configuracion')
 @login_required
 def configuracion():
@@ -185,11 +193,11 @@ def facturar():
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos)
 
 #RUTA PARA CERRAR SESION
-@app.route('/logout')
+@app.route('/')
 @login_required
 def logout():
     logout_user()
-    return render_template('logout.html')
+    return flash("Exito")
 
 @app.route('/actualizar_cliente')
 @login_required

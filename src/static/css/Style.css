@@ -640,3 +640,8 @@ button {
   cursor: pointer;
   font-size: 14px;
 }
+
+
+.cliente_tab {
+  margin: auto;
+}

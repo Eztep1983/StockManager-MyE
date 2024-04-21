@@ -5,26 +5,45 @@
 {% block body %}
 
 <!DOCTYPE html>
+<html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Logout</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
 </head>
-<body style="background-color: #808080;">
-    <nav class="mdl-navigation">
-        <a href="/home">Inicio</a><br>
-        <br>
-        <a href="/productos">Productos</a><br>
-        <br>
-        <a href="/ventas">Ventas</a><br>
-        <br>
-        <a href="/proveedores">Proveedores</a><br>
-        <br>
-        <a href="/clientes">Clientes</a><br>
-        <br>
-        <a href="/configuracion">Configuracion</a><br>
-    </nav>
+<body style="background-color: white;">
+        <div class="mdl-layout mdl-js-layout">
+    
+            <!-- Navegación -->
+            <nav class="mdl-navigation">
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+                    <span class="gg-menu"></span>
+                </button>
+
+                <a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </a>
+            </nav>
+            
+            
+            <div class="mdl-layout__drawer">
+                
+                <i class="mdi--user-tie"></i>
+                <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+                <nav class="mdl-navigation">
+                    <a href="/home">Inicio</a><br>
+                    <br>
+                    <a href="/productos">Productos</a><br>
+                    <br>
+                    <a href="/ventas">Ventas</a><br>
+                    <br>
+                    <a href="/proveedores">Proveedores</a><br>
+                    <br>
+                    <a href="/clientes">Clientes</a><br>
+                    <br>
+                    <a href="/configuracion">Configuracion</a><br>
+                </nav>
+            </div>
          <div id="cerrarsesion" class="sweet-alert show-sweet-alert visible" style="display: block; width: 500px; padding: 20px; margin-left: -250px; margin-top: -186px; background: rgb(255, 255, 255);" tabindex="-1">
             <div class="icon error" style="display: none;">
                 <span class="x-mark">

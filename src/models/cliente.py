@@ -61,8 +61,8 @@ def eliminar_cliente(cedula):
     try:
         conn = mysql.connection
         cursor = conn.cursor()
-        sql="DELETE from clientes WHERE cedula = %s"
-        cursor.execute(sql,(cedula))
+        sql = "DELETE FROM clientes WHERE cedula = %s"
+        cursor.execute(sql, (cedula,))
         conn.commit()
         cursor.close()
         return True

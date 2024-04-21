@@ -11,8 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes</title>
 </head>
-<body>
-    <body style="background-color: white;">
+<body style="background-color: white;">
         <div class="mdl-layout mdl-js-layout">
     
             <!-- Navegación -->
@@ -21,7 +20,7 @@
                     <span class="gg-menu"></span>
                 </button>
 
-                <a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
                     <i class="fas fa-sign-out-alt"></i> Salir
                 </a>
             </nav>
@@ -48,7 +47,6 @@
             <!-- Contenido principal -->
     <main class="mdl-layout__content">
     
-
     <section>
         <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
             <div class="mdl-tabs__tab-bar">
@@ -119,8 +117,8 @@
                                 <form action="#">
 									<br>
 									<br>
+                                    <i class="zmdi zmdi-search" id="searchIcon"></i>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-										<i class="zmdi zmdi-search" ></i>
                                         <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
                                         </label>
                                         <div class="mdl-textfield__expandable-holder">
@@ -132,18 +130,32 @@
                                 <div class="mdl-list">
                                     {% for cliente in clientes %}
                                     <div class="mdl-list__item mdl-list__item--two-line">
-                                        <span class="mdl-list__item-primary-content">
-                                            <i class="zmdi zmdi-account mdl-list__item-avatar"></i>
-                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Nombres: {{ cliente.nombres }} {{ cliente.apellidos }}</span>
+                                        <section class="cliente_tab" id="cliente_tab">
+                                        <span>
+                                            <section>
+                                            <center><i class="zmdi zmdi-account mdl-list__item-avatar"></i></center>
+                                            <br>
+                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;"> {{ cliente.nombres }} {{ cliente.apellidos }}</span>                                      
+                                            </section>
+                                            <section>
                                             <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Identificación: {{ cliente.cedula }}</span>
+                                            <br>
+                                            <br>
                                             <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ cliente.telefono }}</span>
-                                        </span>
-                                            <!-- Botón para mostrar el formulario de edición -->
-                                            <span> 
+                                            </section>                                    
+                                            <section>
+                                                <center>
                                                 <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.cedula }}')">
                                                     <i class="mdi--account-edit"></i>
                                                 </button>
-                                            </span>
+                                                <button class="mdl-button mdl-js-button mdl-button--icon"  onclick="deleteClient('{{ cliente.cedula }}')">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </button>                                                                                              
+                                                <center>
+                                            </section>
+                                        </section>
+                                        </span>                                                           
+                                            <!-- Botón para mostrar el formulario de edición -->
                                     </div>
                                     <li class="full-width divider-menu-h"></li>
                                     <!-- Formulario de edición para cada cliente -->
@@ -195,6 +207,59 @@
         </div>
     </section>
     <script>
+
+        function deleteClient(clienteId) {
+            // Mostrar la alerta de confirmación utilizando SweetAlert
+            swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Esta acción eliminará al cliente permanentemente. ¿Estás seguro de que deseas continuar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                // Verificar si el usuario confirmó la eliminación
+                if (result.isConfirmed) {
+                    // Solicitud para eliminar al cliente del servidor
+                    fetch(`/eliminar_client/${clienteId}`, {
+                        method: 'DELETE'
+                    })                                             
+                    .then(function(response) {
+                        // Verificar si la respuesta fue exitosa
+                        if (response.ok) {
+                            // Recargar la página y mostrar la alerta
+                            reloadPageAndShowAlert();
+                        } else {
+                            // Mostrar mensaje de error si la respuesta no fue exitosa
+                            swal.fire({
+                                title: 'Error',
+                                text: 'Hubo un problema al eliminar el cliente. Por favor, inténtalo de nuevo.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                        // Mostrar mensaje de error en caso de error en la solicitud
+                        swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al eliminar el cliente. Por favor, inténtalo de nuevo.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+        
+                    swal.fire(
+                        '¡Eliminado!',
+                        'El cliente ha sido eliminado exitosamente.',
+                        'success'
+                    );
+                    // Una vez confirmada la eliminación, puedes redirigir a una página de éxito o hacer cualquier otra acción necesaria
+                }
+            });
+        }
+        
         function showEditForm(clienteId) {
             // Ocultar todos los formularios de edición
             var editForms = document.querySelectorAll('[id^="editForm"]');
@@ -221,15 +286,34 @@
                     if (result.isConfirmed) {
                         // Recargar la página
                         location.reload();
-            
-                        // Esperar un breve momento antes de redirigir para asegurarse de que la página se haya recargado completamente
-                        setTimeout(function () {
-                            // Redirigir a #tabListClient después de recargar la página
-                            window.location.href = "#tabListClient";
-                        }); 
                     }
                 });
             }
+            
+            
+            
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtener el icono de búsqueda
+            var searchIcon = document.getElementById("searchIcon");
+        
+            // Agregar evento click al icono de búsqueda
+            searchIcon.addEventListener("click", function() {
+                // Obtener la barra de navegación
+                var navigationBar = document.querySelector(".mdl-navigation");
+        
+                // Mostrar u ocultar la barra de navegación cambiando la clase CSS
+                if (navigationBar.classList.contains("show-navigation")) {
+                    // Si la barra de navegación está visible, ocultarla
+                    navigationBar.classList.remove("show-navigation");
+                } else {
+                    // Si la barra de navegación está oculta, mostrarla
+                    navigationBar.classList.add("show-navigation");
+                }
+            });
+        });
+
+                // Agregar evento clic al documento para ocultar el formulario de edición al hacer clic fuera de él
+
             
         // Agregar evento submit al formulario de edición
         document.addEventListener("DOMContentLoaded", function() {
@@ -275,50 +359,41 @@
             });
         });
         
-        document.addEventListener("DOMContentLoaded", function() {
-            // Inicializar el menú desplegable
-            var menuButton = document.getElementById("menuButton");
-            var menu = document.querySelector(".mdl-menu");
-            var menuInstance = new mdc.menu.MDCMenu(menu);
-            menuButton.addEventListener("click", function() {
-                menuInstance.open = !menuInstance.open;
-            });
+        document.getElementById("btn-addClient").addEventListener("click", function(event) {
+            // Evita que el formulario se envíe automáticamente
+            event.preventDefault();
+    
+            // Validar que todos los campos obligatorios estén llenos
+            var dni = document.getElementById("DNIClient").value.trim();
+            var nombre = document.getElementById("NameClient").value.trim();
+            var apellido = document.getElementById("LastNameClient").value.trim();
+            var direccion = document.getElementById("addressClient1").value.trim();
+            var telefono = document.getElementById("phoneClient").value.trim();
+            var email = document.getElementById("emailClient").value.trim();
+    
+            if (dni === "" || nombre === "" || apellido === "" || direccion === "" || telefono === "" || email === "") {
+                // Mostrar mensaje de advertencia si algún campo está vacío
+                swal.fire({
+                    title: '¡Advertencia!',
+                    text: 'Por favor completa todos los campos antes de agregar el cliente.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                // Mostrar confirmación y enviar el formulario si todos los campos están llenos
+                swal.fire({
+                    title: '¡Se guardó el cliente con éxito!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    showCancelButton: false
+                }).then((result) => {
+                    // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
+                    if (result.isConfirmed) {
+                        document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
+                    }
+                });
+            }
         });
-            document.getElementById("btn-addClient").addEventListener("click", function(event) {
-                // Evita que el formulario se envíe automáticamente
-                event.preventDefault();
-        
-                // Validar que todos los campos obligatorios estén llenos
-                var dni = document.getElementById("DNIClient").value.trim();
-                var nombre = document.getElementById("NameClient").value.trim();
-                var apellido = document.getElementById("LastNameClient").value.trim();
-                var direccion = document.getElementById("addressClient1").value.trim();
-                var telefono = document.getElementById("phoneClient").value.trim();
-                var email = document.getElementById("emailClient").value.trim();
-        
-                if (dni === "" || nombre === "" || apellido === "" || direccion === "" || telefono === "" || email === "") {
-                    // Mostrar mensaje de advertencia si algún campo está vacío
-                    swal.fire({
-                        title: '¡Advertencia!',
-                        text: 'Por favor completa todos los campos antes de agregar el cliente.',
-                        icon: 'warning',
-                        confirmButtonText: 'OK'
-                    });
-                } else {
-                    // Mostrar confirmación y enviar el formulario si todos los campos están llenos
-                    swal.fire({
-                        title: '¡Se guardó el cliente con éxito!',
-                        icon: 'success',
-                        confirmButtonText: 'OK',
-                        showCancelButton: false
-                    }).then((result) => {
-                        // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
-                        if (result.isConfirmed) {
-                            document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
-                        }
-                    });
-                }
-            });
 
             document.addEventListener("DOMContentLoaded", function() {
                 var secondaryActions = document.querySelectorAll(".mdl-list__item-secondary-action");
@@ -339,31 +414,25 @@
                         }
                     });
                 });
-            });
-            
-
-            
+            });  
                 // Obtener el campo de teléfono
-    var phoneInput = document.getElementById("phoneClient");
-
-    // Agregar evento keydown al campo de teléfono para permitir solo números
-    phoneInput.addEventListener("keydown", function(event) {
-        // Permitir solo números y teclas especiales como Backspace, Delete, Flechas, etc.
-        if (!(event.key >= "0" && event.key <= "9") &&
-            event.key !== "Backspace" &&
-            event.key !== "Delete" &&
-            event.key !== "ArrowLeft" &&
-            event.key !== "ArrowRight" &&
-            event.key !== "ArrowUp" &&
-            event.key !== "ArrowDown" &&
-            event.key !== "Tab" &&
-            event.key !== "Home" &&
-            event.key !== "End") {
-            // Evitar la acción predeterminada si la tecla presionada no es un número o una tecla especial permitida
-            event.preventDefault();
-        }
-    });
-
+        var phoneInput = document.getElementById("phoneClient");
+        phoneInput.addEventListener("keydown", function(event) {
+            // Permitir solo números y teclas especiales como Backspace, Delete, Flechas, etc.
+            if (!(event.key >= "0" && event.key <= "9") &&
+                event.key !== "Backspace" &&
+                event.key !== "Delete" &&
+                event.key !== "ArrowLeft" &&
+                event.key !== "ArrowRight" &&
+                event.key !== "ArrowUp" &&
+                event.key !== "ArrowDown" &&
+                event.key !== "Tab" &&
+                event.key !== "Home" &&
+                event.key !== "End") {
+                // Evitar la acción predeterminada si la tecla presionada no es un número o una tecla especial permitida
+                event.preventDefault();
+            }
+        });
         // Obtener el campo de búsqueda
         var searchInput = document.getElementById("searchClient");
 
