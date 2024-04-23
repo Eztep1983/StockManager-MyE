@@ -7,8 +7,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     MYSQL_HOST = "localhost"
     MYSQL_USER = "root"
-    MYSQL_PASSWORD = "1004193541"
-    MYSQL_DB = "stock_manager"
+    MYSQL_PASSWORD = "87067480"
+    MYSQL_DB = "seteco"
 
 config = {
     'development': DevelopmentConfig
