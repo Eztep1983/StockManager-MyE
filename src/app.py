@@ -65,18 +65,17 @@ def register():
         # Si la solicitud no es POST, renderizar el formulario de registro
         return render_template('auth/register.html')
 
-
-
 @app.route('/home')
 @login_required
 def home():
     return render_template('home.html')
 
-#RUTA PARA PROVEEDORES
+#RUTA PARA OBTENER LISTA DE PROVEEDORES
 @app.route('/proveedores')
 @login_required
-def proveedores():
-    return render_template('proveedores.html')
+def add_proveedores():
+    lista_proveedores = obtener_proveedores()
+    return render_template('proveedores.html',proveedores= lista_proveedores)
 
 # RUTA PARA AÑADIR PROVEEDORES
 @app.route('/proveedor', methods=['POST','DELETE'])
@@ -114,15 +113,15 @@ def productos():
 def ventas():
     return render_template('ventas.html')
 
-
+# RUTA PARA OBTENER LISTA DE CLIENTES
 @app.route('/clientes')
 @login_required
 def clientes():
-    lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes
+    lista_clientes = obtener_lista_clientes()  
     return render_template('clientes.html', clientes=lista_clientes)
 
 #RUTA PARA AÑADIR CLIENTES 
-@app.route('/cliente', methods=['GET', 'POST'])
+@app.route('/cliente', methods=['POST'])
 @login_required
 def nuevo_cliente():
     if request.method == 'POST':

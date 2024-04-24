@@ -136,9 +136,9 @@
                                             </div>
                                             <li class="full-width divider-menu-h"></li>
                                             <!-- Formulario de edición para cada cliente -->
-                                            <form id="editForm{{ proveedor.id_proveedor }}" action="/editar_cliente" method="POST" style="display: none;">
+                                            <form id="editForm{{ proveedor.id_proveedor }}" action="/actualizar_proveedore" method="POST" style="display: none;">
                                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                                <input type="hidden" name="cliente_id" value="{{ proveedor.id_proveedors }}">
+                                                <input type="hidden" name="proveedor_id" value="{{ proveedor.id_proveedors }}">
                                             
                                                 <!-- Campo de edición para nombres -->
                                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -154,7 +154,7 @@
                                                 </div>
                                                 <!-- Campo de edición para dirección -->
                                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ cliente.telefono }}">                                                    <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
+                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ proveedor.telefono }}">                                                    <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
                                                     <span class="mdl-textfield__error">Dirección Inválida</span>
                                                 </div>
                                                 <!-- Campo de edición para teléfono -->
