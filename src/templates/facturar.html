@@ -13,35 +13,36 @@
 <body id="color-facturar">
     <div class="mdl-layout mdl-js-layout">
     
-		<!-- Navegación -->
-		<nav class="mdl-navigation">
-			<button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
-				<span class="gg-menu"></span>
-			</button>
-			<a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
-				<i class="fas fa-sign-out-alt"></i> Salir
-			</a>
-		</nav>
-		
-		
-		<div class="mdl-layout__drawer">
-			
-			<i class="mdi--user-tie"></i>
-			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
-			<nav class="mdl-navigation">
-				<a href="/home">Inicio</a><br>
-				<br>
-				<a href="/productos">Productos</a><br>
-				<br>
-				<a href="/ventas">Ventas</a><br>
-				<br>
-				<a href="/proveedores">Proveedores</a><br>
-				<br>
-				<a href="/clientes">Clientes</a><br>
-				<br>
-				<a href="/configuracion">Configuracion</a><br>
-			</nav>
-		</div>
+        <!-- Navegación -->
+        <nav class="mdl-navigation">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+                <span class="gg-menu"></span>
+            </button>
+
+            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </nav>
+        
+        
+        <div class="mdl-layout__drawer">
+            
+            <i class="mdi--user-tie"></i>
+            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+            <nav class="mdl-navigation">
+                <a href="/home">Inicio</a><br>
+                <br>
+                <a href="/productos">Productos</a><br>
+                <br>
+                <a href="/ventas">Ventas</a><br>
+                <br>
+                <a href="/proveedores">Proveedores</a><br>
+                <br>
+                <a href="/clientes">Clientes</a><br>
+                <br>
+                <a href="/configuracion">Configuracion</a><br>
+            </nav>
+        </div>
 		<!-- Contenido principal -->
 <main class="mdl-layout__content">
     <header>

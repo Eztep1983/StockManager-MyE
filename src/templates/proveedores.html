@@ -14,13 +14,14 @@
 </head>
 <body>
     <div class="mdl-layout mdl-js-layout">
-        
-        <!-- Navigation -->
+    
+        <!-- Navegación -->
         <nav class="mdl-navigation">
-            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
                 <span class="gg-menu"></span>
             </button>
-            <a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+
+            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
         </nav>
@@ -29,7 +30,7 @@
         <div class="mdl-layout__drawer">
             
             <i class="mdi--user-tie"></i>
-            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>      
+            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
             <nav class="mdl-navigation">
                 <a href="/home">Inicio</a><br>
                 <br>
@@ -86,7 +87,7 @@
                                                 <span class="mdl-textfield__error">Correo electrónico inválido</span>
                                             </div>
                                             <p class="text-center">
-                                                <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProvider" name="btn-addProvider">
+                                                <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProvider" name="btn-addProvider" title="Enviar">
                                                     <i class="zmdi zmdi-plus"></i>
                                                 </button>
                                                 <div class="mdl-tooltip" for="btn-addProvider">Añadir proveedor</div>
@@ -113,8 +114,9 @@
                                                 <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
                                                 </label>
                                                 <div class="mdl-textfield__expandable-holder">
-                                                    <input class="mdl-textfield__input" type="text" id="searchClient">
                                                     <label class="mdl-textfield__label"style="margin-left: 10px;">Buscar cliente</label>
+                                                    <input class="mdl-textfield__input" type="text" id="searchClient">
+                                                    
                                                 </div>
                                             </div>
                                         </form>
@@ -163,7 +165,7 @@
                                                     <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
                                                     <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
                                                 </div>   >
-                                                <center><button type="submit">Guardar cambios</button></center>
+                                                <center><button type="submit" title="Guardar">Guardar cambios</button></center>
                                                             
                                             </form>                                         
                                             {% endfor %}

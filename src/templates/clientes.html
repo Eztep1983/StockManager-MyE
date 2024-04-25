@@ -16,7 +16,7 @@
     
             <!-- Navegación -->
             <nav class="mdl-navigation">
-                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
                     <span class="gg-menu"></span>
                 </button>
 
@@ -85,7 +85,7 @@
                                         <span class="mdl-textfield__error">Dirección Inválida</span>
                                     </div>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="tel" pattern="-?[0-9+()- ]*(\.[0-9]+)?" id="phoneClient" name="phoneClient">
+                                        <input class="mdl-textfield__input" type="tel" id="phoneClient" name="phoneClient">
                                         <label class="mdl-textfield__label" for="phoneClient">Teléfono</label>
                                         <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
                                     </div>
@@ -95,7 +95,7 @@
                                         <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
                                     </div>
                                     <p class="text-center">
-                                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addClient">
+                                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addClient" title="Añadir cliente">
                                             <i class="zmdi zmdi-plus"></i>
                                         </button>
                                         <div class="mdl-tooltip" for="btn-addClient" id ="add">Añadir cliente</div>
@@ -119,7 +119,7 @@
 									<br>
                                     <i class="zmdi zmdi-search" id="searchIcon"></i>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                                        <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
+                                        <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient" title="Enviar cliente">
                                         </label>
                                         <div class="mdl-textfield__expandable-holder">
                                             <input class="mdl-textfield__input" type="text" id="searchClient">
@@ -145,10 +145,10 @@
                                             </section>                                    
                                             <section>
                                                 <center>
-                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.cedula }}')">
+                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.cedula }}')" title="Editar cliente">
                                                     <i class="mdi--account-edit"></i>
                                                 </button>
-                                                <button class="mdl-button mdl-js-button mdl-button--icon"  onclick="deleteClient('{{ cliente.cedula }}')">
+                                                <button class="mdl-button mdl-js-button mdl-button--icon"  onclick="deleteClient('{{ cliente.cedula }}')" title="Borrar cliente">
                                                     <i class="zmdi zmdi-delete"></i>
                                                 </button>                                                                                              
                                                 <center>
@@ -157,7 +157,9 @@
                                         </span>                                                           
                                             <!-- Botón para mostrar el formulario de edición -->
                                     </div>
+                                    <ul>
                                     <li class="full-width divider-menu-h"></li>
+                                    </ul>
                                     <!-- Formulario de edición para cada cliente -->
                                     <form id="editForm{{ cliente.cedula }}" action="/editar_cliente" method="POST" style="display: none;">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -183,7 +185,7 @@
                                         </div>
                                         <!-- Campo de edición para teléfono -->
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ cliente.telefono }}">
+                                            <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" value="{{ cliente.telefono }}">
                                             <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
                                             <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
                                         </div>   
@@ -194,7 +196,7 @@
                                             <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
                                         </div>                               
                                         <!-- Botón para guardar cambios -->
-                                        <center><button type="submit">Guardar cambios</button></center>
+                                        <center><button type="submit" title="Guardar cambios">Guardar cambios</button></center>
                                                     
                                     </form>                                         
                                     {% endfor %}
@@ -289,31 +291,6 @@
                     }
                 });
             }
-            
-            
-            
-        document.addEventListener("DOMContentLoaded", function() {
-            // Obtener el icono de búsqueda
-            var searchIcon = document.getElementById("searchIcon");
-        
-            // Agregar evento click al icono de búsqueda
-            searchIcon.addEventListener("click", function() {
-                // Obtener la barra de navegación
-                var navigationBar = document.querySelector(".mdl-navigation");
-        
-                // Mostrar u ocultar la barra de navegación cambiando la clase CSS
-                if (navigationBar.classList.contains("show-navigation")) {
-                    // Si la barra de navegación está visible, ocultarla
-                    navigationBar.classList.remove("show-navigation");
-                } else {
-                    // Si la barra de navegación está oculta, mostrarla
-                    navigationBar.classList.add("show-navigation");
-                }
-            });
-        });
-
-                // Agregar evento clic al documento para ocultar el formulario de edición al hacer clic fuera de él
-
             
         // Agregar evento submit al formulario de edición
         document.addEventListener("DOMContentLoaded", function() {

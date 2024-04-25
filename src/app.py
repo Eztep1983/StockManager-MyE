@@ -193,11 +193,11 @@ def facturar():
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos)
 
 #RUTA PARA CERRAR SESION
-@app.route('/')
+@app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return flash("Exito")
+    return redirect(url_for('logout'))
 
 @app.route('/actualizar_cliente')
 @login_required

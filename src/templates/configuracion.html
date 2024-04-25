@@ -15,21 +15,22 @@
 <body>
     <div class="mdl-layout mdl-js-layout">
     
-		<!-- Navegación -->
-		<nav class="mdl-navigation">
-			<button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
-				<span class="gg-menu"></span>
-			</button>
-			<a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
-				<i class="fas fa-sign-out-alt"></i> Salir
-			</a>
-		</nav>
-		
-		
-		<div class="mdl-layout__drawer">
-			
-			<i class="mdi--user-tie"></i>
-			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+        <!-- Navegación -->
+        <nav class="mdl-navigation">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+                <span class="gg-menu"></span>
+            </button>
+
+            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </nav>
+        
+        
+        <div class="mdl-layout__drawer">
+            
+            <i class="mdi--user-tie"></i>
+            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
             <nav class="mdl-navigation">
                 <a href="/home">Inicio</a><br>
                 <br>
@@ -43,7 +44,7 @@
                 <br>
                 <a href="/configuracion">Configuracion</a><br>
             </nav>
-		</div>
+        </div>
 		<!-- Contenido principal -->
 <main class="mdl-layout__content">
 
@@ -55,11 +56,10 @@
                 <img src="Style/favicon.ico" alt="">
                 <br>
                 <br>
-                <li>Nombre: Esteban Zambrano</li>
+                <li>Nombre:{{ current_user.fullname }}</li>
                 <li>Rol: Administrador</li>
                 <li>Fecha de nacimiento: 19/12/02</li>
                 <li>E-mail: extep1983@gmail.com</li>
-                <li>Telefono: +57 310-7981736</li>
             </ol>
         </section></center>
         <br>
