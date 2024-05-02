@@ -354,6 +354,7 @@ nav a:hover {
 }
 
 .funciones-enlaces a {
+  width:  300px;
   display: block;
   padding: 10px;
   margin: 5px;

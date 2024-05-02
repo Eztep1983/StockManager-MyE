@@ -14,13 +14,14 @@
 </head>
 <body>
     <div class="mdl-layout mdl-js-layout">
-        
-        <!-- Navigation -->
+    
+        <!-- Navegación -->
         <nav class="mdl-navigation">
-            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
                 <span class="gg-menu"></span>
             </button>
-            <a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+
+            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
         </nav>
@@ -29,7 +30,7 @@
         <div class="mdl-layout__drawer">
             
             <i class="mdi--user-tie"></i>
-            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>      
+            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
             <nav class="mdl-navigation">
                 <a href="/home">Inicio</a><br>
                 <br>
@@ -86,7 +87,7 @@
                                                 <span class="mdl-textfield__error">Correo electrónico inválido</span>
                                             </div>
                                             <p class="text-center">
-                                                <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProvider" name="btn-addProvider">
+                                                <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProvider" name="btn-addProvider" title="Enviar">
                                                     <i class="zmdi zmdi-plus"></i>
                                                 </button>
                                                 <div class="mdl-tooltip" for="btn-addProvider">Añadir proveedor</div>
@@ -113,32 +114,35 @@
                                                 <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
                                                 </label>
                                                 <div class="mdl-textfield__expandable-holder">
-                                                    <input class="mdl-textfield__input" type="text" id="searchClient">
                                                     <label class="mdl-textfield__label"style="margin-left: 10px;">Buscar cliente</label>
+                                                    <input class="mdl-textfield__input" type="text" id="searchClient">
+                                                    
                                                 </div>
                                             </div>
                                         </form>
                                         <div class="mdl-list">
                                             {% for proveedor in proveedores %}
+                                            <section>
                                             <div class="mdl-list__item mdl-list__item--two-line">
                                                 <span class="mdl-list__item-primary-content">
-                                                    <i class="zmdi zmdi-account mdl-list__item-avatar"></i>
-                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Nombres: {{ proveedor.nombre_empresa }}</span>
-                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Identificación: {{ proveedor.direccion }}</span>
-                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ proveedor.telefono }}</span>
-                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ proveedor.correo_electronico }}</span>
+                                                    <i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Nombres: {{ proveedor.nombre_empresa }}</span>                                                    
+                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Direccion: {{ proveedor.direccion }}</span>                                                    
+                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ proveedor.telefono }}</span>                                            
+                                                    <br>
                                                 </span>
                                                     <span> 
                                                         <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ proveedor.id_proveedor}}')">
                                                             <i class="mdi--account-edit"></i>
                                                         </button>
                                                     </span>
+                                            </section>
                                             </div>
                                             <li class="full-width divider-menu-h"></li>
                                             <!-- Formulario de edición para cada cliente -->
-                                            <form id="editForm{{ proveedor.id_proveedor }}" action="/actualizar_proveedore" method="POST" style="display: none;">
+                                            <form id="editForm{{ proveedor.id_proveedor }}" action="/editar_cliente" method="POST" style="display: none;">
                                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                                <input type="hidden" name="proveedor_id" value="{{ proveedor.id_proveedors }}">
+                                                <input type="hidden" name="cliente_id" value="{{ proveedor.id_proveedors }}">
                                             
                                                 <!-- Campo de edición para nombres -->
                                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -154,16 +158,16 @@
                                                 </div>
                                                 <!-- Campo de edición para dirección -->
                                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ proveedor.telefono }}">                                                    <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
+                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient"  value="{{ proveedor.telefono }}">                                                    <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
                                                     <span class="mdl-textfield__error">Dirección Inválida</span>
                                                 </div>
                                                 <!-- Campo de edición para teléfono -->
                                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ proveedor.correo_electronico }}">
+                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient"  value="{{ proveedor.correo_electronico }}">
                                                     <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
                                                     <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
                                                 </div>   >
-                                                <center><button type="submit">Guardar cambios</button></center>
+                                                <center><button type="submit" title="Guardar">Guardar cambios</button></center>
                                                             
                                             </form>                                         
                                             {% endfor %}
@@ -175,6 +179,41 @@
                     </div>
             </section>
             <script>
+
+            document.getElementById("btn-addProvider").addEventListener("click", function(event) {
+            // Evita que el formulario se envíe automáticamente
+            event.preventDefault();
+    
+            // Validar que todos los campos obligatorios estén llenoss
+            var nombre = document.getElementById("NameProvider").value.trim();
+            var direccion = document.getElementById("addressProvider").value.trim();
+            var telefono = document.getElementById("phoneProvider").value.trim();
+            var email = document.getElementById("emailProvider").value.trim();
+    
+            if ( nombre === "" || direccion === "" || telefono === "" || email === "") {
+                // Mostrar mensaje de advertencia si algún campo está vacío
+                swal.fire({
+                    title: '¡Advertencia!',
+                    text: 'Por favor completa todos los campos antes de agregar el cliente.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                // Mostrar confirmación y enviar el formulario si todos los campos están llenos
+                swal.fire({
+                    title: '¡Se guardó el cliente con éxito!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    showCancelButton: false
+                }).then((result) => {
+                    // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
+                    if (result.isConfirmed) {
+                        document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
+                    }
+                });
+            }
+        });
+
                 document.addEventListener('DOMContentLoaded', function () {
                     const deleteButtons = document.querySelectorAll('.delete-button');
                     deleteButtons.forEach(button => {
@@ -195,6 +234,54 @@
                         });
                     });
                 });
+
+
+        // Obtener el campo de teléfono
+        var phoneInput = document.getElementById("phoneProvider");
+        phoneInput.addEventListener("keydown", function(event) {
+            // Permitir solo números y teclas especiales como Backspace, Delete, Flechas, etc.
+            if (!(event.key >= "0" && event.key <= "9") &&
+                event.key !== "Backspace" &&
+                event.key !== "Delete" &&
+                event.key !== "ArrowLeft" &&
+                event.key !== "ArrowRight" &&
+                event.key !== "ArrowUp" &&
+                event.key !== "ArrowDown" &&
+                event.key !== "Tab" &&
+                event.key !== "Home" &&
+                event.key !== "End") {
+                // Evitar la acción predeterminada si la tecla presionada no es un número o una tecla especial permitida
+                event.preventDefault();
+            }
+        });
+        // Obtener el campo de búsqueda
+        var searchInput = document.getElementById("searchClient");
+
+        // Obtener la lista de clientes
+        var clientList = document.getElementsByClassName("mdl-list")[0];
+
+        // Agregar evento keyup al campo de búsqueda
+        searchInput.addEventListener("keyup", function(event) {
+            // Obtener el valor del campo de búsqueda
+            var searchTerm = event.target.value.toLowerCase();
+
+            // Obtener todos los elementos de clientes
+            var clients = clientList.getElementsByClassName("mdl-list__item");
+
+            // Iterar sobre los elementos de clientes
+            Array.from(clients).forEach(function(client) {
+                // Obtener el contenido de cliente
+                var clientContent = client.textContent.toLowerCase();
+
+                // Mostrar u ocultar el cliente según el término de búsqueda
+                if (clientContent.includes(searchTerm)) {
+                    client.style.display = "block";
+                } else {
+                    client.style.display = "none";
+                }
+            });
+        });
+
             </script>
             
             

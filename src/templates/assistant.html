@@ -25,6 +25,14 @@
         <button onclick="sendMessage()">Enviar</button>
     </div>
     <script src="js/main.js"></script>
-
+    <nav class="mdl-navigation">
+        <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+            <span class="gg-menu"></span>
+        </button>
+        <a id = "logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+            <i class="fas fa-sign-out-alt"></i> Salir
+        </a>
+    </nav>
+    
 </body>
 </html>

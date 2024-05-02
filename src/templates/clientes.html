@@ -15,15 +15,15 @@
         <div class="mdl-layout mdl-js-layout">
     
             <!-- Navegación -->
-            <nav class="mdl-navigation">
-                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
-                    <span class="gg-menu"></span>
-                </button>
-
-                <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
-                    <i class="fas fa-sign-out-alt"></i> Salir
-                </a>
-            </nav>
+        <nav class="mdl-navigation">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+                <span class="gg-menu"></span>
+            </button>
+            <a id = "logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </nav>
+        
             
             
             <div class="mdl-layout__drawer">
@@ -85,7 +85,7 @@
                                         <span class="mdl-textfield__error">Dirección Inválida</span>
                                     </div>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="tel" pattern="-?[0-9+()- ]*(\.[0-9]+)?" id="phoneClient" name="phoneClient">
+                                        <input class="mdl-textfield__input" type="tel" id="phoneClient" name="phoneClient">
                                         <label class="mdl-textfield__label" for="phoneClient">Teléfono</label>
                                         <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
                                     </div>
@@ -145,12 +145,12 @@
                                             </section>                                    
                                             <section>
                                                 <center>
-                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.cedula }}')">
+                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.identificador_c }}')">
                                                     <i class="mdi--account-edit"></i>
                                                 </button>
-                                                <button class="mdl-button mdl-js-button mdl-button--icon"  onclick="deleteClient('{{ cliente.cedula }}')">
+                                                <button class="mdl-button mdl-js-button mdl-button--icon"  onclick="deleteClient('{{ cliente.identificador_c }}')">
                                                     <i class="zmdi zmdi-delete"></i>
-                                                </button>                                                                                              
+                                                </button>                                                                                                                                             
                                                 <center>
                                             </section>
                                         </section>
@@ -207,8 +207,9 @@
         </div>
     </section>
     <script>
-
         function deleteClient(clienteId) {
+            // Convertir clienteId a un número entero
+            const clienteIdInt = parseInt(clienteId);
             // Mostrar la alerta de confirmación utilizando SweetAlert
             swal.fire({
                 title: '¿Estás seguro?',
@@ -221,14 +222,16 @@
                 // Verificar si el usuario confirmó la eliminación
                 if (result.isConfirmed) {
                     // Solicitud para eliminar al cliente del servidor
-                    fetch(`/eliminar_client/${clienteId}`, {
-                        method: 'DELETE'
-                    })                                             
+                    fetch(`/deletecliente/${clienteIdInt}`, { 
+                    method: 'POST'
+                })
+
                     .then(function(response) {
                         // Verificar si la respuesta fue exitosa
                         if (response.ok) {
                             // Recargar la página y mostrar la alerta
-                            reloadPageAndShowAlert();
+                            location.reload(); // Recargar la página
+                            swal.fire('¡Eliminado!', 'El cliente ha sido eliminado exitosamente.', 'success');
                         } else {
                             // Mostrar mensaje de error si la respuesta no fue exitosa
                             swal.fire({
@@ -249,17 +252,9 @@
                             confirmButtonText: 'OK'
                         });
                     });
-        
-                    swal.fire(
-                        '¡Eliminado!',
-                        'El cliente ha sido eliminado exitosamente.',
-                        'success'
-                    );
-                    // Una vez confirmada la eliminación, puedes redirigir a una página de éxito o hacer cualquier otra acción necesaria
                 }
             });
-        }
-        
+        }    
         function showEditForm(clienteId) {
             // Ocultar todos los formularios de edición
             var editForms = document.querySelectorAll('[id^="editForm"]');
@@ -311,9 +306,6 @@
                 }
             });
         });
-
-                // Agregar evento clic al documento para ocultar el formulario de edición al hacer clic fuera de él
-
             
         // Agregar evento submit al formulario de edición
         document.addEventListener("DOMContentLoaded", function() {

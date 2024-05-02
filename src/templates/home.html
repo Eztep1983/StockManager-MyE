@@ -13,14 +13,16 @@
     <div class="mdl-layout mdl-js-layout">
     
 		<!-- Navegación -->
-		<nav class="mdl-navigation">
-			<button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
-				<span class="gg-menu"></span>
-			</button>
-			<a href="{{ url_for('logout') }}" style="margin-left: auto;"> 
-				<i class="fas fa-sign-out-alt"></i> Salir
-			</a>
-		</nav>
+        <nav class="mdl-navigation">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
+                <span class="gg-menu"></span>
+            </button>
+
+            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </nav>
+        
 		
 		
 		<div class="mdl-layout__drawer">
@@ -47,30 +49,58 @@
 
             <center><h2>Bienvenido, {{ current_user.fullname }}!</h2></center>
             <div class="funciones-enlaces">
-                <a href="/productos">Gestión de Productos</a><br>
-                <a href="/clientes">Gestión de Clientes</a><br>
-                <a href="/ventas">Registro de Ventas</a><br>
-                <a href="/reportes">Generar Reportes</a>
+               <center> <a href="/productos">Gestión de Productos</a><br></center>
+               <center> <a href="/clientes">Gestión de Clientes</a><br></center>
+               <center> <a href="/ventas">Registro de Ventas</a><br></center>
+               <center> <a href="/reportes">Generar Reportes</a></center>
             </div>
         </section>
 
         <section id="actualizaciones-stock">
             <center><h2>Últimas Actualizaciones de Stock</h2></center>
-            <ul>
-                <Section><li>Camisetas: +218</li></Section>
-                <Section><li>Pantalonetas: +300</li></Section>
-                <Section> <li>Zapatos deportivos: -50</li></Section>
-                <Section><li>Chaquetas: +80</li></Section>
-                <Section><li>Vestidos: +120</li></Section>
-                <Section><li>Gorras: +45</li></Section>
-                <Section><li>Calcetines: +150</li></Section>
+            <ul class='mdl-list'>
+                <Section><li class="mdl-list__item">Camisetas: +218</li></Section>
+                <Section><li class="mdl-list__item">Pantalonetas: +300</li></Section>
+                <Section><li class="mdl-list__item">Zapatos deportivos: -50</li></Section>
+                <Section><li class="mdl-list__item">Chaquetas: +80</li></Section>
+                <Section><li class="mdl-list__item">Vestidos: +120</li></Section>
+                <Section><li class="mdl-list__item">Gorras: +45</li></Section>
+                <Section><li class="mdl-list__item">Calcetines: +150</li></Section>
             </ul>
         </section>
-    </main>
 
+        <div class="mdl-tabs__panel" id="tabListClient">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+                    <div class="full-width panel mdl-shadow--2dp">
+                        <div class="full-width panel-tittle bg-success text-center tittles">
+                            Lista de clientes
+                        </div>
+                        <div class="full-width panel-content">
+                            <form action="#">
+                                <br>
+                                <br>
+                                <i class="zmdi zmdi-search" id="searchIcon"></i>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                                    <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
+                                    </label>
+                                    <div class="mdl-textfield__expandable-holder">
+                                        <input class="mdl-textfield__input" type="text" id="searchClient">
+                                        <label class="mdl-textfield__label"style="margin-left: 10px;">Buscar cliente</label>
+                                    </div>
+                                </div>
+                            </form>
+                                                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     <footer>
         <p>&copy; 2024 StockManager JyE</p>
     </footer>
+    </main>
 </body>
 </html>
 {% endblock %}
