@@ -58,7 +58,7 @@ def actualizr_cliente(cedula, nombres, apellidos, direccion, telefono, correo_el
         print("Error al actualizar cliente:", str(e))
         return False
 
-def eliminar_cliente(cliente_id):
+def eliminarr_client(cliente_id):
     try:
         conn = mysql.connection
         cursor = conn.cursor()

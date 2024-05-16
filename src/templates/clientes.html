@@ -159,9 +159,9 @@
                                     </div>
                                     <li class="full-width divider-menu-h"></li>
                                     <!-- Formulario de edición para cada cliente -->
-                                    <form id="editForm{{ cliente.cedula }}" action="/editar_cliente" method="POST" style="display: none;">
+                                    <form id="editForm{{ cliente.identificador_c }}" action="/editar_cliente" method="POST" style="display: none;">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="cliente_id" value="{{ cliente.cedula }}">
+                                        <input type="hidden" name="cliente_id" value="{{ cliente.identificador_c }}">
                                     
                                         <!-- Campo de edición para nombres -->
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -209,7 +209,7 @@
     <script>
         function deleteClient(clienteId) {
             // Convertir clienteId a un número entero
-            const clienteIdInt = parseInt(clienteId);
+           
             // Mostrar la alerta de confirmación utilizando SweetAlert
             swal.fire({
                 title: '¿Estás seguro?',
@@ -222,9 +222,9 @@
                 // Verificar si el usuario confirmó la eliminación
                 if (result.isConfirmed) {
                     // Solicitud para eliminar al cliente del servidor
-                    fetch(`/deletecliente/${clienteIdInt}`, { 
-                    method: 'POST'
-                })
+                    fetch(`/eliminar_cliente/${clienteId}`, { 
+                        method: 'POST'
+                    })
 
                     .then(function(response) {
                         // Verificar si la respuesta fue exitosa

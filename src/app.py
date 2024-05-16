@@ -167,10 +167,10 @@ def editar_cliente():
 # RUTA PARA ELIMINAR CLIENTES
 @app.route('/eliminar_cliente/<int:cliente_id>', methods=['POST'])
 @login_required
-def deletecliente(cliente_id):
+def eliminar_cliente(cliente_id):
     if request.method == "POST":
-        eliminar_cliente(cliente_id)
-    return render_template('clientes.html')  
+        eliminarr_client(cliente_id)
+        return jsonify({'message': 'Cliente eliminado exitosamente'}) 
 
 #RUTA PARA LA CONFIGURACION
 @app.route('/configuracion')

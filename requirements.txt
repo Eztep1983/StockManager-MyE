@@ -1,0 +1,12 @@
+flask==3.0.3
+werkzeug==3.0.2
+bcrypt 
+flask_mysqldb
+flask_wtf
+jinja2
+MySQLdb
+blinker
+markupsafe
+itsdangerous
+colorama
+wtforms
