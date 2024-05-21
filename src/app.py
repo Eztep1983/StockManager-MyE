@@ -102,10 +102,12 @@ def eliminar_proveedor(id_proveedor):
         return abort(405)  # Método no permitido
 
 
+# RUTA PARA OBTENER LISTA DE PRODUCTOS
 @app.route('/productos')
 @login_required
-def productos():
-    return render_template('productos.html')
+def obtener_productos():
+    lista_productos = obtener_lista_productos()  
+    return render_template('productos.html', productos=lista_productos)
 
 
 @app.route('/ventas')
@@ -165,12 +167,14 @@ def editar_cliente():
     return render_template('clientes.html')
 
 # RUTA PARA ELIMINAR CLIENTES
-@app.route('/eliminar_cliente/<int:cliente_id>', methods=['POST'])
+@app.route('/eliminar_cliente/<int:cliente_id>', methods=['DELETE'])
 @login_required
 def eliminar_cliente(cliente_id):
-    if request.method == "POST":
+    print(f"Received cliente_id: {cliente_id}")  # Log para depuración
+    if request.method=='DELETE':
         eliminarr_client(cliente_id)
-        return jsonify({'message': 'Cliente eliminado exitosamente'}) 
+        return jsonify({'message': 'Cliente eliminado exitosamente'})
+    return render_template('clientes.html', eliminar_cliente=eliminarr_client()), 500
 
 #RUTA PARA LA CONFIGURACION
 @app.route('/configuracion')
@@ -180,7 +184,6 @@ def configuracion():
 
 
 #RUTA PARA LA FACTURACION
-
 @app.route('/facturar', methods=['POST', 'GET'])
 @login_required
 def facturar():

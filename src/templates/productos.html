@@ -130,18 +130,52 @@
                     </div>
                     <div class="mdl-tabs__panel" id="tabListProducts">
                         <div class="mdl-grid">
-                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
-                                <form action="#">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                                        <label class="mdl-button mdl-js-button mdl-button--icon" for="searchProduct">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </label>
-                                        <div class="mdl-textfield__expandable-holder">
-                                            <input class="mdl-textfield__input" type="text" id="searchProduct">
-                                            <label class="mdl-textfield__label"></label>
-                                        </div>
+                            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+                                <div class="full-width panel mdl-shadow--2dp">
+                                    <div class="full-width panel-tittle bg-success text-center tittles">
+                                        Lista de clientes
                                     </div>
-                                </form>
+                                    <div class="full-width panel-content">
+                                        <form action="#">
+                                            <br>
+                                            <br>
+                                            <i class="zmdi zmdi-search" id="searchIcon"></i>
+                                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                                                <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
+                                                </label>
+                                                <div class="mdl-textfield__expandable-holder">
+                                                    <input class="mdl-textfield__input" type="text" id="searchClient">
+                                                    <label class="mdl-textfield__label"style="margin-left: 10px;">Buscar Producto</label>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="mdl-list">
+                                            {% for producto in productos %}
+                                            <div class="mdl-list__item mdl-list__item--two-line">
+                                                <section class="cliente_tab" id="cliente_tab">
+                                                <span>
+                                                    <section>
+                                                    <center><i class="zmdi zmdi-account mdl-list__item-avatar"></i></center>
+                                                    <br>
+                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;"> {{ producto.nombre }} </span>                                      
+                                                    </section>
+                                                    <section>
+                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Descripción: {{ producto.descripcion }}</span>
+                                                    <br>
+                                                    <br>
+                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Precio: {{ producto.precio }}</span>
+                                                    <br>
+                                                    <br>
+                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Cantidad: {{ producto.stock }}</span>
+                                                    </section>
+                                                </section>                                                                                 
+                                                </span>                                                           
+                                            </div>
+                                            <li class="full-width divider-menu-h"></li>                                   
+                                            {% endfor %}
+                                        </div>                                
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

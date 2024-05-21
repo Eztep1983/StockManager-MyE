@@ -1,5 +1,6 @@
 from flask_mysqldb import MySQL
 from config import config
+import logging
 
 mysql = MySQL()
 development_config = config['development']
@@ -58,17 +59,16 @@ def actualizr_cliente(cedula, nombres, apellidos, direccion, telefono, correo_el
         print("Error al actualizar cliente:", str(e))
         return False
 
+
 def eliminarr_client(cliente_id):
     try:
         conn = mysql.connection
-        cursor = conn.cursor()
-        sql = "DELETE FROM clientes WHERE identificador_c = %s"
-        cursor.execute(sql, (cliente_id,))
+        with conn.cursor() as cursor:
+            sql = "DELETE FROM clientes WHERE identificador_c = %s"
+            cursor.execute(sql, (cliente_id,))
         conn.commit()
-        cursor.close()
         return True
     except Exception as e:
         conn.rollback()
-        cursor.close()
-        print("Error al eliminar el Cliente", str(e))
+        logging.error("Error al eliminar el Cliente: %s", str(e))
         return False
