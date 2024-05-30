@@ -1,4 +1,4 @@
-from flask import Flask, abort, render_template, redirect, url_for, request, flash
+from flask import Flask, abort, render_template, jsonify, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
 from config import config
@@ -7,23 +7,33 @@ from models.ModelUser import ModelUser
 from models.register import *
 from models.entities.user import User
 from models.cliente import *
+from models.categorias import *
 from flask_wtf import CSRFProtect
 from models.producto import *
 app = Flask(__name__)
+
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 # Configuración de la base de datos y del login manager
 db = MySQL(app)
 csrf= CSRFProtect()
 login_manager_app = LoginManager(app)
 
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
+#RUTA LOGIN
 @login_manager_app.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db, id)
-
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 @app.route('/')
 def index():
     return redirect(url_for('login'))
 
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -40,6 +50,10 @@ def login():
             flash("Contraseña invalida")
     return render_template('auth/login.html')
 
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
+
+#RUTA PARA EL REGISTRO DE USUARIOS
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == 'POST':
@@ -65,17 +79,24 @@ def register():
         # Si la solicitud no es POST, renderizar el formulario de registro
         return render_template('auth/register.html')
 
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
+
+#RUTA PARA EL HOME
 @app.route('/home')
 @login_required
 def home():
     return render_template('home.html')
 
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
+
 #RUTA PARA OBTENER LISTA DE PROVEEDORES
 @app.route('/proveedores')
 @login_required
-def add_proveedores():
+def get_proveedores():
     lista_proveedores = obtener_proveedores()
-    return render_template('proveedores.html',proveedores= lista_proveedores)
+    return render_template('productos.html','proveedores.html', proveedores=lista_proveedores)
 
 # RUTA PARA AÑADIR PROVEEDORES
 @app.route('/proveedor', methods=['POST','DELETE'])
@@ -101,7 +122,8 @@ def eliminar_proveedor(id_proveedor):
     else:
         return abort(405)  # Método no permitido
 
-
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 # RUTA PARA OBTENER LISTA DE PRODUCTOS
 @app.route('/productos')
 @login_required
@@ -109,11 +131,61 @@ def obtener_productos():
     lista_productos = obtener_lista_productos()  
     return render_template('productos.html', productos=lista_productos)
 
+#RUTA PARA AÑADIR PRODUCTOS 
+@app.route('/producto', methods=['GET', 'POST'])
+@login_required
+def nuevo_producto():
+    if request.method == 'POST':
+        nombre = request.form.get('NameProduct')
+        descripcion = request.form.get('Description')
+        precio = request.form.get('PriceProduct')
+        stock = request.form.get('StockProduct')
+        categoria = request.form.get('CategoryProduct')
+        proveedor = request.form.get('ProviderProduct')
+        fecha_ingreso = request.form.get('IngresoProduct')
+        
+        # Verificar si alguno de los campos requeridos está vacío
+        if not nombre or not descripcion or not precio or not stock or not categoria or not proveedor or not fecha_ingreso:
+            return "Por favor, complete todos los campos del formulario.", 400
+
+        # Convertir el precio y el stock a los tipos de datos apropiados
+        try:
+            precio = float(precio)
+            stock = int(stock)
+        except ValueError:
+            return "Datos inválidos en precio o stock.", 400
+
+        if crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, proveedor, categoria):
+            return redirect('/productos')
+
+    # Obtener las listas de proveedores y categorías
+    lista_proveedores = obtener_proveedores()
+    lista_categorias = obtener_categorias()
+
+    return render_template('productos.html', proveedores=lista_proveedores, categorias=lista_categorias)
+
+
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
+
+#RUTA PARA OBTENER LISTA DE CATEGORIAS
+@app.route('/categorias')
+@login_required
+def get_categorias():
+    lista_categorias = obtener_categorias()
+    return render_template('productos.html', lista_categorias=lista_categorias)
+
+
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 @app.route('/ventas')
 @login_required
 def ventas():
     return render_template('ventas.html')
+
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 # RUTA PARA OBTENER LISTA DE CLIENTES
 @app.route('/clientes')
@@ -176,12 +248,17 @@ def eliminar_cliente(cliente_id):
         return jsonify({'message': 'Cliente eliminado exitosamente'})
     return render_template('clientes.html', eliminar_cliente=eliminarr_client()), 500
 
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
+
 #RUTA PARA LA CONFIGURACION
 @app.route('/configuracion')
 @login_required
 def configuracion():
     return render_template('configuracion.html')
 
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 #RUTA PARA LA FACTURACION
 @app.route('/facturar', methods=['POST', 'GET'])
@@ -193,6 +270,8 @@ def facturar():
         # PARA PROCESAR LA FACTURA
         pass
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos)
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 #RUTA PARA CERRAR SESION
 @app.route('/logout')
@@ -200,11 +279,14 @@ def facturar():
 def logout():
     logout_user()
     return redirect(url_for('logout'))
-
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 @app.route('/actualizar_cliente')
 @login_required
 def actualizar_cliente():
     return render_template('actualizar_cliente.html')
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 
 def status404(error):
@@ -245,10 +327,16 @@ def status404(error):
                     </div>
                 </body>
             </html>""", 404
- 
+ #_______________________________________________________________________________________________________
+
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 def status401(error):
     return redirect(url_for('login'))
+
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])

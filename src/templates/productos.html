@@ -60,70 +60,64 @@
                                     <div class="full-width panel-tittle bg-primary text-center tittles">
                                         Agregar producto
                                     </div>
-                                    <div class="full-width panel-content">
-                                        <form>
+                                    <div class="full-width panel-content">                                
+                                        <form id="productForm" action="/producto" method="POST">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <div class="mdl-grid">
                                                 <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                        <input class="mdl-textfield__input" type="text" pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="NameProduct">
+                                                        <input class="mdl-textfield__input" type="text" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚ ]+" id="NameProduct" name="NameProduct" >
                                                         <label class="mdl-textfield__label" for="NameProduct">Nombre</label>
-                                                        <span class="mdl-textfield__error">Nombre invalido</span>
+                                                        <span class="mdl-textfield__error">Nombre inválido</span>
                                                     </div>
-                                                    <h5 class="text-condensedLight" style="margin-top: 80px;">Descripcion</h5>
+                                                    <h5 class="text-condensedLight" style="margin-top: 80px;">Descripción</h5>
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9- ]*(\.[0-9]+)?" id="BarCode">
+                                                        <input class="mdl-textfield__input" type="text" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚ ]+" id="Description" name="Description" >
                                                     </div>
-                                                    <div class="mdl-textfield mdl-js-textfield">
-                                                        <select class="mdl-textfield__input">
-                                                            <option value="" disabled="" selected="">Seleccionar Categoria</option>
-                                                            <option value="">Categoria 1</option>
-                                                            <option value="">Categoria 2</option>
-                                                        </select>
-                                                    </div>
+                                                    
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                        <input class="mdl-textfield__input" type="text" pattern="-?[0-9.]*(\.[0-9]+)?" id="PriceProduct">
+                                                        <input class="mdl-textfield__input" type="text" pattern="\d+(\.\d{1,2})?" id="PriceProduct" name="PriceProduct" >
                                                         <label class="mdl-textfield__label" for="PriceProduct">Precio</label>
-                                                        <span class="mdl-textfield__error">Precio invalido</span>
+                                                        <span class="mdl-textfield__error">Precio inválido</span>
                                                     </div>
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                        <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="StrockProduct">
-                                                        <label class="mdl-textfield__label" for="StrockProduct">Unidades</label>
-                                                        <span class="mdl-textfield__error">Numero invalido</span>
+                                                        <input class="mdl-textfield__input" type="number" pattern="\d+" id="StockProduct" name="StockProduct" >
+                                                        <label class="mdl-textfield__label" for="StockProduct">Unidades</label>
+                                                        <span class="mdl-textfield__error">Cantidad inválida</span>
                                                     </div>
-                                                </div>
-                                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
-                                                    <h5 class="text-condensedLight">Informacion y modelo</h5>
-                                                    <div class="mdl-textfield mdl-js-textfield">
-                                                        <select class="mdl-textfield__input">
-                                                            <option value="" disabled="" selected="">Seleccionar proveedores</option>
-                                                            <option value="">Proveedor 1</option>
-                                                            <option value="">Proveedor 2</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                        <input class="mdl-textfield__input" type="text"  id="modelProduct">
-                                                        <label class="mdl-textfield__label" for="modelProduct">Modelo</label>
-                                                        <span class="mdl-textfield__error">Modelo Invalido</span>
-                                                    </div>
-                                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                        <input class="mdl-textfield__input" type="text" id="markProduct">
-                                                        <label class="mdl-textfield__label" for="markProduct">Marca</label>
-                                                        <span class="mdl-textfield__error">Marca Invalida</span>
-                                                    </div>
+                                                </div>                                                
+                                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">                                                    
+                                                    <h5 class="text-condensedLight">Información y modelo</h5>
+                                                    <div class="mdl-textfield mdl-js-textfield">                                                                                                                
+                                                        <select class="mdl-textfield__input" id="ProviderProduct" name="ProviderProduct">
+                                                            {% for proveedor in proveedores %}
+                                                                <option value="{{ proveedor.id_proveedor }}">{{ proveedor.nombre_empresa }}</option>
+                                                            {% endfor %}
+                                                        </select>                                                                                                                                                                     
+                                                    </div>                                                                                                                                                                                                       
+                                                    <div class="mdl-textfield mdl-js-textfield">                                                        
+                                                        <select class="mdl-textfield__input" id="CategoryProduct" name="CategoryProduct" >                                                                                                                                           
+                                                            {% for categoria in categorias %} 
+                                                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>                                                            
+                                                            {% endfor %}
+
+                                                            <h1>Hola mundo</h1>
+                                                        </select>                                                            
+                                                    </div>                                                                                                    
                                                     <h5 class="text-condensedLight">Fecha de ingreso del producto</h5>
                                                     <div class="mdl-textfield mdl-js-textfield">
-                                                        <input type="date" class="mdl-textfield__input">
+                                                        <input type="date" class="mdl-textfield__input" id="IngresoProduct" name="IngresoProduct" >
                                                     </div>
-                                                </div>
+                                                </div>                                                
                                             </div>
                                             <p class="text-center">
                                                 <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProduct">
                                                     <i class="zmdi zmdi-plus"></i>
                                                 </button>
-                                                <div class="mdl-tooltip" for="btn-addProduct">Añadir producto</div>
+                                                <div class="mdl-tooltip" for="btn-addProduct" id="add">Añadir producto</div>
                                             </p>
-                                        </form>
-                                    </div>
+                                        </form>                                                                               
+                                    </div>                                               
                                 </div>
                             </div>
                         </div>

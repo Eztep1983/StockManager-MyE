@@ -65,7 +65,7 @@
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <h5 class="text-condensedLight">Información del cliente</h5>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" pattern="[0-9]{1,15}" id="DNIClient" name="DNIClient">
+                                        <input class="mdl-textfield__input" type="number" pattern="[0-9]{1,15}" id="DNIClient" name="DNIClient">
                                         <label class="mdl-textfield__label" for="DNIClient">Cédula</label>
                                         <span class="mdl-textfield__error">Número Inválido</span>
                                     </div>
@@ -127,8 +127,8 @@
                                         </div>
                                     </div>
                                 </form>
-                                <div class="mdl-list">
-                                    {% for cliente in clientes %}
+                            {% for cliente in clientes %}
+                                <div class="mdl-list">                                    
                                     <div class="mdl-list__item mdl-list__item--two-line">
                                         <section class="cliente_tab" id="cliente_tab">
                                         <span>
@@ -196,9 +196,9 @@
                                         <!-- Botón para guardar cambios -->
                                         <center><button type="submit">Guardar cambios</button></center>
 
-                                    </form>                                         
-                                    {% endfor %}
+                                    </form>                                                                             
                                 </div>                                
+                            {% endfor %}
                             </div>
                         </div>
                     </div>
