@@ -13,7 +13,6 @@
 </head>
 <body style="background-color: white;">
     <div class="mdl-layout mdl-js-layout">
-    
         <!-- Navegación -->
         <nav class="mdl-navigation">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
@@ -22,12 +21,8 @@
             <a id = "logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
-        </nav>
-        
-        
-        
+        </nav>    
         <div class="mdl-layout__drawer">
-            
             <i class="mdi--user-tie"></i>
             <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>      
             <nav class="mdl-navigation">
@@ -46,8 +41,7 @@
             </nav>
         </div>
         <!-- Contenido principal -->
-        <main class="mdl-layout__content">
-    
+        <main class="mdl-layout__content">    
             <section>
                 <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
                     <div class="mdl-tabs__tab-bar">
@@ -70,10 +64,11 @@
                                                         <input class="mdl-textfield__input" type="text" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚ ]+" id="NameProduct" name="NameProduct" >
                                                         <label class="mdl-textfield__label" for="NameProduct">Nombre</label>
                                                         <span class="mdl-textfield__error">Nombre inválido</span>
-                                                    </div>
-                                                    <h5 class="text-condensedLight" style="margin-top: 80px;">Descripción</h5>
+                                                    </div>                                                
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                                         <input class="mdl-textfield__input" type="text" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚ ]+" id="Description" name="Description" >
+                                                        <label class="mdl-textfield__label" for="Description">Descripción</label>
+                                                        <span class="mdl-textfield__error">Descripción inválida</span>
                                                     </div>
                                                     
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -82,22 +77,26 @@
                                                         <span class="mdl-textfield__error">Precio inválido</span>
                                                     </div>
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                        <input class="mdl-textfield__input" type="number" pattern="\d+" id="StockProduct" name="StockProduct" >
+                                                        <input class="mdl-textfield__input" type="number" id="StockProduct" name="StockProduct" >
                                                         <label class="mdl-textfield__label" for="StockProduct">Unidades</label>
                                                         <span class="mdl-textfield__error">Cantidad inválida</span>
                                                     </div>
                                                 </div>                                                
                                                 <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">                                                    
                                                     <h5 class="text-condensedLight">Información y modelo</h5>
-                                                    <div class="mdl-textfield mdl-js-textfield">                                                                                                                
-                                                        <select class="mdl-textfield__input" id="ProviderProduct" name="ProviderProduct">
+                                                    <div class="mdl-textfield mdl-js-textfield">   
+                                                        <label class="mdl-textfield__label" for="ProviderProduct"></label>                                                                                                            
+                                                        <select class="mdl-textfield__input" id="ProviderProduct" name="ProviderProduct">                                                            
+                                                            <option value="">Seleccionar proveedor</option>
                                                             {% for proveedor in proveedores %}
                                                                 <option value="{{ proveedor.id_proveedor }}">{{ proveedor.nombre_empresa }}</option>
                                                             {% endfor %}
                                                         </select>                                                                                                                                                                     
                                                     </div>                                                                                                                                                                                                       
-                                                    <div class="mdl-textfield mdl-js-textfield">                                                        
-                                                        <select class="mdl-textfield__input" id="CategoryProduct" name="CategoryProduct" >                                                                                                                                           
+                                                    <div class="mdl-textfield mdl-js-textfield">              
+                                                        <label class="mdl-textfield__label" for="CategoryProduct"></label>                                          
+                                                        <select class="mdl-textfield__input" id="CategoryProduct" name="CategoryProduct" > 
+                                                            <option value="">Seleccionar Categoria</option>                                                                                                                                          
                                                             {% for categoria in categorias %} 
                                                             <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>                                                            
                                                             {% endfor %}                                            
@@ -110,7 +109,7 @@
                                                 </div>                                                
                                             </div>
                                             <p class="text-center">
-                                                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProduct">
+                                                <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProduct">
                                                     <i class="zmdi zmdi-plus"></i>
                                                 </button>
                                                 <div class="mdl-tooltip" for="btn-addProduct" id="add">Añadir producto</div>
@@ -126,7 +125,7 @@
                             <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
                                 <div class="full-width panel mdl-shadow--2dp">
                                     <div class="full-width panel-tittle bg-success text-center tittles">
-                                        Lista de clientes
+                                        Lista de Productos
                                     </div>
                                     <div class="full-width panel-content">
                                         <form action="#">
@@ -174,16 +173,11 @@
                     </div>
                 </div>
             </section>
-
         </main>
-
-        <!-- Pie de página -->
         <footer>
             <p>&copy; 2024 StockManager JyE</p>
         </footer>
-
     </div>
-
 </body>
 </html>
 {% endblock %}

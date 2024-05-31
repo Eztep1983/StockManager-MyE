@@ -125,14 +125,9 @@ def eliminar_proveedor(id_proveedor):
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 # RUTA PARA OBTENER LISTA DE PRODUCTOS
-@app.route('/productos')
-@login_required
-def obtener_productos():
-    lista_productos = obtener_lista_productos()  
-    return render_template('productos.html', productos=lista_productos)
 
 #RUTA PARA AÑADIR PRODUCTOS 
-@app.route('/producto', methods=['GET', 'POST'])
+@app.route('/productos', methods=['GET', 'POST'])
 @login_required
 def nuevo_producto():
     if request.method == 'POST':
@@ -161,8 +156,9 @@ def nuevo_producto():
     # Obtener las listas de proveedores y categorías
     lista_proveedores = obtener_proveedores()
     lista_categorias = obtener_categorias()
+    lista_productos = obtener_lista_productos() 
 
-    return render_template('productos.html', proveedores=lista_proveedores, categorias=lista_categorias)
+    return render_template('productos.html', proveedores=lista_proveedores, categorias=lista_categorias, productos=lista_productos)
 
 
 #_______________________________________________________________________________________________________

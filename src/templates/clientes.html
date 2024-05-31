@@ -3,7 +3,6 @@
 {% block title %} Clientes {% endblock %}
 
 {% block body %}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,8 +11,7 @@
     <title>Clientes</title>
 </head>
 <body style="background-color: white;">
-        <div class="mdl-layout mdl-js-layout">
-    
+        <div class="mdl-layout mdl-js-layout">    
             <!-- Navegación -->
         <nav class="mdl-navigation">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
@@ -22,12 +20,8 @@
             <a id = "logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
-        </nav>
-        
-            
-            
-            <div class="mdl-layout__drawer">
-                
+        </nav>                                
+            <div class="mdl-layout__drawer">                
                 <i class="mdi--user-tie"></i>
                 <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
                 <nav class="mdl-navigation">
@@ -46,7 +40,6 @@
             </div>
             <!-- Contenido principal -->
     <main class="mdl-layout__content">
-    
     <section>
         <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
             <div class="mdl-tabs__tab-bar">
@@ -195,7 +188,6 @@
                                         </div>                               
                                         <!-- Botón para guardar cambios -->
                                         <center><button type="submit">Guardar cambios</button></center>
-
                                     </form>                                                                             
                                 </div>                                
                             {% endfor %}

@@ -47,7 +47,6 @@
         </div>
         <!-- Main Content -->
         <main class="mdl-layout__content">
-
             <section>
                 <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
                     <div class="mdl-tabs__tab-bar">
@@ -65,7 +64,6 @@
                                         <form action="/proveedor" method="POST">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <h5 class="text-condensedLight">Información del proveedor</h5>
-
                                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                                 <input class="mdl-textfield__input" type="text" id="NameProvider" name="NameProvider">
                                                 <label class="mdl-textfield__label" for="NameProvider">Nombre del proveedor</label>
@@ -103,7 +101,7 @@
                             <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
                                 <div class="full-width panel mdl-shadow--2dp">
                                     <div class="full-width panel-tittle bg-success text-center tittles">
-                                        Lista de clientes
+                                        Lista de Proveedores
                                     </div>
                                     <div class="full-width panel-content">
                                         <form action="#">
@@ -114,9 +112,8 @@
                                                 <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
                                                 </label>
                                                 <div class="mdl-textfield__expandable-holder">
-                                                    <label class="mdl-textfield__label"style="margin-left: 10px;">Buscar cliente</label>
-                                                    <input class="mdl-textfield__input" type="text" id="searchClient">
-                                                    
+                                                    <label class="mdl-textfield__label"style="margin-left: 10px;">Buscar Proveedor</label>
+                                                    <input class="mdl-textfield__input" type="text" id="searchClient">                                                    
                                                 </div>
                                             </div>
                                         </form>
@@ -167,8 +164,7 @@
                                                     <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
                                                     <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
                                                 </div>   >
-                                                <center><button type="submit" title="Guardar">Guardar cambios</button></center>
-                                                            
+                                                <center><button type="submit" title="Guardar">Guardar cambios</button></center>                                                            
                                             </form>                                         
                                             {% endfor %}
                                         </div>                                
@@ -179,11 +175,9 @@
                     </div>
             </section>
             <script>
-
             document.getElementById("btn-addProvider").addEventListener("click", function(event) {
             // Evita que el formulario se envíe automáticamente
             event.preventDefault();
-    
             // Validar que todos los campos obligatorios estén llenoss
             var nombre = document.getElementById("NameProvider").value.trim();
             var direccion = document.getElementById("addressProvider").value.trim();
@@ -213,7 +207,6 @@
                 });
             }
         });
-
                 document.addEventListener('DOMContentLoaded', function () {
                     const deleteButtons = document.querySelectorAll('.delete-button');
                     deleteButtons.forEach(button => {
@@ -281,18 +274,12 @@
                 }
             });
         });
-
-            </script>
-            
-            
-                
+            </script>   
             <footer>
                 <p>&copy; 2024 StockManager JyE</p>
             </footer>
         </main>
-
     </div>
 </body>
 </html>
-
 {% endblock %}
