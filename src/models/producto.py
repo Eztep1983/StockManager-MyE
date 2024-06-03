@@ -27,12 +27,12 @@ def obtener_lista_productos():
     cursor.close()
     return Productos
 
-def crear_producto():
+def crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, id_proveedor, id_categoria):
     conn = mysql.connection
     cursor = conn.cursor()
     try:
         sql = "INSERT INTO productos (nombre, descripcion, precio, stock, fecha_ingreso, id_proveedor, id_categoria) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-        cursor.execute(sql)
+        cursor.execute(sql,(nombre, descripcion, precio, stock, fecha_ingreso, id_proveedor, id_categoria))
         conn.commit()
         cursor.close()
         return True

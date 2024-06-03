@@ -96,7 +96,7 @@ def home():
 @login_required
 def get_proveedores():
     lista_proveedores = obtener_proveedores()
-    return render_template('productos.html','proveedores.html', proveedores=lista_proveedores)
+    return render_template('proveedores.html', proveedores=lista_proveedores)
 
 # RUTA PARA AÑADIR PROVEEDORES
 @app.route('/proveedor', methods=['POST','DELETE'])

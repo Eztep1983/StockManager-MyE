@@ -26,7 +26,7 @@
             <i class="mdi--user-tie"></i>
             <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>      
             <nav class="mdl-navigation">
-            <h5>Hola mundo</h5>
+            
                 <a href="/home">Inicio</a><br>
                 <br>
                 <a href="/productos">Productos</a><br>
@@ -38,6 +38,7 @@
                 <a href="/clientes">Clientes</a><br>
                 <br>
                 <a href="/configuracion">Configuracion</a><br>
+                
             </nav>
         </div>
         <!-- Contenido principal -->
@@ -56,7 +57,7 @@
                                         Agregar producto
                                     </div>
                                     <div class="full-width panel-content">                                
-                                        <form id="productForm" action="/producto" method="POST">
+                                        <form id="productForm" action="/productos" method="POST">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <div class="mdl-grid">
                                                 <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
