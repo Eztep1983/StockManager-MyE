@@ -1,6 +1,7 @@
 from flask import Flask, abort, render_template, jsonify, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_wtf import CSRFProtect
 from config import config
 from models.proveedor import *
 from models.ModelUser import ModelUser 
@@ -8,17 +9,19 @@ from models.register import *
 from models.entities.user import User
 from models.cliente import *
 from models.categorias import *
-from flask_wtf import CSRFProtect
 from models.producto import *
+
 app = Flask(__name__)
 
-#_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
-
 # Configuración de la base de datos y del login manager
+app.config.from_object(config['development'])
 db = MySQL(app)
-csrf= CSRFProtect()
+csrf = CSRFProtect(app)
 login_manager_app = LoginManager(app)
+login_manager_app.login_view = 'login'
+
+# Inicialización de la protección CSRF
+csrf.init_app(app)
 
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
@@ -160,6 +163,17 @@ def nuevo_producto():
 
     return render_template('productos.html', proveedores=lista_proveedores, categorias=lista_categorias, productos=lista_productos)
 
+@app.route('/eliminar_productos/<int:id>', methods=['DELETE'])
+@login_required
+def eliminar_producto(id):
+    try:
+        if eliminar_productos(id):
+            return jsonify({'message': 'Producto eliminado exitosamente'}), 200
+        else:
+            return jsonify({'message': 'Error al eliminar el producto'}), 500
+    except Exception as e:
+        print("Error al procesar la solicitud DELETE:", e)
+        return jsonify({'message': 'Error al procesar la solicitud'}), 500
 
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________

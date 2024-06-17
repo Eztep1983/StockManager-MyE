@@ -43,10 +43,10 @@
     <section>
         <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
             <div class="mdl-tabs__tab-bar">
-                <a href="#tabNewClient" class="mdl-tabs__tab is-active">Nuevo Cliente</a>
-                <a href="#tabListClient" class="mdl-tabs__tab">Lista de clientes</a>
+                <a href="#tabListClient" class="mdl-tabs__tab is-active">Lista de clientes</a>
+                <a href="#tabNewClient" class="mdl-tabs__tab">Nuevo Cliente</a>                
             </div>
-            <div class="mdl-tabs__panel is-active" id="tabNewClient">
+            <div class="mdl-tabs__panel " id="tabNewClient">
                 <div class="mdl-grid">
                     <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
                         <div class="full-width panel mdl-shadow--2dp">
@@ -99,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mdl-tabs__panel" id="tabListClient">
+            <div class="mdl-tabs__panel is-active" id="tabListClient">
                 <div class="mdl-grid">
                     <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
                         <div class="full-width panel mdl-shadow--2dp">
@@ -200,17 +200,6 @@
     </section>
     <script>   
         function deleteClient(clienteId) {
-            clienteId = parseInt(clienteId, 10);
-            if (isNaN(clienteId) || !Number.isInteger(clienteId)) {
-                swal.fire({
-                    title: 'Error',
-                    text: 'ID de cliente no válido.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-                return;
-            }
-
             swal.fire({
                 title: '¿Estás seguro?',
                 text: 'Esta acción eliminará al cliente permanentemente. ¿Estás seguro de que deseas continuar?',

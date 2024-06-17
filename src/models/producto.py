@@ -41,9 +41,19 @@ def crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, id_proveed
         cursor.close()
         print("Error al añadir el producto", str(e))
         return False 
+    
 
-# def eliminar_products():
-    #conn = mysql.connection
-    #cursor = conn.cursor()
-    #sql="DELETE FROM CLIENTES WHERE id = %s"
-    #cursor.execute(sql)
+def eliminar_productos(prd_id):
+    conn = mysql.connection
+    cursor = conn.cursor()
+    try:
+        sql = "DELETE FROM productos WHERE id = %s"
+        cursor.execute(sql, (prd_id,))
+        conn.commit()
+        cursor.close()
+        return True
+    except Exception as e:
+        conn.rollback()
+        cursor.close()
+        print("Error al eliminar el producto:", e)
+        return False
