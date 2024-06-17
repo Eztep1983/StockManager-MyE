@@ -171,7 +171,7 @@
                                                     <i class="zmdi zmdi-plus"></i>
                                                 </button>
                                                 <div class="mdl-tooltip" for="btn-addProduct" id="add">Añadir producto</div>
-                                            </form>                                                                               
+                                        </form>                                                                               
                                         </div>                                               
                                     </div>
                                 </div>
@@ -182,12 +182,49 @@
             </section>
         </main>
         <script>
+            document.getElementById("btn-addProduct").addEventListener("click", function(event) {
+            // Evita que el formulario se envíe automáticamente
+            event.preventDefault();
+    
+            // Validar que todos los campos obligatorios estén llenos
+            var nombreP = document.getElementById("NameProduct").value.trim();
+            var Descripcion = document.getElementById("Description").value.trim();
+            var Precio = document.getElementById("PriceProduct").value.trim();
+            var Cantidad = document.getElementById("StockProduct").value.trim();
+            var Proveedor = document.getElementById("ProviderProduct").value.trim();
+            var Categoria = document.getElementById("CategoryProduct").value.trim();
+            var Fecha = document.getElementById("IngresoProduct").value.trim();
+    
+            if ( nombreP === "" || Descripcion === "" || Precio === "" || Cantidad === "" || Proveedor === "" || Categoria === ""||Fecha === "") {
+                // Mostrar mensaje de advertencia si algún campo está vacío
+                swal.fire({
+                    title: '¡Advertencia!',
+                    text: 'Por favor completa todos los campos antes de agregar el producto.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                // Mostrar confirmación y enviar el formulario si todos los campos están llenos
+                swal.fire({
+                    title: '¡Se guardó el producto con éxito!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    showCancelButton: false
+                }).then((result) => {
+                    // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
+                    if (result.isConfirmed) {
+                        document.getElementById("productForm").submit();  // Envía el formulario con JavaScript
+                    }
+                });
+            }
+        });
+
             function getCSRFToken() {
                 return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             }
             
             function deleteOption(productoId) {
-                console.log('Producto ID:', productoId);  // Añade esta línea para depuración
+                console.log('Producto ID:', productoId);  //línea para depuración
                 swal.fire({
                     title: '¿Estás seguro?',
                     text: 'Esta acción eliminará el producto permanentemente. ¿Estás seguro de que deseas continuar?',
