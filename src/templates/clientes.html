@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Clientes</title>
 </head>
 <body style="background-color: white;">
@@ -114,83 +115,89 @@
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                                         <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
                                         </label>
-                                        <div class="mdl-textfield__expandable-holder">
-                                            <input class="mdl-textfield__input" type="text" id="searchClient">
-                                            <label class="mdl-textfield__label"style="margin-left: 10px;">Buscar cliente</label>
-                                        </div>
+                                        <div>
+                                            <center><h5>Buscar cliente</h5></center>
+                                            <input class="mdl-textfield__input" type="text" id="searchClient">                                           
+                                            <label class="mdl-textfield__label" style="margin-left: 10px;"></label>
+                                        </div>                                                                      
                                     </div>
                                 </form>
-                            {% for cliente in clientes %}
-                                <div class="mdl-list">                                    
-                                    <div class="mdl-list__item mdl-list__item--two-line">
-                                        <section class="cliente_tab" id="cliente_tab">
-                                        <span>
-                                            <section>
-                                            <center><i class="zmdi zmdi-account mdl-list__item-avatar"></i></center>
-                                            <br>
-                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;"> {{ cliente.nombres }} {{ cliente.apellidos }}</span>                                      
-                                            </section>
-                                            <section>
-                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Identificación: {{ cliente.cedula }}</span>
-                                            <br>
-                                            <br>
-                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ cliente.telefono }}</span>
-                                            </section>                                    
-                                            <section>
-                                                <center>
-                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.identificador_c }}')">
-                                                    <i class="mdi--account-edit"></i>
-                                                </button>
-                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteClient('{{ cliente.identificador_c }}')">
-                                                    <i class="zmdi zmdi-delete"></i>
-                                                </button>                                                                                                                                             
-                                                <center>
-                                            </section>
-                                        </section>
-                                        </span>                                                           
-                                            <!-- Botón para mostrar el formulario de edición -->
+                                {% if clientes|length == 0 %}
+                                    <center><p class="no-clients-message">Aún no hay clientes, añade para visualizarlos</p></center>  
+                                    {% else %}
+                                    <div class="mdl-list-container">
+                                        {% for cliente in clientes %}
+                                        <div class="mdl-list">                                    
+                                            <div class="mdl-list__item mdl-list__item--two-line cliente-item">
+                                                <section class="cliente_tab" id="cliente_tab">
+                                                    <span>
+                                                        <section>
+                                                            <center><i class="zmdi zmdi-account mdl-list__item-avatar"></i></center>
+                                                            <br>
+                                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">{{ cliente.nombres }} {{ cliente.apellidos }}</span>                                      
+                                                        </section>
+                                                        <section>
+                                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Identificación: {{ cliente.cedula }}</span>
+                                                            <br>
+                                                            <br>
+                                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ cliente.telefono }}</span>
+                                                        </section>                                    
+                                                        <section>
+                                                            <center>
+                                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.identificador_c }}')">
+                                                                    <i class="mdi--account-edit"></i>
+                                                                </button>
+                                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteClient('{{ cliente.identificador_c }}')">
+                                                                    <i class="zmdi zmdi-delete"></i>
+                                                                </button>                                                                                                                                             
+                                                            </center>
+                                                        </section>
+                                                    </span>                                                           
+                                                </section>
+                                            </div>
+                                            <li class="full-width divider-menu-h"></li>
+                                            <!-- Formulario de edición para cada cliente -->
+                                            <form id="editForm{{ cliente.identificador_c }}" action="/editar_cliente" method="POST" style="display: none;">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="cliente_id" value="{{ cliente.identificador_c }}">
+                                            
+                                                <!-- Campo de edición para nombres -->
+                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                    <input class="mdl-textfield__input" type="text" name="edit_NameClient" id="edit_NameClient" value="{{ cliente.nombres }}">
+                                                    <label class="mdl-textfield__label" for="edit_NameClient">Nombres:</label>
+                                                    <span class="mdl-textfield__error">Nombres Inválidos</span>
+                                                </div>
+                                                <!-- Campo de edición para apellidos -->
+                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                    <input class="mdl-textfield__input" type="text" name="edit_LastNameClient" id="edit_LastNameClient" value="{{ cliente.apellidos }}">
+                                                    <label class="mdl-textfield__label" for="edit_LastNameClient">Apellidos:</label>
+                                                    <span class="mdl-textfield__error">Apellido Inválido</span>
+                                                </div>
+                                                <!-- Campo de edición para dirección -->
+                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                    <input class="mdl-textfield__input" type="text" name="edit_addressClient" id="edit_addressClient" value="{{ cliente.direccion }}">
+                                                    <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
+                                                    <span class="mdl-textfield__error">Dirección Inválida</span>
+                                                </div>
+                                                <!-- Campo de edición para teléfono -->
+                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ cliente.telefono }}">
+                                                    <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
+                                                    <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
+                                                </div>   
+                                                <!-- Campo de edición para correo electrónico -->
+                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                    <input class="mdl-textfield__input" type="email" name="edit_emailClient" id="edit_emailClient" value="{{ cliente.correo_electronico }}">
+                                                    <label class="mdl-textfield__label" for="edit_emailClient">Correo Electrónico:</label>
+                                                    <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
+                                                </div>                               
+                                                <!-- Botón para guardar cambios -->
+                                                <center><button type="submit">Guardar cambios</button></center>
+                                            </form>                                                                             
+                                        </div>
+                                        {% endfor %}
                                     </div>
-                                    <li class="full-width divider-menu-h"></li>
-                                    <!-- Formulario de edición para cada cliente -->
-                                    <form id="editForm{{ cliente.identificador_c }}" action="/editar_cliente" method="POST" style="display: none;">
-                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="cliente_id" value="{{ cliente.identificador_c }}">
-                                    
-                                        <!-- Campo de edición para nombres -->
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="text" name="edit_NameClient" id="edit_NameClient" value="{{ cliente.nombres }}">
-                                            <label class="mdl-textfield__label" for="edit_NameClient">Nombres:</label>
-                                            <span class="mdl-textfield__error">Nombres Inválidos</span>
-                                        </div>
-                                        <!-- Campo de edición para apellidos -->
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="text" name="edit_LastNameClient" id="edit_LastNameClient" value="{{ cliente.apellidos }}">
-                                            <label class="mdl-textfield__label" for="edit_LastNameClient">Apellidos:</label>
-                                            <span class="mdl-textfield__error">Apellido Inválido</span>
-                                        </div>
-                                        <!-- Campo de edición para dirección -->
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="text" name="edit_addressClient" id="edit_addressClient" value="{{ cliente.direccion }}">
-                                            <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
-                                            <span class="mdl-textfield__error">Dirección Inválida</span>
-                                        </div>
-                                        <!-- Campo de edición para teléfono -->
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ cliente.telefono }}">
-                                            <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
-                                            <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
-                                        </div>   
-                                        <!-- Campo de edición para correo electrónico -->
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="email" name="edit_emailClient" id="edit_emailClient" value="{{ cliente.correo_electronico }}">
-                                            <label class="mdl-textfield__label" for="edit_emailClient">Correo Electrónico:</label>
-                                            <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
-                                        </div>                               
-                                        <!-- Botón para guardar cambios -->
-                                        <center><button type="submit">Guardar cambios</button></center>
-                                    </form>                                                                             
-                                </div>                                
-                            {% endfor %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -198,46 +205,53 @@
             </div>
         </div>
     </section>
-    <script>   
-        function deleteClient(clienteId) {
-            swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción eliminará al cliente permanentemente. ¿Estás seguro de que deseas continuar?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch(`/eliminar_cliente/${clienteId}`, { method: 'DELETE' })
+    <script>  
+    function getCSRFToken(){
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    } 
+             
+    function deleteClient(clienteId) {
+                console.log('Cliente ID:', clienteId);  //pa ver si esta cogiendo el id
+                swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción eliminará el cliente permanentemente. ¿Estás seguro de que deseas continuar?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/eliminar_cliente/${clienteId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCSRFToken()
+                            }
+                        })
                         .then(response => {
-                            if (response.ok) {
-                                swal.fire('¡Eliminado!', 'El cliente ha sido eliminado exitosamente.', 'success')
-                                    .then(() => location.reload());
-                            } else {
-                                response.json().then(data => {
-                                    swal.fire({
-                                        title: 'Error',
-                                        text: data.message || 'Hubo un problema al eliminar el cliente. Por favor, inténtalo de nuevo.',
-                                        icon: 'error',
-                                        confirmButtonText: 'OK'
-                                    });
+                            if (!response.ok) {
+                                return response.json().then(data => {
+                                    throw new Error(data.message || 'Error desconocido');
                                 });
                             }
+                            return response.json();
+                        })
+                        .then(data => {
+                            swal.fire('¡Eliminado!', data.message, 'success')
+                                .then(() => location.reload());
                         })
                         .catch(error => {
                             console.error('Error:', error);
                             swal.fire({
                                 title: 'Error',
-                                text: 'Hubo un problema al eliminar el cliente. Por favor, inténtalo de nuevo.',
+                                text: error.message,
                                 icon: 'error',
                                 confirmButtonText: 'OK'
                             });
                         });
-                }
-            });
-        }
-
+                    }
+                });
+            }
 
 
         function showEditForm(clienteId) {
@@ -410,33 +424,30 @@
                 event.preventDefault();
             }
         });
-        // Obtener el campo de búsqueda
-        var searchInput = document.getElementById("searchClient");
+            // Obtener el campo de búsqueda
+            var searchInput = document.getElementById("searchClient");
 
-        // Obtener la lista de clientes
-        var clientList = document.getElementsByClassName("mdl-list")[0];
+            // Agregar evento keyup al campo de búsqueda
+            searchInput.addEventListener("keyup", function(event) {
+                // Obtener el valor del campo de búsqueda
+                var searchTerm = event.target.value.toLowerCase();
 
-        // Agregar evento keyup al campo de búsqueda
-        searchInput.addEventListener("keyup", function(event) {
-            // Obtener el valor del campo de búsqueda
-            var searchTerm = event.target.value.toLowerCase();
+                // Obtener todos los elementos de clientes
+                var clients = document.querySelectorAll(".cliente-item");
 
-            // Obtener todos los elementos de clientes
-            var clients = clientList.getElementsByClassName("mdl-list__item");
+                // Iterar sobre los elementos de clientes
+                clients.forEach(function(client) {
+                    // Obtener el contenido de cliente
+                    var clientContent = client.textContent.toLowerCase();
 
-            // Iterar sobre los elementos de clientes
-            Array.from(clients).forEach(function(client) {
-                // Obtener el contenido de cliente
-                var clientContent = client.textContent.toLowerCase();
-
-                // Mostrar u ocultar el cliente según el término de búsqueda
-                if (clientContent.includes(searchTerm)) {
-                    client.style.display = "block";
-                } else {
-                    client.style.display = "none";
-                }
+                    // Mostrar u ocultar el cliente según el término de búsqueda
+                    if (clientContent.includes(searchTerm)) {
+                        client.style.display = "block";
+                    } else {
+                        client.style.display = "none";
+                    }
+                });
             });
-        });
     </script>
     
     <footer>

@@ -410,7 +410,7 @@ textarea {
   width: 100%;
   padding: 21px;
   margin-bottom: 10px;
-  border-radius: 3px;
+  border-radius: 20px;
   box-sizing: border-box;
 }
 
@@ -645,4 +645,16 @@ button {
 
 .cliente_tab {
   margin: auto;
+}
+
+
+.no-clients-message {
+  background-color: #007bff; 
+  color: #ffffff; 
+  font-size: 18px; 
+  font-weight: bold; 
+  text-align: center; 
+  padding: 20px; 
+  border-radius: 10px; 
+  margin: 20px 0; 
 }

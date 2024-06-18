@@ -252,11 +252,16 @@ def editar_cliente():
 @app.route('/eliminar_cliente/<int:cliente_id>', methods=['DELETE'])
 @login_required
 def eliminar_cliente(cliente_id):
-    print(f"Received cliente_id: {cliente_id}")  # Log para depuración
-    if request.method=='DELETE':
-        eliminarr_client(cliente_id)
-        return jsonify({'message': 'Cliente eliminado exitosamente'})
-    return render_template('clientes.html', eliminar_cliente=eliminarr_client()), 500
+    try:
+        if request.method=='DELETE':
+            eliminarr_client(cliente_id)
+            return jsonify({'message': 'Cliente eliminado exitosamente'}),200
+        else:
+            return jsonify({'message': '>Error al elimina al cliente'}),500
+
+    except Exception as e:
+        print("Error al procesar la solicitud DELETE:", e)
+        return jsonify({'message': 'Error al procesar la solicitud'}),500
 
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
