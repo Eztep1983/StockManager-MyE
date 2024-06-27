@@ -11,6 +11,7 @@ from models.cliente import *
 from models.categorias import *
 from models.producto import *
 
+
 app = Flask(__name__)
 
 # Configuración de la base de datos y del login manager
@@ -243,7 +244,7 @@ def editar_cliente():
         email = request.form.get('edit_emailClient')
         
         if actualizr_cliente(cedula, nombre, apellido, direccion, telefono, email):
-            flash('Cliente actualizado con éxito!', 'success')
+            pass
         else:
             flash('Error al actualizar el cliente.', 'error')
     return render_template('clientes.html')
@@ -294,54 +295,13 @@ def facturar():
 def logout():
     logout_user()
     return redirect(url_for('logout'))
-#_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
-@app.route('/actualizar_cliente')
-@login_required
-def actualizar_cliente():
-    return render_template('actualizar_cliente.html')
+
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 
-
+# MANEJO PARA EL 404 ERROR
 def status404(error):
-    return """<html>
-                <head>
-                    <title>Página no encontrada</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                        }
-                        .container {
-                            margin-top: 50px;
-                        }
-                        .button {
-                            background-color: #007bff; /* Azul */
-                            border: none;
-                            color: white;
-                            padding: 15px 32px;
-                            text-align: center;
-                            text-decoration: none;
-                            display: inline-block;
-                            font-size: 16px;
-                            margin-top: 20px;
-                            cursor: pointer;
-                            border-radius: 5px;
-                        }
-                        .button:hover {
-                            background-color: #0056b3; /* Azul oscuro al pasar el ratón */
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <center>
-                            <h1>No se pudo encontrar la página</h1>
-                            <button class="button" onclick="window.location.href='/login'">Ir a login</button>
-                        </center>
-                    </div>
-                </body>
-            </html>""", 404
+    return render_template('404handler.html'), 404
  #_______________________________________________________________________________________________________
 
 #_______________________________________________________________________________________________________

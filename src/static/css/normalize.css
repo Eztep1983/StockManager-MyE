@@ -209,6 +209,7 @@ input::-moz-focus-inner {
 
 input {
   line-height: normal;
+  border-radius: 20px;
 }
 
 /**

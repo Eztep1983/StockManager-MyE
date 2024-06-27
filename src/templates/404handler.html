@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %} Clientes {% endblock %}
+
+{% block body %}
+
+<html>
+                <head>
+                    <title>Página no encontrada</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                        }
+                        .container {
+                            margin-top: 50px;
+                        }
+                        .button {
+                            background-color: #007bff; /* Azul */
+                            border: none;
+                            color: white;
+                            padding: 15px 32px;
+                            text-align: center;
+                            text-decoration: none;
+                            display: inline-block;
+                            font-size: 16px;
+                            margin-top: 20px;
+                            cursor: pointer;
+                            border-radius: 5px;
+                        }
+                        .button:hover {
+                            background-color: #0056b3; /* Azul oscuro al pasar el ratón */
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <center>
+                            <h1>No se pudo encontrar la página :C</h1>
+                            <button class="button" onclick="window.history.back()">Volver a la pagina anterior</button>
+                        </center>
+                    </div>
+                </body>
+            </html>
+{% endblock %}

@@ -110,16 +110,17 @@
                             <div class="full-width panel-content">
                                 <form action="#">
 									<br>
-									<br>
-                                    <i class="zmdi zmdi-search" id="searchIcon"></i>
+									<br>                                    
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                                         <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
                                         </label>
                                         <div>
                                             <center><h5>Buscar cliente</h5></center>
+                                            <i class="zmdi zmdi-search" id="searchIcon" style="position: absolute; right: 10px; top: 63%; transform: translateY(-50%);"></i>
                                             <input class="mdl-textfield__input" type="text" id="searchClient">                                           
                                             <label class="mdl-textfield__label" style="margin-left: 10px;"></label>
-                                        </div>                                                                      
+                                        </div> 
+                                        <div id="mensaje"></div>                                                                     
                                     </div>
                                 </form>
                                 {% if clientes|length == 0 %}
@@ -144,9 +145,9 @@
                                                         </section>                                    
                                                         <section>
                                                             <center>
-                                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.identificador_c }}')">
+                                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm(event, '{{ cliente.identificador_c }}')">
                                                                     <i class="mdi--account-edit"></i>
-                                                                </button>
+                                                                </button>                                                                
                                                                 <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteClient('{{ cliente.identificador_c }}')">
                                                                     <i class="zmdi zmdi-delete"></i>
                                                                 </button>                                                                                                                                             
@@ -157,10 +158,10 @@
                                             </div>
                                             <li class="full-width divider-menu-h"></li>
                                             <!-- Formulario de edición para cada cliente -->
-                                            <form id="editForm{{ cliente.identificador_c }}" action="/editar_cliente" method="POST" style="display: none;">
+                                            <form id="editForm{{ cliente.identificador_c }}" class="editForm" action="/editar_cliente" method="POST" style="display: none;">
                                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                                 <input type="hidden" name="cliente_id" value="{{ cliente.identificador_c }}">
-                                            
+
                                                 <!-- Campo de edición para nombres -->
                                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                                     <input class="mdl-textfield__input" type="text" name="edit_NameClient" id="edit_NameClient" value="{{ cliente.nombres }}">
@@ -252,40 +253,45 @@
                     }
                 });
             }
+                    function showEditForm(event, clienteId) {
+                    // Evitar la propagación del evento de clic
+                    event.stopPropagation();
 
+                    // Ocultar todos los formularios de edición
+                    var editForms = document.querySelectorAll('[id^="editForm"]');
+                    editForms.forEach(function(form) {
+                        form.style.display = 'none';
+                    });
 
-        function showEditForm(clienteId) {
-            // Ocultar todos los formularios de edición
-            var editForms = document.querySelectorAll('[id^="editForm"]');
-            editForms.forEach(function(form) {
-                form.style.display = 'none';
-            });
-            
-            // Mostrar el formulario de edición del cliente seleccionado
-            var editForm = document.getElementById('editForm' + clienteId);
-            if (editForm) {
-                editForm.style.display = 'block';
-            }
-        }
-            // Función para recargar la página y mostrar la alerta
-            function reloadPageAndShowAlert() {
-                // Mostrar la alerta utilizando SweetAlert
-                swal.fire({
-                    title: '¡Cliente actualizado con éxito!',
-                    text: 'La información del cliente se ha modificado correctamente.',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    // Verificar si el usuario hizo clic en "OK"
-                    if (result.isConfirmed) {
-                        // Recargar la página
-                        location.reload();
+                    // Mostrar el formulario de edición del cliente seleccionado
+                    var editForm = document.getElementById('editForm' + clienteId);
+                    if (editForm) {
+                        editForm.style.display = 'block';
+
+                        // Añadir un event listener al documento para detectar clics fuera del formulario
+                        document.addEventListener('click', function(event) {
+                            if (!editForm.contains(event.target)) {
+                                editForm.style.display = 'none';
+                            }
+                        }, { once: true }); // El listener se eliminará después de ser ejecutado una vez
                     }
-                });
-            }
-            
-            
-            
+                }
+
+                function reloadPageAndShowAlert() {
+                    // Mostrar la alerta utilizando SweetAlert
+                    swal.fire({
+                        title: '¡Cliente actualizado con éxito!',
+                        text: 'La información del cliente se ha modificado correctamente.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        // Verificar si el usuario hizo clic en "OK"
+                        if (result.isConfirmed) {
+                            // Recargar la página
+                            location.reload();
+                        }
+                    });
+                }                        
         document.addEventListener("DOMContentLoaded", function() {
             // Obtener el icono de búsqueda
             var searchIcon = document.getElementById("searchIcon");
@@ -304,8 +310,7 @@
                     navigationBar.classList.add("show-navigation");
                 }
             });
-        });
-            
+        });            
         // Agregar evento submit al formulario de edición
         document.addEventListener("DOMContentLoaded", function() {
             var editForms = document.querySelectorAll('[id^="editForm"]');
@@ -348,8 +353,7 @@
                     });
                 });
             });
-        });
-        
+        });        
         document.getElementById("btn-addClient").addEventListener("click", function(event) {
             // Evita que el formulario se envíe automáticamente
             event.preventDefault();
@@ -385,7 +389,6 @@
                 });
             }
         });
-
             document.addEventListener("DOMContentLoaded", function() {
                 var secondaryActions = document.querySelectorAll(".mdl-list__item-secondary-action");
             
@@ -443,13 +446,12 @@
                     // Mostrar u ocultar el cliente según el término de búsqueda
                     if (clientContent.includes(searchTerm)) {
                         client.style.display = "block";
-                    } else {
+                    } else {                    
                         client.style.display = "none";
                     }
                 });
             });
     </script>
-    
     <footer>
         <p>&copy; 2024 StockManager JyE</p>
     </footer>
