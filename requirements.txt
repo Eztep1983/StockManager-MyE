@@ -3,6 +3,7 @@ bcrypt
 flask_mysqldb
 flask_wtf
 jinja2
+flask_login
 blinker
 markupsafe
 itsdangerous
