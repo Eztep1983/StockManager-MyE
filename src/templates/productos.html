@@ -62,7 +62,7 @@
                                             <div>
                                                 <center><h5>Buscar producto</h5></center>
                                                 <i class="zmdi zmdi-search" id="searchIcon" style="position: absolute; right: 10px; top: 63%; "></i>
-                                                <input class="mdl-textfield__input" type="text" id="searchClient">                                           
+                                                <input class="mdl-textfield__input" type="text" id="searchProduct">                                           
                                                 <label class="mdl-textfield__label" style="margin-left: 10px;"></label>
                                             </div> 
                                         </form>
@@ -71,7 +71,7 @@
                                         {% else %}                                      
                                         <div class="mdl-list">
                                             {% for producto in productos %}                                                
-                                            <div class="mdl-list__item mdl-list__item--two-line">
+                                            <div class="mdl-list__item mdl-list__item--two-line producto-item">
                                                 <section class="cliente_tab" id="cliente_tab">
                                                 <span>
                                                     <section>
@@ -90,6 +90,9 @@
                                                     </section>
                                                     <section>
                                                         <center>
+                                                        <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm(event, '{{ producto.id }}')">
+                                                            <i class="zmdi zmdi-edit"></i>
+                                                        </button>   
                                                         <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteOption('{{ producto.id }}')">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>                                                                                                                                             
@@ -183,7 +186,8 @@
             </section>
         </main>
         <script>
-            document.getElementById("btn-addProduct").addEventListener("click", function(event) {
+            
+        document.getElementById("btn-addProduct").addEventListener("click", function(event) {
             // Evita que el formulario se envíe automáticamente
             event.preventDefault();
     
@@ -266,10 +270,21 @@
                     }
                 });
             }
-            </script>
-            
-            
-                           
+
+        document.getElementById('searchProduct').addEventListener('input', function () {
+            const searchValue = this.value.toLowerCase();
+            const clientItems = document.querySelectorAll('.producto-item');
+
+            clientItems.forEach(function (clientItem) {
+                const clientName = clientItem.querySelector('.mdl-list__item-sub-title').textContent.toLowerCase();
+                if (clientName.includes(searchValue)) {
+                    clientItem.style.display = '';
+                } else {
+                    clientItem.style.display = 'none';
+                }
+            });
+        });
+        </script>        
         <footer>
             <p>&copy; 2024 StockManager JyE</p>
         </footer>

@@ -54,7 +54,7 @@
                             <div class="full-width panel-tittle bg-primary text-center tittles">
                                 Nuevo Cliente
                             </div>
-                            <div class="full-width panel-content">
+                            <div class="full-width panel-content">                            
                                 <form id="clientForm" action="/cliente" method="POST">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <h5 class="text-condensedLight">Información del cliente</h5>
@@ -142,59 +142,23 @@
                                                             <br>
                                                             <br>
                                                             <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ cliente.telefono }}</span>
+                                                            <br>
+                                                            <br>
+                                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Correo Electronico: {{ cliente.correo_electronico }}</span>
                                                         </section>                                    
                                                         <section>
                                                             <center>
-                                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm(event, '{{ cliente.identificador_c }}')">
-                                                                    <i class="mdi--account-edit"></i>
-                                                                </button>                                                                
+                                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditClientModal('{{ cliente.identificador_c }}', '{{ cliente.nombres }}', '{{ cliente.apellidos }}', '{{ cliente.direccion }}', '{{ cliente.telefono }}', '{{ cliente.correo_electronico }}','{{cliente.cedula}}')">
+                                                                    <i class="zmdi zmdi-edit"></i>
+                                                                </button>                                                                                                                               
                                                                 <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteClient('{{ cliente.identificador_c }}')">
                                                                     <i class="zmdi zmdi-delete"></i>
                                                                 </button>                                                                                                                                             
                                                             </center>
                                                         </section>
-                                                    </span>                                                           
+                                                    </span>                                                          
                                                 </section>
-                                            </div>
-                                            <li class="full-width divider-menu-h"></li>
-                                            <!-- Formulario de edición para cada cliente -->
-                                            <form id="editForm{{ cliente.identificador_c }}" class="editForm" action="/editar_cliente" method="POST" style="display: none;">
-                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                                <input type="hidden" name="cliente_id" value="{{ cliente.identificador_c }}">
-
-                                                <!-- Campo de edición para nombres -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="text" name="edit_NameClient" id="edit_NameClient" value="{{ cliente.nombres }}">
-                                                    <label class="mdl-textfield__label" for="edit_NameClient">Nombres:</label>
-                                                    <span class="mdl-textfield__error">Nombres Inválidos</span>
-                                                </div>
-                                                <!-- Campo de edición para apellidos -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="text" name="edit_LastNameClient" id="edit_LastNameClient" value="{{ cliente.apellidos }}">
-                                                    <label class="mdl-textfield__label" for="edit_LastNameClient">Apellidos:</label>
-                                                    <span class="mdl-textfield__error">Apellido Inválido</span>
-                                                </div>
-                                                <!-- Campo de edición para dirección -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="text" name="edit_addressClient" id="edit_addressClient" value="{{ cliente.direccion }}">
-                                                    <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
-                                                    <span class="mdl-textfield__error">Dirección Inválida</span>
-                                                </div>
-                                                <!-- Campo de edición para teléfono -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" pattern="-?[0-9+()- ]*(\.[0-9]+)?" value="{{ cliente.telefono }}">
-                                                    <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
-                                                    <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
-                                                </div>   
-                                                <!-- Campo de edición para correo electrónico -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="email" name="edit_emailClient" id="edit_emailClient" value="{{ cliente.correo_electronico }}">
-                                                    <label class="mdl-textfield__label" for="edit_emailClient">Correo Electrónico:</label>
-                                                    <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
-                                                </div>                               
-                                                <!-- Botón para guardar cambios -->
-                                                <center><button type="submit">Guardar cambios</button></center>
-                                            </form>                                                                             
+                                            </div>                                                                                                                     
                                         </div>
                                         {% endfor %}
                                     </div>
@@ -207,6 +171,7 @@
         </div>
     </section>
     <script>  
+
     function getCSRFToken(){
         return document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     } 
@@ -253,45 +218,62 @@
                     }
                 });
             }
-                    function showEditForm(event, clienteId) {
-                    // Evitar la propagación del evento de clic
-                    event.stopPropagation();
+            function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo, cedula) {
+    Swal.fire({
+        title: 'Editar Cliente',
+        html: `                    
+            <input id="edit_NameClient" class="swal2-input" placeholder="Nombres" value="${nombres}">
+            <input id="edit_LastNameClient" class="swal2-input" placeholder="Apellidos" value="${apellidos}">
+            <input id="edit_addressClient" class="swal2-input" placeholder="Dirección" value="${direccion}">
+            <input id="edit_phoneClient" class="swal2-input" placeholder="Teléfono" value="${telefono}">
+            <input id="edit_emailClient" class="swal2-input" placeholder="Correo Electrónico" value="${correo}">
+            <input id="edit_cedulaClient" class="swal2-input" placeholder="Cédula" value="${cedula}">
+            `,
+        focusConfirm: false,
+        preConfirm: () => {
+            const name = document.getElementById('edit_NameClient').value;
+            const lastName = document.getElementById('edit_LastNameClient').value;
+            const address = document.getElementById('edit_addressClient').value;
+            const phone = document.getElementById('edit_phoneClient').value;
+            const email = document.getElementById('edit_emailClient').value;
+            const cedul = document.getElementById('edit_cedulaClient').value;
 
-                    // Ocultar todos los formularios de edición
-                    var editForms = document.querySelectorAll('[id^="editForm"]');
-                    editForms.forEach(function(form) {
-                        form.style.display = 'none';
-                    });
-
-                    // Mostrar el formulario de edición del cliente seleccionado
-                    var editForm = document.getElementById('editForm' + clienteId);
-                    if (editForm) {
-                        editForm.style.display = 'block';
-
-                        // Añadir un event listener al documento para detectar clics fuera del formulario
-                        document.addEventListener('click', function(event) {
-                            if (!editForm.contains(event.target)) {
-                                editForm.style.display = 'none';
-                            }
-                        }, { once: true }); // El listener se eliminará después de ser ejecutado una vez
-                    }
+            // Aquí hacemos la llamada a la ruta de edición
+            return fetch('/editar_cliente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: new URLSearchParams({
+                    cliente_id: id,  // Este es el ID que envías (identificador_c)
+                    edit_NameClient: name,
+                    edit_LastNameClient: lastName,
+                    edit_addressClient: address,
+                    edit_phoneClient: phone,
+                    edit_emailClient: email,
+                    cedula: cedul  // Usamos "cedula" como en el backend
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al actualizar el cliente');
                 }
-
-                function reloadPageAndShowAlert() {
-                    // Mostrar la alerta utilizando SweetAlert
-                    swal.fire({
-                        title: '¡Cliente actualizado con éxito!',
-                        text: 'La información del cliente se ha modificado correctamente.',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        // Verificar si el usuario hizo clic en "OK"
-                        if (result.isConfirmed) {
-                            // Recargar la página
-                            location.reload();
-                        }
-                    });
-                }                        
+                return response.json(); // Asumiendo que devuelves un JSON en la respuesta
+            });
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (result.value.success) {
+                Swal.fire('Éxito', 'Cliente actualizado correctamente', 'success').then(() => location.reload());
+            } else {
+                Swal.fire('Error', 'No se pudo actualizar el cliente', 'error');
+            }
+        }
+    }).catch(error => {
+        Swal.fire('Error', error.message, 'error');
+    });
+}
+          
         document.addEventListener("DOMContentLoaded", function() {
             // Obtener el icono de búsqueda
             var searchIcon = document.getElementById("searchIcon");
@@ -312,104 +294,104 @@
             });
         });            
         // Agregar evento submit al formulario de edición
-        document.addEventListener("DOMContentLoaded", function() {
-            var editForms = document.querySelectorAll('[id^="editForm"]');
-            editForms.forEach(function(form) {
-                form.addEventListener("submit", function(event) {
-                    // Evitar que el formulario se envíe automáticamente
-                    event.preventDefault();
-                    
-                    // Enviar el formulario manualmente utilizando Fetch API o AJAX
-                    var formId = form.getAttribute("id");
-                    var formData = new FormData(form);
-                    fetch('/editar_cliente', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(function(response) {
-                        // Verificar si la respuesta fue exitosa
-                        if (response.ok) {
-                            // Recargar la página y mostrar la alerta
-                            reloadPageAndShowAlert();
-                        } else {
-                            // Mostrar mensaje de error si la respuesta no fue exitosa
-                            swal.fire({
-                                title: 'Error',
-                                text: 'Hubo un problema al actualizar el cliente. Por favor, inténtalo de nuevo.',
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
-                        }
-                    })
-                    .catch(function(error) {
-                        console.error('Error:', error);
-                        // Mostrar mensaje de error en caso de error en la solicitud
+    document.addEventListener("DOMContentLoaded", function() {
+        var editForms = document.querySelectorAll('[id^="editForm"]');
+        editForms.forEach(function(form) {
+            form.addEventListener("submit", function(event) {
+                // Evitar que el formulario se envíe automáticamente
+                event.preventDefault();
+                
+                // Enviar el formulario manualmente utilizando Fetch API o AJAX
+                var formId = form.getAttribute("id");
+                var formData = new FormData(form);
+                fetch('/editar_cliente', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    // Verificar si la respuesta fue exitosa
+                    if (response.ok) {
+                        // Recargar la página y mostrar la alerta
+                        reloadPageAndShowAlert();
+                    } else {
+                        // Mostrar mensaje de error si la respuesta no fue exitosa
                         swal.fire({
                             title: 'Error',
                             text: 'Hubo un problema al actualizar el cliente. Por favor, inténtalo de nuevo.',
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    // Mostrar mensaje de error en caso de error en la solicitud
+                    swal.fire({
+                        title: 'Error',
+                        text: 'Hubo un problema al actualizar el cliente. Por favor, inténtalo de nuevo.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
                     });
                 });
             });
-        });        
-        document.getElementById("btn-addClient").addEventListener("click", function(event) {
-            // Evita que el formulario se envíe automáticamente
-            event.preventDefault();
-    
-            // Validar que todos los campos obligatorios estén llenos
-            var dni = document.getElementById("DNIClient").value.trim();
-            var nombre = document.getElementById("NameClient").value.trim();
-            var apellido = document.getElementById("LastNameClient").value.trim();
-            var direccion = document.getElementById("addressClient1").value.trim();
-            var telefono = document.getElementById("phoneClient").value.trim();
-            var email = document.getElementById("emailClient").value.trim();
-    
-            if (dni === "" || nombre === "" || apellido === "" || direccion === "" || telefono === "" || email === "") {
-                // Mostrar mensaje de advertencia si algún campo está vacío
-                swal.fire({
-                    title: '¡Advertencia!',
-                    text: 'Por favor completa todos los campos antes de agregar el cliente.',
-                    icon: 'warning',
-                    confirmButtonText: 'OK'
-                });
-            } else {
-                // Mostrar confirmación y enviar el formulario si todos los campos están llenos
-                swal.fire({
-                    title: '¡Se guardó el cliente con éxito!',
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    showCancelButton: false
-                }).then((result) => {
-                    // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
-                    if (result.isConfirmed) {
-                        document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
-                    }
-                });
-            }
         });
-            document.addEventListener("DOMContentLoaded", function() {
-                var secondaryActions = document.querySelectorAll(".mdl-list__item-secondary-action");
-            
-                secondaryActions.forEach(function(action) {
-                    action.addEventListener("click", function(event) {
-                        var updateOption = action.querySelector(".update-client-option");
-                        var deleteOption = action.querySelector(".delete-client-option");
-            
-                        if (updateOption && event.target === updateOption) {
-                            // Aquí redirige al usuario a la página de actualización del cliente
-                            window.location.href = "/actualizar-cliente?id=" + clienteId;
-                        } else if (deleteOption && event.target === deleteOption) {
-                            // Aquí muestra un mensaje de confirmación antes de borrar el cliente
-                            if (confirm("¿Estás seguro de que deseas borrar este cliente?")) {
-                                // Aquí puedes hacer una solicitud para borrar el cliente del servidor
-                            }
-                        }
-                    });
-                });
-            });  
-                // Obtener el campo de teléfono
+    });        
+    document.getElementById("btn-addClient").addEventListener("click", function(event) {
+        // Evita que el formulario se envíe automáticamente
+        event.preventDefault();
+
+        // Validar que todos los campos obligatorios estén llenos
+        var dni = document.getElementById("DNIClient").value.trim();
+        var nombre = document.getElementById("NameClient").value.trim();
+        var apellido = document.getElementById("LastNameClient").value.trim();
+        var direccion = document.getElementById("addressClient1").value.trim();
+        var telefono = document.getElementById("phoneClient").value.trim();
+        var email = document.getElementById("emailClient").value.trim();
+
+        if (dni === "" || nombre === "" || apellido === "" || direccion === "" || telefono === "" || email === "") {
+            // Mostrar mensaje de advertencia si algún campo está vacío
+            swal.fire({
+                title: '¡Advertencia!',
+                text: 'Por favor completa todos los campos antes de agregar el cliente.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+        } else {
+            // Mostrar confirmación y enviar el formulario si todos los campos están llenos
+            swal.fire({
+                title: '¡Se guardó el cliente con éxito!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                showCancelButton: false
+            }).then((result) => {
+                // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
+                if (result.isConfirmed) {
+                    document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
+                }
+            });
+        }
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        var secondaryActions = document.querySelectorAll(".mdl-list__item-secondary-action");
+    
+        secondaryActions.forEach(function(action) {
+            action.addEventListener("click", function(event) {
+                var updateOption = action.querySelector(".update-client-option");
+                var deleteOption = action.querySelector(".delete-client-option");
+    
+                if (updateOption && event.target === updateOption) {
+                    // Aquí redirige al usuario a la página de actualización del cliente
+                    window.location.href = "/actualizar-cliente?id=" + clienteId;
+                } else if (deleteOption && event.target === deleteOption) {
+                    // Aquí muestra un mensaje de confirmación antes de borrar el cliente
+                    if (confirm("¿Estás seguro de que deseas borrar este cliente?")) {
+                        // Aquí puedes hacer una solicitud para borrar el cliente del servidor
+                    }
+                }
+            });
+        });
+    });  
+        // Obtener el campo de teléfono
         var phoneInput = document.getElementById("phoneClient");
         phoneInput.addEventListener("keydown", function(event) {
             // Permitir solo números y teclas especiales como Backspace, Delete, Flechas, etc.
@@ -427,30 +409,20 @@
                 event.preventDefault();
             }
         });
-            // Obtener el campo de búsqueda
-            var searchInput = document.getElementById("searchClient");
+    document.getElementById('searchClient').addEventListener('input', function () {
+        const searchValue = this.value.toLowerCase();
+        const clientItems = document.querySelectorAll('.cliente-item');
 
-            // Agregar evento keyup al campo de búsqueda
-            searchInput.addEventListener("keyup", function(event) {
-                // Obtener el valor del campo de búsqueda
-                var searchTerm = event.target.value.toLowerCase();
+        clientItems.forEach(function (clientItem) {
+            const clientName = clientItem.querySelector('.mdl-list__item-sub-title').textContent.toLowerCase();
+            if (clientName.includes(searchValue)) {
+                clientItem.style.display = '';
+            } else {
+                clientItem.style.display = 'none';
+            }
+        });
+    });
 
-                // Obtener todos los elementos de clientes
-                var clients = document.querySelectorAll(".cliente-item");
-
-                // Iterar sobre los elementos de clientes
-                clients.forEach(function(client) {
-                    // Obtener el contenido de cliente
-                    var clientContent = client.textContent.toLowerCase();
-
-                    // Mostrar u ocultar el cliente según el término de búsqueda
-                    if (clientContent.includes(searchTerm)) {
-                        client.style.display = "block";
-                    } else {                    
-                        client.style.display = "none";
-                    }
-                });
-            });
     </script>
     <footer>
         <p>&copy; 2024 StockManager JyE</p>

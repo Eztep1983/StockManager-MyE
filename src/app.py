@@ -10,6 +10,7 @@ from models.entities.user import User
 from models.cliente import *
 from models.categorias import *
 from models.producto import *
+from models.ventas import *
 
 
 app = Flask(__name__)
@@ -91,6 +92,11 @@ def register():
 @login_required
 def home():
     return render_template('home.html')
+
+#_______________________________________________________________________________________________________
+#_______________________________________________________________________________________________________
+
+#RUTA PARA VENTAS
 
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
@@ -193,6 +199,7 @@ def get_categorias():
 @app.route('/ventas')
 @login_required
 def ventas():
+    lista_ventas = obtener_ventas()
     return render_template('ventas.html')
 
 #_______________________________________________________________________________________________________
@@ -236,18 +243,20 @@ def nuevo_cliente():
 def editar_cliente():
     if request.method == 'POST':
         # Obtener los datos del formulario
-        cedula = request.form.get('cliente_id')
+        identificador_c = request.form.get('cliente_id')  
         nombre = request.form.get('edit_NameClient')
         apellido = request.form.get('edit_LastNameClient')
         direccion = request.form.get('edit_addressClient')
         telefono = request.form.get('edit_phoneClient')
         email = request.form.get('edit_emailClient')
+
         
-        if actualizr_cliente(cedula, nombre, apellido, direccion, telefono, email):
-            pass
+        if actualizar_cliente(identificador_c, nombre, apellido, direccion, telefono, email):
+            return jsonify(success=True)  #Si sale bien
         else:
-            flash('Error al actualizar el cliente.', 'error')
-    return render_template('clientes.html')
+            return jsonify(success=False), 400 #Si ocurre algun problema  
+
+    return jsonify(success=False), 400  # En caso de método incorrecto
 
 # RUTA PARA ELIMINAR CLIENTES
 @app.route('/eliminar_cliente/<int:cliente_id>', methods=['DELETE'])
