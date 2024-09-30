@@ -148,7 +148,8 @@
                                                         </section>                                    
                                                         <section>
                                                             <center>
-                                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditClientModal('{{ cliente.identificador_c }}', '{{ cliente.nombres }}', '{{ cliente.apellidos }}', '{{ cliente.direccion }}', '{{ cliente.telefono }}', '{{ cliente.correo_electronico }}','{{cliente.cedula}}')">
+                                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditClientModal('{{ cliente.identificador_c }}', '{{ cliente.nombres }}', 
+                                                                '{{ cliente.apellidos }}', '{{ cliente.direccion }}', '{{ cliente.telefono }}', '{{ cliente.correo_electronico }}','{{cliente.cedula}}')">
                                                                     <i class="zmdi zmdi-edit"></i>
                                                                 </button>                                                                                                                               
                                                                 <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteClient('{{ cliente.identificador_c }}')">
@@ -225,7 +226,7 @@ function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo
             <input id="edit_NameClient" class="swal2-input" placeholder="Nombres" value="${nombres}">
             <input id="edit_LastNameClient" class="swal2-input" placeholder="Apellidos" value="${apellidos}">
             <input id="edit_addressClient" class="swal2-input" placeholder="Dirección" value="${direccion}">
-            <input id="edit_phoneClient" class="swal2-input" placeholder="Teléfono" value="${telefono}">
+            <input id="edit_phoneClient" type="tel" class="swal2-input" placeholder="Teléfono" value="${telefono}">
             <input id="edit_emailClient" class="swal2-input" placeholder="Correo Electrónico" value="${correo}">
             <input id="edit_cedulaClient" class="swal2-input" placeholder="Cédula" value="${cedula}">
             `,
@@ -246,14 +247,14 @@ function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo
                     'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: new URLSearchParams({
-                    cliente_id: id,  // Este es el ID que envías (identificador_c)
-                    edit_NameClient: name,
-                    edit_LastNameClient: lastName,
-                    edit_addressClient: address,
-                    edit_phoneClient: phone,
-                    edit_emailClient: email,
-                    cedula: cedul  // Usamos "cedula" como en el backend
-                })
+                cliente_id: id,
+                edit_NameClient: name,
+                edit_LastNameClient: lastName,
+                edit_addressClient: address,
+                edit_phoneClient: phone,
+                edit_emailClient: email,
+                edit_cedulaClient: cedul,  // Asegúrate de que coincida con el backend
+            })
             }).then(response => {
                 if (!response.ok) {
                     throw new Error('Error al actualizar el cliente');

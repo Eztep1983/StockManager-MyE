@@ -44,12 +44,12 @@ def añadir_cliente(cedula, nombres, apellidos, direccion, telefono, correo_elec
         print("Error al añadir cliente:", str(e))
         return False
     
-def actualizar_cliente(identificador_c, nombres, apellidos, direccion, telefono, correo_electronico):
+def actualizar_cliente(identificador_c ,nombres, apellidos, direccion, telefono, correo_electronico, cedula):
     try:
         conn = mysql.connection
         cursor = conn.cursor()
-        sql = "UPDATE clientes SET nombres=%s, apellidos=%s, direccion=%s, telefono=%s, correo_electronico=%s WHERE identificador_c=%s"
-        cursor.execute(sql, (nombres, apellidos, direccion, telefono, correo_electronico, identificador_c))
+        sql = "UPDATE clientes SET nombres=%s, apellidos=%s, direccion=%s, telefono=%s, correo_electronico=%s, cedula= %s WHERE identificador_c=%s"
+        cursor.execute(sql, (nombres, apellidos, direccion, telefono, correo_electronico, cedula, identificador_c))
         conn.commit()
         cursor.close()
         return True

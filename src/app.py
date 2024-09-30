@@ -249,12 +249,13 @@ def editar_cliente():
         direccion = request.form.get('edit_addressClient')
         telefono = request.form.get('edit_phoneClient')
         email = request.form.get('edit_emailClient')
+        cedul = request.form.get('edit_cedulaClient')
 
         
-        if actualizar_cliente(identificador_c, nombre, apellido, direccion, telefono, email):
-            return jsonify(success=True)  #Si sale bien
+        if actualizar_cliente(identificador_c, nombre, apellido, direccion, telefono, email, cedul):
+            return jsonify(success=True) 
         else:
-            return jsonify(success=False), 400 #Si ocurre algun problema  
+            return jsonify(success=False), 400 
 
     return jsonify(success=False), 400  # En caso de método incorrecto
 
