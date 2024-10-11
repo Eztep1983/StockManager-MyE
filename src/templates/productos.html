@@ -90,10 +90,11 @@
                                                     </section>
                                                     <section>
                                                         <center>
-                                                        <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm(event, '{{ producto.id }}','{{producto.}}','{{producto.}}','{{producto.}}')">
+                                                            <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditProductModal('{{ producto.identificador_p }}','{{producto.nombre}}','{{producto.descripcion}}',
+                                                            '{{producto.precio}}','{{producto.stock}}','{{producto.id_categoria}}')">
                                                             <i class="zmdi zmdi-edit"></i>
-                                                        </button>   
-                                                        <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteOption('{{ producto.id }}')">
+                                                        </button>                                                          
+                                                        <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteOption('{{ producto.identificador_p }}')">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>                                                                                                                                             
                                                         <center>
@@ -186,55 +187,52 @@
             </section>
         </main>
         <script>
-function showEditProductModal(id, nombres, apellidos, direccion, telefono, correo, cedula) {
+function showEditProductModal(id, nombre, descripcion, precio, stock, id_categoria) {
     Swal.fire({
-        title: 'Editar Cliente',
-        html: `                    
-            <input id="edit_NameClient" class="swal2-input" placeholder="Nombres" value="${nombres}">
-            <input id="edit_LastNameClient" class="swal2-input" placeholder="Apellidos" value="${apellidos}">
-            <input id="edit_addressClient" class="swal2-input" placeholder="Dirección" value="${direccion}">
-            <input id="edit_phoneClient" class="swal2-input" placeholder="Teléfono" value="${telefono}">
-            <input id="edit_emailClient" class="swal2-input" placeholder="Correo Electrónico" value="${correo}">
-            <input id="edit_cedulaClient" class="swal2-input" placeholder="Cédula" value="${cedula}">
+        title: 'Editar Producto',
+        html: `                 
+            <input id="edit_NameProduct" class="swal2-input" placeholder="Nombre del producto" value="${nombre}">
+            <input id="edit_Description" class="swal2-input" placeholder="Descripcion" value="${descripcion}">
+            <input id="edit_Price" type="number" class="swal2-input" placeholder="Precio" value="${precio}" min="0" step="any">
+            <input id="edit_Stock" type="number" class="swal2-input" placeholder="Stock" value="${stock}" min="0">
+            <input id="edit_Category" class="swal2-input" placeholder="Categoria" value="${id_categoria}">
             `,
         focusConfirm: false,
         preConfirm: () => {
-            const name = document.getElementById('edit_NameClient').value;
-            const lastName = document.getElementById('edit_LastNameClient').value;
-            const address = document.getElementById('edit_addressClient').value;
-            const phone = document.getElementById('edit_phoneClient').value;
-            const email = document.getElementById('edit_emailClient').value;
-            const cedul = document.getElementById('edit_cedulaClient').value;
+            const name = document.getElementById('edit_NameProduct').value;
+            const descripcion = document.getElementById('edit_Description').value;
+            const precio = parseFloat(document.getElementById('edit_Price').value);
+            const stock = parseInt(document.getElementById('edit_Stock').value);
+            const id_categoria = document.getElementById('edit_Category').value;
 
-            // Aquí hacemos la llamada a la ruta de edición
-            return fetch('/editar_cliente', {
-                method: 'POST',
+            // llamada a la ruta de edición
+            return fetch('/editar_producto', {
+                method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded',  // Formato del formulario
                     'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: new URLSearchParams({
-                    cliente_id: id,  // Este es el ID que envías (identificador_c)
-                    edit_NameClient: name,
-                    edit_LastNameClient: lastName,
-                    edit_addressClient: address,
-                    edit_phoneClient: phone,
-                    edit_emailClient: email,
-                    cedula: cedul  // Usamos "cedula" como en el backend
+                    producto_id: id,
+                    edit_NameProduct: name,
+                    edit_Description: descripcion,
+                    edit_Price: precio,
+                    edit_Stock: stock,
+                    edit_Category: id_categoria
                 })
             }).then(response => {
                 if (!response.ok) {
-                    throw new Error('Error al actualizar el cliente');
+                    throw new Error('Error al actualizar el Producto');
                 }
-                return response.json(); // Asumiendo que devuelves un JSON en la respuesta
+                return response.json(); 
             });
         }
     }).then((result) => {
         if (result.isConfirmed) {
             if (result.value.success) {
-                Swal.fire('Éxito', 'Cliente actualizado correctamente', 'success').then(() => location.reload());
+                Swal.fire('Éxito', 'Producto actualizado correctamente', 'success').then(() => location.reload());
             } else {
-                Swal.fire('Error', 'No se pudo actualizar el cliente', 'error');
+                Swal.fire('Error', 'No se pudo actualizar el producto', 'error');
             }
         }
     }).catch(error => {

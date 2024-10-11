@@ -49,7 +49,7 @@ def actualizar_cliente(identificador_c ,nombres, apellidos, direccion, telefono,
         conn = mysql.connection
         cursor = conn.cursor()
         sql = "UPDATE clientes SET nombres=%s, apellidos=%s, direccion=%s, telefono=%s, correo_electronico=%s, cedula= %s WHERE identificador_c=%s"
-        cursor.execute(sql, (nombres, apellidos, direccion, telefono, correo_electronico, cedula, identificador_c))
+        cursor.execute(sql,(nombres, apellidos, direccion, telefono, correo_electronico, cedula, identificador_c))
         conn.commit()
         cursor.close()
         return True

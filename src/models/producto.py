@@ -1,11 +1,11 @@
 from config import config
 from flask_mysqldb import MySQL
-
+import logging
 mysql=MySQL()
 
 class Producto:
-    def __init__(self, id, nombre, descripcion, precio, stock, id_proveedor, id_categoria):
-        self.id= id
+    def __init__(self, identificador_p, nombre, descripcion, precio, stock, id_proveedor, id_categoria):
+        self.identificador_p = identificador_p
         self.nombre=nombre
         self.descripcion=descripcion
         self.precio=precio
@@ -17,12 +17,12 @@ class Producto:
 def obtener_lista_productos():
     conn = mysql.connection
     cursor = conn.cursor()
-    sql= "SELECT id, nombre, descripcion, precio, stock, id_categoria, id_proveedor FROM productos"
+    sql= "SELECT identificador_p, nombre, descripcion, precio, stock, id_categoria, id_proveedor FROM productos"
     cursor.execute(sql)
     Productos=[]
     for row in cursor.fetchall():
-        id, nombre, descripcion, precio, stock, id_categoria, id_provedor = row
-        producto= Producto(id, nombre, descripcion, precio, stock, id_categoria, id_provedor)
+        identificador_p, nombre, descripcion, precio, stock, id_categoria, id_provedor = row
+        producto= Producto(identificador_p, nombre, descripcion, precio, stock, id_categoria, id_provedor)
         Productos.append(producto)
     cursor.close()
     return Productos
@@ -43,17 +43,34 @@ def crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, id_proveed
         return False 
     
 
-def eliminar_productos(prd_id):
-    conn = mysql.connection
-    cursor = conn.cursor()
+def actualizar_producto(identificador_p, nombre, descripcion, precio, stock, id_categoria):
     try:
-        sql = "DELETE FROM productos WHERE id = %s"
-        cursor.execute(sql, (prd_id,))
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql = """
+        UPDATE productos 
+        SET nombre= %s, descripcion= %s, precio= %s, stock= %s, id_categoria = %s 
+        WHERE identificador_p = %s
+        """
+        cursor.execute(sql, (nombre, descripcion, precio, stock, id_categoria, identificador_p))
         conn.commit()
         cursor.close()
         return True
     except Exception as e:
         conn.rollback()
         cursor.close()
-        print("Error al eliminar el producto:", e)
+        print("Error al actualizar el producto:", e)
+        return False
+
+def eliminar_productos(prd_id):
+    try:
+        conn = mysql.connection
+        with conn.cursor() as cursor:
+            sql = "DELETE FROM productos WHERE identificador_p = %s"
+            cursor.execute(sql, (prd_id,))
+        conn.commit()
+        return True
+    except Exception as e:
+        conn.rollback()
+        logging.error("Error al eliminar el Cliente: %s", str(e))
         return False

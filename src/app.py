@@ -12,7 +12,7 @@ from models.categorias import *
 from models.producto import *
 from models.ventas import *
 
-
+#Ejecutar la API
 app = Flask(__name__)
 
 # Configuración de la base de datos y del login manager
@@ -238,10 +238,10 @@ def nuevo_cliente():
     return render_template('clientes.html')
 
 #RUTA PARA EDITAR CLIENTES
-@app.route('/editar_cliente', methods=['POST'])
+@app.route('/editar_cliente', methods=['PUT'])
 @login_required
 def editar_cliente():
-    if request.method == 'POST':
+    if request.method == 'PUT':
         # Obtener los datos del formulario
         identificador_c = request.form.get('cliente_id')  
         nombre = request.form.get('edit_NameClient')
@@ -296,6 +296,39 @@ def facturar():
         # PARA PROCESAR LA FACTURA
         pass
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos)
+
+
+@app.route('/editar_producto', methods=['PUT'])
+@login_required
+def editar_producto():
+    if request.method == 'PUT':
+        try:
+            data = request.form
+            identificador_p = data.get('producto_id')
+            nombre = data.get('edit_NameProduct')
+            descripcion = data.get('edit_Description')
+            precio = data.get('edit_Price')
+            stock = data.get('edit_Stock')
+            id_categoria = data.get('edit_Category')
+
+            # Verificación de que los datos no estén vacíos
+            if not all([nombre, descripcion, precio, stock, id_categoria, identificador_p]):
+                print("Datos incompletos o inválidos")  # Agrega esto para depurar
+                return jsonify(success=False, message="Datos incompletos o inválidos"), 400
+
+            # Imprimir los valores para verificar que se están recibiendo correctamente
+            print(f"ID: {identificador_p}, Nombre: {nombre}, Descripción: {descripcion}, Precio: {precio}, Stock: {stock}, Categoría: {id_categoria}")
+
+            if actualizar_producto(identificador_p, nombre, descripcion, precio, stock, id_categoria):
+                return jsonify(success=True)
+            else:
+                return jsonify(success=False, message="Error en la actualización del producto"), 400
+
+        except Exception as e:
+            print(f"Excepción en el servidor: {e}")  # Esto te ayudará a identificar el error
+            return jsonify(success=False, message=str(e)), 500
+    return jsonify(success=False, message="Método no permitido"), 405
+
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 

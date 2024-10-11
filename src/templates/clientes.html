@@ -241,19 +241,19 @@ function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo
 
             // Aquí hacemos la llamada a la ruta de edición
             return fetch('/editar_cliente', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: new URLSearchParams({
-                cliente_id: id,
-                edit_NameClient: name,
-                edit_LastNameClient: lastName,
-                edit_addressClient: address,
-                edit_phoneClient: phone,
-                edit_emailClient: email,
-                edit_cedulaClient: cedul,  // Asegúrate de que coincida con el backend
+                    cliente_id: id,
+                    edit_NameClient: name,
+                    edit_LastNameClient: lastName,
+                    edit_addressClient: address,
+                    edit_phoneClient: phone,
+                    edit_emailClient: email,
+                    edit_cedulaClient: cedul, 
             })
             }).then(response => {
                 if (!response.ok) {
@@ -273,8 +273,7 @@ function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo
     }).catch(error => {
         Swal.fire('Error', error.message, 'error');
     });
-}
-          
+}          
         document.addEventListener("DOMContentLoaded", function() {
             // Obtener el icono de búsqueda
             var searchIcon = document.getElementById("searchIcon");
