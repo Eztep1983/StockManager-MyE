@@ -91,7 +91,7 @@
                                                     <section>
                                                         <center>
                                                             <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditProductModal('{{ producto.identificador_p }}','{{producto.nombre}}','{{producto.descripcion}}',
-                                                            '{{producto.precio}}','{{producto.stock}}','{{producto.id_categoria}}')">
+                                                            '{{producto.precio}}','{{producto.stock}}')">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>                                                          
                                                         <button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteOption('{{ producto.identificador_p }}')">
@@ -187,7 +187,7 @@
             </section>
         </main>
         <script>
-function showEditProductModal(id, nombre, descripcion, precio, stock, id_categoria) {
+function showEditProductModal(id, nombre, descripcion, precio, stock) {
     Swal.fire({
         title: 'Editar Producto',
         html: `                 
@@ -195,7 +195,6 @@ function showEditProductModal(id, nombre, descripcion, precio, stock, id_categor
             <input id="edit_Description" class="swal2-input" placeholder="Descripcion" value="${descripcion}">
             <input id="edit_Price" type="number" class="swal2-input" placeholder="Precio" value="${precio}" min="0" step="any">
             <input id="edit_Stock" type="number" class="swal2-input" placeholder="Stock" value="${stock}" min="0">
-            <input id="edit_Category" class="swal2-input" placeholder="Categoria" value="${id_categoria}">
             `,
         focusConfirm: false,
         preConfirm: () => {
@@ -203,7 +202,6 @@ function showEditProductModal(id, nombre, descripcion, precio, stock, id_categor
             const descripcion = document.getElementById('edit_Description').value;
             const precio = parseFloat(document.getElementById('edit_Price').value);
             const stock = parseInt(document.getElementById('edit_Stock').value);
-            const id_categoria = document.getElementById('edit_Category').value;
 
             // llamada a la ruta de edición
             return fetch('/editar_producto', {
@@ -218,7 +216,6 @@ function showEditProductModal(id, nombre, descripcion, precio, stock, id_categor
                     edit_Description: descripcion,
                     edit_Price: precio,
                     edit_Stock: stock,
-                    edit_Category: id_categoria
                 })
             }).then(response => {
                 if (!response.ok) {

@@ -309,17 +309,16 @@ def editar_producto():
             descripcion = data.get('edit_Description')
             precio = data.get('edit_Price')
             stock = data.get('edit_Stock')
-            id_categoria = data.get('edit_Category')
 
             # Verificación de que los datos no estén vacíos
-            if not all([nombre, descripcion, precio, stock, id_categoria, identificador_p]):
+            if not all([nombre, descripcion, precio, stock, identificador_p]):
                 print("Datos incompletos o inválidos")  # Agrega esto para depurar
                 return jsonify(success=False, message="Datos incompletos o inválidos"), 400
 
             # Imprimir los valores para verificar que se están recibiendo correctamente
-            print(f"ID: {identificador_p}, Nombre: {nombre}, Descripción: {descripcion}, Precio: {precio}, Stock: {stock}, Categoría: {id_categoria}")
+            print(f"ID: {identificador_p}, Nombre: {nombre}, Descripción: {descripcion}, Precio: {precio}, Stock: {stock}")
 
-            if actualizar_producto(identificador_p, nombre, descripcion, precio, stock, id_categoria):
+            if actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
                 return jsonify(success=True)
             else:
                 return jsonify(success=False, message="Error en la actualización del producto"), 400

@@ -43,16 +43,15 @@ def crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, id_proveed
         return False 
     
 
-def actualizar_producto(identificador_p, nombre, descripcion, precio, stock, id_categoria):
+def actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
     try:
         conn = mysql.connection
         cursor = conn.cursor()
         sql = """
         UPDATE productos 
-        SET nombre= %s, descripcion= %s, precio= %s, stock= %s, id_categoria = %s 
-        WHERE identificador_p = %s
+        SET nombre= %s, descripcion= %s, precio= %s, stock= %s WHERE identificador_p = %s
         """
-        cursor.execute(sql, (nombre, descripcion, precio, stock, id_categoria, identificador_p))
+        cursor.execute(sql, (nombre, descripcion, precio, stock, identificador_p))
         conn.commit()
         cursor.close()
         return True
