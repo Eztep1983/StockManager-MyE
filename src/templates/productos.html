@@ -193,7 +193,7 @@ function showEditProductModal(id, nombre, descripcion, precio, stock) {
         html: `                 
             <input id="edit_NameProduct" class="swal2-input" placeholder="Nombre del producto" value="${nombre}">
             <input id="edit_Description" class="swal2-input" placeholder="Descripcion" value="${descripcion}">
-            <input id="edit_Price" type="number" class="swal2-input" placeholder="Precio" value="${precio}" min="0" step="any">
+            <input id="edit_Price" type="number" class="swal2-input" placeholder="Precio" value="${precio}" step="0.01" min="0">
             <input id="edit_Stock" type="number" class="swal2-input" placeholder="Stock" value="${stock}" min="0">
             `,
         focusConfirm: false,
@@ -203,11 +203,17 @@ function showEditProductModal(id, nombre, descripcion, precio, stock) {
             const precio = parseFloat(document.getElementById('edit_Price').value);
             const stock = parseInt(document.getElementById('edit_Stock').value);
 
-            // llamada a la ruta de edición
+            // Verificación para valores NaN o vacíos
+            if (!name || !descripcion || isNaN(precio) || isNaN(stock)) {
+                Swal.showValidationMessage('Por favor, completa todos los campos correctamente');
+                return false;
+            }
+
+            // Llamada a la ruta de edición
             return fetch('/editar_producto', {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',  // Formato del formulario
+                    'Content-Type': 'application/x-www-form-urlencoded',
                     'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: new URLSearchParams({
@@ -236,6 +242,7 @@ function showEditProductModal(id, nombre, descripcion, precio, stock) {
         Swal.fire('Error', error.message, 'error');
     });
 }
+
 
         document.getElementById("btn-addProduct").addEventListener("click", function(event) {
             // Evita que el formulario se envíe automáticamente

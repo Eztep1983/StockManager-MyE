@@ -20,7 +20,7 @@
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
                 <span class="gg-menu"></span>
             </button>
-
+        <!-- Logout -->
             <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
@@ -118,61 +118,43 @@
                                             </div>
                                         </form>
                                         <div class="mdl-list">
-                                            {% for proveedor in proveedores %}
-                                            <section>
-                                            <div class="mdl-list__item mdl-list__item--two-line">
-                                                <span class="mdl-list__item-primary-content">
-                                                    <i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
-                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Nombres: {{ proveedor.nombre_empresa }}</span>                                                    
-                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Direccion: {{ proveedor.direccion }}</span>                                                    
-                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ proveedor.telefono }}</span>                                            
-                                                    <br>
-                                                </span>
-                                                    <span> 
-                                                        <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ proveedor.id_proveedor}}')">
-                                                            <i class="mdi--account-edit"></i>
-                                                        </button>
-                                                    </span>
-                                            </section>
-                                            </div>
-                                            <li class="full-width divider-menu-h"></li>
-                                            <!-- Formulario de edición para cada cliente -->
-                                            <form id="editForm{{ proveedor.id_proveedor }}" action="/editar_cliente" method="POST" style="display: none;">
-                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                                <input type="hidden" name="cliente_id" value="{{ proveedor.id_proveedors }}">
-                                            
-                                                <!-- Campo de edición para nombres -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="text" name="edit_NameClient" id="edit_NameClient" value="{{ proveedor.nombre_empresa}}">
-                                                    <label class="mdl-textfield__label" for="edit_NameClient">Nombres:</label>
-                                                    <span class="mdl-textfield__error">Nombres Inválidos</span>
-                                                </div>
-                                                <!-- Campo de edición para apellidos -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="text" name="edit_LastNameClient" id="edit_LastNameClient" value="{{ proveedor.direccion }}">
-                                                    <label class="mdl-textfield__label" for="edit_LastNameClient">Apellidos:</label>
-                                                    <span class="mdl-textfield__error">Apellido Inválido</span>
-                                                </div>
-                                                <!-- Campo de edición para dirección -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient"  value="{{ proveedor.telefono }}">                                                    <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
-                                                    <span class="mdl-textfield__error">Dirección Inválida</span>
-                                                </div>
-                                                <!-- Campo de edición para teléfono -->
-                                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                    <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient"  value="{{ proveedor.correo_electronico }}">
-                                                    <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
-                                                    <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
-                                                </div>   >
-                                                <center><button type="submit" title="Guardar">Guardar cambios</button></center>                                                            
-                                            </form>                                         
-                                            {% endfor %}
-                                        </div>                                
-                                    </div>
+                                            {% if proveedores | length == 0 %}
+                                                <center><p class="no-clients-message">Aún no hay proveedores, añade para visualizarlos</p></center>
+                                            {% else %}
+                                                <div class="mdl-list-container">
+                                                    {% for proveedor in proveedores %}
+                                                        <section>
+                                                            <div class="mdl-list__item mdl-list__item--two-line">
+                                                                <span class="mdl-list__item-primary-content">
+                                                                    <i class="zmdi zmdi-truck mdl-list__item-avatar"></i>
+                                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">
+                                                                        Nombres: {{ proveedor.nombre_empresa }}
+                                                                    </span>
+                                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">
+                                                                        Dirección: {{ proveedor.direccion }}
+                                                                    </span>
+                                                                    <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">
+                                                                        Teléfono: {{ proveedor.telefono }}
+                                                                    </span>
+                                                                    <br>
+                                                                </span>
+                                                                <span>
+                                                                    <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ proveedor.id_proveedor }}')">
+                                                                        <i class="mdi mdi-account-edit"></i>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                        </section>
+                                                    {% endfor %}
+                                                </div> <!-- Cierre del contenedor de la lista -->
+                                            {% endif %}
+                                        </div>                                        
+                                    </div>                                
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </section>
             <script>
             document.getElementById("btn-addProvider").addEventListener("click", function(event) {
