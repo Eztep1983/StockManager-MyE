@@ -219,7 +219,7 @@
                     }
                 });
             }
-            function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo, cedula) {
+function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo, cedula) {
     Swal.fire({
         title: 'Editar Cliente',
         html: `                 
@@ -247,6 +247,10 @@
             if (!nombres || !apellidos || !direccion || !telefono || !correo || !cedula) {
                 Swal.showValidationMessage('Por favor, completa todos los campos');
                 return false;
+            }
+            if (telefono < 0 || cedula < 0){
+                Swal.showValidationMessage("Solo puedes agregar numeros positivos")
+                return false
             }
 
             // Validación del formato de correo electrónico

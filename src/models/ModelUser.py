@@ -7,7 +7,7 @@ class ModelUser:
     def login(cls, db, user):
         try:
             cursor = db.connection.cursor()
-            sql = """SELECT id, identification, password, fullname 
+            sql = """SELECT id_trabajador, identification, password, fullname 
                      FROM users 
                      WHERE identification = %s"""
             cursor.execute(sql, (user.identification,))
@@ -29,11 +29,11 @@ class ModelUser:
             
     #Obtener usuario por medio de id
     @classmethod
-    def get_by_id(cls, db, id):
+    def get_by_id(cls, db, id_trabajador):
         try:
             cursor = db.connection.cursor()
-            sql = "SELECT id, identification, fullname FROM users WHERE id = %s"
-            cursor.execute(sql, (id,))
+            sql = "SELECT id_trabajador, identification, fullname FROM users WHERE id_trabajador = %s"
+            cursor.execute(sql, (id_trabajador,))
             row = cursor.fetchone()
             if row is not None:
                 return User(row[0], row[1], None, row[2])

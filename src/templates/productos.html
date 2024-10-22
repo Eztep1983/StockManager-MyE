@@ -208,6 +208,10 @@ function showEditProductModal(id, nombre, descripcion, precio, stock) {
                 Swal.showValidationMessage('Por favor, completa todos los campos correctamente');
                 return false;
             }
+            if (precio < 0|| stock <0){
+                Swal.showValidationMessage('Solo puedes agregar numeros positivos');
+                return false;
+            }
 
             // Llamada a la ruta de edición
             return fetch('/editar_producto', {

@@ -200,7 +200,9 @@ def get_categorias():
 @login_required
 def ventas():
     lista_ventas = obtener_ventas()
-    return render_template('ventas.html')
+    print(f"Ventas obtenidas: {lista_ventas}")  # Agregar esta línea para depuración
+    return render_template('ventas.html', ventas=lista_ventas)
+
 
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
@@ -297,12 +299,13 @@ def facturar():
         pass
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos)
 
-
+#RUTA PARA EDITAR PRODUCTOS
 @app.route('/editar_producto', methods=['PUT'])
 @login_required
 def editar_producto():
     if request.method == 'PUT':
         try:
+            # Obtener los datos desde el formulario HTML
             data = request.form
             identificador_p = data.get('producto_id')
             nombre = data.get('edit_NameProduct')
@@ -312,21 +315,28 @@ def editar_producto():
 
             # Verificación de que los datos no estén vacíos
             if not all([nombre, descripcion, precio, stock, identificador_p]):
-                print("Datos incompletos o inválidos")  # Agrega esto para depurar
                 return jsonify(success=False, message="Datos incompletos o inválidos"), 400
 
-            # Imprimir los valores para verificar que se están recibiendo correctamente
-            print(f"ID: {identificador_p}, Nombre: {nombre}, Descripción: {descripcion}, Precio: {precio}, Stock: {stock}")
+            # Validar que el precio y el stock sean números válidos
+            try:
+                precio = float(precio)
+                stock = int(stock)
+                if precio < 0 or stock < 0:
+                    return jsonify(success=False, message="Precio y stock deben ser numeros positivos"), 400
+            except ValueError:
+                return jsonify(success=False, message="Precio o stock inválido"), 400
 
+            # Intentar actualizar el producto
             if actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
                 return jsonify(success=True)
             else:
                 return jsonify(success=False, message="Error en la actualización del producto"), 400
 
         except Exception as e:
-            print(f"Excepción en el servidor: {e}")  # Esto te ayudará a identificar el error
-            return jsonify(success=False, message=str(e)), 500
-    return jsonify(success=False, message="Método no permitido"), 405
+            return jsonify(success=False, message=f"Ocurrió un error en el servidor: {str(e)}"), 500
+
+    return jsonify(success=False, message="Solo se permite el método PUT"), 405
+
 
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
