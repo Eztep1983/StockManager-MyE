@@ -1,4 +1,5 @@
 // logout.js
+
 document.addEventListener('DOMContentLoaded', function() {
     // Esperar a que el DOM esté completamente cargado
     var logoutLink = document.getElementById('logoutLink');
@@ -24,8 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-// 
 document.addEventListener("DOMContentLoaded", function() {
     // Obtener el icono de búsqueda
     var searchIcon = document.getElementById("searchIcon");

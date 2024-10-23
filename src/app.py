@@ -348,6 +348,12 @@ def logout():
     logout_user()
     return redirect(url_for('logout'))
 
+@app.route('/actualizar_cliente')
+@login_required
+def actualizar_cliente():
+    return render_template('actualizar_cliente.html')
+
+
 #_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 

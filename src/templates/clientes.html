@@ -14,6 +14,7 @@
 <body style="background-color: white;">
         <div class="mdl-layout mdl-js-layout">    
             <!-- Navegación -->
+
         <nav class="mdl-navigation">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
                 <span class="gg-menu"></span>
@@ -23,6 +24,21 @@
             </a>
         </nav>                                
             <div class="mdl-layout__drawer">                
+
+            <nav class="mdl-navigation">
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
+                    <span class="gg-menu"></span>
+                </button>
+
+                <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </a>
+            </nav>
+            
+            
+            <div class="mdl-layout__drawer">
+                
+
                 <i class="mdi--user-tie"></i>
                 <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
                 <nav class="mdl-navigation">
@@ -89,7 +105,7 @@
                                         <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
                                     </div>
                                     <p class="text-center">
-                                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addClient">
+                                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addClient" title="Añadir cliente">
                                             <i class="zmdi zmdi-plus"></i>
                                         </button>
                                         <div class="mdl-tooltip" for="btn-addClient" id ="add">Añadir cliente</div>
@@ -112,7 +128,7 @@
 									<br>
 									<br>                                    
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                                        <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient">
+                                        <label class="mdl-button mdl-js-button mdl-button--icon" for="searchClient" title="Enviar cliente">
                                         </label>
                                         <div>
                                             <center><h5>Buscar cliente</h5></center>
@@ -123,6 +139,7 @@
                                         <div id="mensaje"></div>                                                                     
                                     </div>
                                 </form>
+
                                 {% if clientes|length == 0 %}
                                     <center><p class="no-clients-message">Aún no hay clientes, añade para visualizarlos</p></center>  
                                     {% else %}
@@ -164,6 +181,82 @@
                                         {% endfor %}
                                     </div>
                                 {% endif %}
+
+                                <div class="mdl-list">
+                                    {% for cliente in clientes %}
+                                    <div class="mdl-list__item mdl-list__item--two-line">
+                                        <section class="cliente_tab" id="cliente_tab">
+                                        <span>
+                                            <section>
+                                            <center><i class="zmdi zmdi-account mdl-list__item-avatar"></i></center>
+                                            <br>
+                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;"> {{ cliente.nombres }} {{ cliente.apellidos }}</span>                                      
+                                            </section>
+                                            <section>
+                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Identificación: {{ cliente.cedula }}</span>
+                                            <br>
+                                            <br>
+                                            <span class="mdl-list__item-sub-title" style="font-size: 14px; color: black;">Teléfono: {{ cliente.telefono }}</span>
+                                            </section>                                    
+                                            <section>
+                                                <center>
+                                                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="showEditForm('{{ cliente.cedula }}')" title="Editar cliente">
+                                                    <i class="mdi--account-edit"></i>
+                                                </button>
+                                                <button class="mdl-button mdl-js-button mdl-button--icon"  onclick="deleteClient('{{ cliente.cedula }}')" title="Borrar cliente">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </button>                                                                                              
+                                                <center>
+                                            </section>
+                                        </section>
+                                        </span>                                                           
+                                            <!-- Botón para mostrar el formulario de edición -->
+                                    </div>
+                                    <ul>
+                                    <li class="full-width divider-menu-h"></li>
+                                    </ul>
+                                    <!-- Formulario de edición para cada cliente -->
+                                    <form id="editForm{{ cliente.cedula }}" action="/editar_cliente" method="POST" style="display: none;">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="cliente_id" value="{{ cliente.cedula }}">
+                                    
+                                        <!-- Campo de edición para nombres -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" name="edit_NameClient" id="edit_NameClient" value="{{ cliente.nombres }}">
+                                            <label class="mdl-textfield__label" for="edit_NameClient">Nombres:</label>
+                                            <span class="mdl-textfield__error">Nombres Inválidos</span>
+                                        </div>
+                                        <!-- Campo de edición para apellidos -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" name="edit_LastNameClient" id="edit_LastNameClient" value="{{ cliente.apellidos }}">
+                                            <label class="mdl-textfield__label" for="edit_LastNameClient">Apellidos:</label>
+                                            <span class="mdl-textfield__error">Apellido Inválido</span>
+                                        </div>
+                                        <!-- Campo de edición para dirección -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="text" name="edit_addressClient" id="edit_addressClient" value="{{ cliente.direccion }}">
+                                            <label class="mdl-textfield__label" for="edit_addressClient">Dirección:</label>
+                                            <span class="mdl-textfield__error">Dirección Inválida</span>
+                                        </div>
+                                        <!-- Campo de edición para teléfono -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="tel" name="edit_phoneClient" id="edit_phoneClient" value="{{ cliente.telefono }}">
+                                            <label class="mdl-textfield__label" for="edit_phoneClient">Teléfono:</label>
+                                            <span class="mdl-textfield__error">Número de Teléfono Inválido</span>
+                                        </div>   
+                                        <!-- Campo de edición para correo electrónico -->
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="email" name="edit_emailClient" id="edit_emailClient" value="{{ cliente.correo_electronico }}">
+                                            <label class="mdl-textfield__label" for="edit_emailClient">Correo Electrónico:</label>
+                                            <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
+                                        </div>                               
+                                        <!-- Botón para guardar cambios -->
+                                        <center><button type="submit" title="Guardar cambios">Guardar cambios</button></center>
+                                                    
+                                    </form>                                         
+                                    {% endfor %}
+                                </div>                                
+
                             </div>
                         </div>
                     </div>
@@ -296,6 +389,7 @@ function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo
                 Swal.fire('Error', 'No se pudo actualizar el cliente', 'error');
             }
         }
+
     }).catch(error => {
         Swal.fire('Error', error.message, 'error');
     });
@@ -320,6 +414,25 @@ function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo
                 }
             });
         });            
+
+            // Función para recargar la página y mostrar la alerta
+            function reloadPageAndShowAlert() {
+                // Mostrar la alerta utilizando SweetAlert
+                swal.fire({
+                    title: '¡Cliente actualizado con éxito!',
+                    text: 'La información del cliente se ha modificado correctamente.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    // Verificar si el usuario hizo clic en "OK"
+                    if (result.isConfirmed) {
+                        // Recargar la página
+                        location.reload();
+                    }
+                });
+            }
+            
+
         // Agregar evento submit al formulario de edición
     document.addEventListener("DOMContentLoaded", function() {
         var editForms = document.querySelectorAll('[id^="editForm"]');
