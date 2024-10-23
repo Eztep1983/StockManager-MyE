@@ -200,7 +200,7 @@ def get_categorias():
 @login_required
 def ventas():
     lista_ventas = obtener_ventas()
-    print(f"Ventas obtenidas: {lista_ventas}")  # Agregar esta línea para depuración
+    print(f"Ventas obtenidas: {lista_ventas}")#PARA DEPURAR SI ESTA RECIBIENDO O NO LAS VENTAS 
     return render_template('ventas.html', ventas=lista_ventas)
 
 
