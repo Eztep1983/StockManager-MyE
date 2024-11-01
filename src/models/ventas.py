@@ -8,12 +8,12 @@ development_config = config['development']
 #CLASE PARA VENTAS DE LA EMPRESA 
 
 class Venta:
-    def __init__(self, id_venta, id_usuario, fecha_venta, id_cliente):
+    def __init__(self, id_venta, id_usuario, fecha_venta, id_cliente, hora):
         self.id_venta = id_venta
         self.id_usuario = id_usuario
         self.fecha_venta = fecha_venta
         self.id_cliente = id_cliente
-
+        self.hora = hora
 # METODO PARA OBTENER VENTAS
 def obtener_ventas():
     try:
@@ -21,10 +21,21 @@ def obtener_ventas():
         cursor = conn.cursor()
 
         sql = """
-            SELECT v.id_venta, v.id_usuario, v.fecha_venta, c.identificador_c AS id_cliente, c.nombres AS nombre_cliente, u.fullname AS nombre_usuario
-            FROM ventas v
-            JOIN clientes c ON v.id_cliente = c.identificador_c
-            JOIN users u ON v.id_usuario = u.id_trabajador;
+                SELECT 
+                    v.id_venta, 
+                    v.id_usuario, 
+                    v.fecha_venta, 
+                    v.hora, 
+                    c.identificador_c AS id_cliente, 
+                    c.nombres AS nombre_cliente, 
+                    u.fullname AS nombre_usuario
+                FROM 
+                    ventas v
+                JOIN 
+                    clientes c ON v.id_cliente = c.identificador_c
+                JOIN 
+                    users u ON v.id_usuario = u.id_trabajador;
+
         """
         cursor.execute(sql)
         rows = cursor.fetchall()
@@ -34,14 +45,15 @@ def obtener_ventas():
 
         ventas = []
         for row in rows:
-            id_venta, id_usuario, fecha_venta, id_cliente, nombre_cliente, nombre_usuario = row
+            id_venta, id_usuario, fecha_venta, id_cliente, nombre_cliente, nombre_usuario, hora = row
             venta = {
                 'id_vemta': id_venta,
                 'id_usuario': id_usuario,
                 'fecha_venta': fecha_venta,
                 'id_cliente': id_cliente,
                 'nombre_cliente': nombre_cliente,
-                'nombre_usuario': nombre_usuario
+                'nombre_usuario': nombre_usuario,
+                'hora': hora
             }
             ventas.append(venta)
 

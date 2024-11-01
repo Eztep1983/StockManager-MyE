@@ -57,7 +57,7 @@
 			<br>
 			<section class="table-container">
 				{% if ventas is not none and ventas|length > 0 %}
-					{% for venta in ventas %}
+					
 					<div class="mdl-grid" style="overflow-x:auto;">
 						<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
 							<ol>
@@ -65,24 +65,27 @@
 									<thead>
 										<tr>
 											<th class="mdl-data-table__cell--non-numeric">Fecha</th>
-											<th>Usuario</th>
+											<th>Vendido por</th>											
 											<th>Cliente</th>
-											<th>Opciones</th>
+											<th>Hora</th>
+											<th>Detalles</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
+										{% for venta in ventas %}
+										<tr>											
 											<td class="mdl-data-table__cell--non-numeric">{{ venta.fecha_venta }}</td>
-											<td>Vendido por: {{ venta.nombre_usuario }}</td> <!-- Mostrar el nombre del usuario -->
+											<td>{{ venta.hora }}</td>
+											<td>{{ venta.nombre_usuario }}</td> <!-- Mostrar el nombre del usuario -->
 											<td>{{ venta.id_cliente }} {{ venta.nombre_cliente }}</td> <!-- Mostrar nombre del cliente -->
 											<td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i class="zmdi zmdi-more"></i></button></td>
 										</tr>
+										{% endfor %}
 									</tbody>
 								</table>
 							</ol>
 						</div>
 					</div>
-					{% endfor %}
 				{% else %}
 					<center> <p class="no-clients-message">Aún no hay productos, añade para visualizarlos</p> </center>
 				{% endif %}
