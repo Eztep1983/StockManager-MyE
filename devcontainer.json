@@ -1,0 +1,10 @@
+{
+    "name": "StockManagerMyE",
+    "image": "mcr.microsoft.com/devcontainers/python:3.8",  // O cualquier versión de Python que uses
+    "postCreateCommand": "pip install -r requirements.txt",
+    "forwardPorts": [5000],
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash"
+    }
+  }
+  

@@ -9,3 +9,4 @@ markupsafe
 itsdangerous
 colorama
 wtforms
+python-dotenv

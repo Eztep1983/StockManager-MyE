@@ -36,7 +36,6 @@
                     <br>
                     <a href="/clientes">Clientes</a><br>
                     <br>
-                    <a href="/configuracion">Configuracion</a><br>
                 </nav>
             </div>
             <!-- Contenido principal -->
@@ -172,11 +171,9 @@
         </div>
     </section>
     <script>  
-
     function getCSRFToken(){
         return document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-    } 
-             
+    }  
     function deleteClient(clienteId) {
                 console.log('Cliente ID:', clienteId);  //pa ver si esta cogiendo el id
                 swal.fire({
