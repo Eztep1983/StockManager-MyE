@@ -44,68 +44,46 @@
             <br>
     </header>
     <main>
-  <form id="formulario-facturacion">
-            <div>
-                <select id="cedula" name="clientes">
-                    <option value="">Seleccionar Cliente</option>
-                    {% for cliente in lista_clientes %}
-                    <option value="{{ cliente.cedula }}">{{ cliente.nombres }} {{ cliente.apellidos }}</option>
-                    {% endfor %}
-                </select>                
-            </div>
-            <br>
-            <div>
-                <table id="tabla-productos">
-                    <thead>
-                        <tr>
-                            <th>Producto/Servicio</th>
-                            <th>Cantidad</th>
-                            <th>Precio Unitario</th>
-                            <th>Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tr class="fila-producto">
-                        <td>
-                            <select id="producto" name="productos">
-                                <option value="">Seleccionar producto</option>
-                                {% for producto in lista_productos %}
-                                <option value="{{ producto.id }}">{{ producto.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                            <input type="text" id="servicio" name="servicio" placeholder="Describir servicio">
-                        </td>
-                        <td><input type="number" name="cantidad"></td>
-                        <td><input type="number" name="precio"></td>
-                        <td><input type="number" name="subtotal" readonly></td>
-                    </tr>
-                    
-                </table>
-                <center>  <button type="button" id="agregar-producto">Agregar Producto</button></center>
-            </div>
-            <br>
-            <tbody>
-                <h5>Total</h5>
-                <section>
-                    <tr class="total">
-                        <td><input type="number" name="total" readonly></td>
-                    </tr>
-                </section>
-            </tbody>
-        
-            <div>
-                <label for="metodo-pago">Método de Pago:</label>
-                <select id="metodo-pago" name="metodo-pago">
-                    <option value="efectivo">Efectivo</option>
-                    <option value="tarjeta">Tarjeta de Crédito</option>
-                    <option value="transferencia">Transferencia Bancaria</option>
-                </select>
-            </div>
-            <div>
-                <label for="notas">Nota:</label>
-                <textarea id="notas" name="notas"></textarea>
-                <center><button type="button" id="facturar" style ="color: white">Facturar</button></center>
-            </div>
-        </form>  
+  <form id="formulario-facturacion"> <!-- Información de la Venta --> <div> <label for="id_usuario">Usuario:</label> <select id="id_usuario" name="id_usuario"> <!-- Opciones de usuarios --> 
+    {% for usuario in lista_usuarios %} <option value="{{ usuario.id }}">{{ usuario.nombre }}</option> {% endfor %} 
+    </select> 
+</div> 
+<div> 
+<label for="id_cliente">Cliente:</label> <select id="id_cliente" name="id_cliente"> <option value="">Seleccionar Cliente</option>
+     {% for cliente in lista_clientes %} <option value="{{ cliente.cedula }}">{{ cliente.nombres }} {{ cliente.apellidos }}</option> {% endfor %} </select> </div>
+      <div> <label for="fecha_venta">Fecha de Venta:</label> 
+        <input type="date" id="fecha_venta" name="fecha_venta"> 
+    </div>
+    <div> <label for="hora_venta">Hora de Venta:</label> 
+        <input type="time" id="hora_venta" name="hora_venta"> 
+    </div> <br> <!-- Tabla de Productos/Servicios --> 
+       <div> <table id="tabla-productos"> 
+        <thead> 
+            <tr> 
+                <th>Producto/Servicio</th> 
+                <th>Cantidad</th> 
+                <th>Precio Unitario</th> 
+                <th>Subtotal</th> 
+                <th>Acciones</th> </tr>
+     </thead> 
+     <tbody> 
+        <tr class="fila-producto"> <td> <select id="producto" name="productos"> <option value="">Seleccionar producto</option>
+             {% for producto in lista_productos %} <option value="{{ producto.id }}">{{ producto.nombre }}</option> {% endfor %} 
+            </select> 
+            <input type="text" id="servicio" name="servicio" placeholder="Describir servicio"> </td> <td><input type="number" name="cantidad" min="1"></td> <td>
+            <input type="number" name="precio" step="0.01"></td> <td><input type="number" name="subtotal" readonly></td> <td><button type="button" class="quitar-producto">Quitar</button></td> </tr> </tbody> </table> 
+            <center>
+                <button type="button" id="agregar-producto">Agregar Producto</button></center> </div> <br> <!-- Total --> <div> <h5>Total</h5>
+            <input type="number" name="total" readonly> </div> <br> <!-- Información del Pago --> <div> <label for="metodo-pago">Método de Pago:</label> <select id="metodo-pago" name="metodo-pago"> 
+            <option value="efectivo">Efectivo</option> <option value="tarjeta">Tarjeta de Crédito</option> <option value="transferencia">Transferencia Bancaria</option> 
+        </select> 
+    </div> 
+    <div> 
+        <label for="fecha_pago">Fecha de Pago:</label> 
+        <input type="date" id="fecha_pago" name="fecha_pago"> 
+    </div> <br> <!-- Notas --> <div> <label for="notas">Nota:</label> 
+        <textarea id="notas" name="notas"></textarea> 
+    </div> <br> <!-- Botón de Facturación --> 
     </main>
     <script>
         document.getElementById("producto").addEventListener("change", function() {
