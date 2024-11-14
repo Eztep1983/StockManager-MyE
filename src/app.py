@@ -11,6 +11,8 @@ from models.cliente import *
 from models.categorias import *
 from models.producto import *
 from models.ventas import *
+from models.users import *
+from models.pagos import *
 
 #Ejecutar la API
 app = Flask(__name__)
@@ -306,12 +308,17 @@ def configuracion():
 @app.route('/facturar', methods=['POST', 'GET'])
 @login_required
 def facturar():
-    lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes
-    lista_productos = obtener_lista_productos()  # Obtener la lista de productos
-    if request.method =='POST':
-        # PARA PROCESAR LA FACTURA
-        pass
-    return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos)
+    try:    
+        lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes
+        lista_productos = obtener_lista_productos()  # Obtener la lista de productos
+        metodo_pagos = metodo_pago()  # Obtener métodos de pago únicos
+        if request.method == 'POST':
+            # Lógica para procesar la factura
+            pass
+    except Exception as e:
+        print("Error al procesar la facturación", str(e))
+    
+    return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos, metodo_pagos=metodo_pagos)
 
 #RUTA PARA EDITAR PRODUCTOS
 @app.route('/editar_producto', methods=['PUT'])

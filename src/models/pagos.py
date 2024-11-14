@@ -1,9 +1,10 @@
 from flask_mysqldb import MySQL
 from config import config
-import logging
+
 
 mysql = MySQL()
 development_config= config['development']
+
 class pagos:
     def __init__(self, id_pagos,id_venta, monto, metodo_pago, fecha_pago, id_cliente):
         self.id_pagos= id_pagos
@@ -13,14 +14,15 @@ class pagos:
         self.fecha_pago = fecha_pago
         self.id_cliente = id_cliente
 
-def facturacion_pago():
-    conn = mysql.connection
-    cursor = conn.cursor()
-    sql = ""
-    cursor.execute(sql,())
-    conn.commit()
-    pagos = []
-
-
-
-    
+def metodo_pago():  # Obtener los métodos de pago únicos para facturación
+    try: 
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql = "SELECT DISTINCT metodo_pago FROM pagos"
+        cursor.execute(sql)
+        Metodo = [row[0] for row in cursor.fetchall()]  # Extraer el primer elemento de cada fila (el método de pago)
+        cursor.close()
+        return Metodo
+    except Exception as e:
+        print("Error al obtener el metodo de pago", str(e))
+        return []

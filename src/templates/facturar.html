@@ -12,150 +12,214 @@
 </head>
 <body id="color-facturar">
     <div class="mdl-layout mdl-js-layout">
-		<!-- Navegación -->
+        <!-- Navegación -->
         <nav class="mdl-navigation">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
                 <span class="gg-menu"></span>
             </button>
-            <a id = "logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;">
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
         </nav>
-		<div class="mdl-layout__drawer">
-			<i class="mdi--user-tie"></i>
-			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
-			<nav class="mdl-navigation">
-				<a href="/home">Inicio</a><br>
-				<br>
-				<a href="/productos">Productos</a><br>
-				<br>
-				<a href="/ventas">Ventas</a><br>
-				<br>
-				<a href="/proveedores">Proveedores</a><br>
-				<br>
-				<a href="/clientes">Clientes</a><br>
-				<br>
-			</nav>
-		</div>
-		<!-- Contenido principal -->
-<main class="mdl-layout__content">
-    <header>
-        <center><div class="titulo">FACTURACION</center>
-            <br>
-    </header>
-    <main>
-  <form id="formulario-facturacion"> <!-- Información de la Venta --> <div> <label for="id_usuario">Usuario:</label> <select id="id_usuario" name="id_usuario"> <!-- Opciones de usuarios --> 
-    {% for usuario in lista_usuarios %} <option value="{{ usuario.id }}">{{ usuario.nombre }}</option> {% endfor %} 
-    </select> 
-</div> 
-<div> 
-<label for="id_cliente">Cliente:</label> <select id="id_cliente" name="id_cliente"> <option value="">Seleccionar Cliente</option>
-     {% for cliente in lista_clientes %} <option value="{{ cliente.cedula }}">{{ cliente.nombres }} {{ cliente.apellidos }}</option> {% endfor %} </select> </div>
-      <div> <label for="fecha_venta">Fecha de Venta:</label> 
-        <input type="date" id="fecha_venta" name="fecha_venta"> 
-    </div>
-    <div> <label for="hora_venta">Hora de Venta:</label> 
-        <input type="time" id="hora_venta" name="hora_venta"> 
-    </div> <br> <!-- Tabla de Productos/Servicios --> 
-       <div> <table id="tabla-productos"> 
-        <thead> 
-            <tr> 
-                <th>Producto/Servicio</th> 
-                <th>Cantidad</th> 
-                <th>Precio Unitario</th> 
-                <th>Subtotal</th> 
-                <th>Acciones</th> </tr>
-     </thead> 
-     <tbody> 
-        <tr class="fila-producto"> <td> <select id="producto" name="productos"> <option value="">Seleccionar producto</option>
-             {% for producto in lista_productos %} <option value="{{ producto.id }}">{{ producto.nombre }}</option> {% endfor %} 
-            </select> 
-            <input type="text" id="servicio" name="servicio" placeholder="Describir servicio"> </td> <td><input type="number" name="cantidad" min="1"></td> <td>
-            <input type="number" name="precio" step="0.01"></td> <td><input type="number" name="subtotal" readonly></td> <td><button type="button" class="quitar-producto">Quitar</button></td> </tr> </tbody> </table> 
-            <center>
-                <button type="button" id="agregar-producto">Agregar Producto</button></center> </div> <br> <!-- Total --> <div> <h5>Total</h5>
-            <input type="number" name="total" readonly> </div> <br> <!-- Información del Pago --> <div> <label for="metodo-pago">Método de Pago:</label> <select id="metodo-pago" name="metodo-pago"> 
-            <option value="efectivo">Efectivo</option> <option value="tarjeta">Tarjeta de Crédito</option> <option value="transferencia">Transferencia Bancaria</option> 
-        </select> 
-    </div> 
-    <div> 
-        <label for="fecha_pago">Fecha de Pago:</label> 
-        <input type="date" id="fecha_pago" name="fecha_pago"> 
-    </div> <br> <!-- Notas --> <div> <label for="notas">Nota:</label> 
-        <textarea id="notas" name="notas"></textarea> 
-    </div> <br> <!-- Botón de Facturación --> 
-    </main>
-    <script>
-        document.getElementById("producto").addEventListener("change", function() {
-            const productoSelect = this;
-            const precioInput = document.querySelector("input[name='precio']");
-            const precio = productoSelect.options[productoSelect.selectedIndex].getAttribute("precio");
-            precioInput.value = precio;
-        });
-
-        document.getElementById("facturar").addEventListener("click", function() {
-
-            swal.fire({
-                title: '¡Facturación exitosa!',
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Imprimir factura',
-                cancelButtonText: 'Cerrar',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.print();
-                }
-            });
-        });
-        const totalInput = document.querySelector("input[name='total']");
-    
-        function actualizarTotal() {
-            let total = 0;
-            document.querySelectorAll("input[name='subtotal']").forEach(function(subtotalInput) {
-                total += parseFloat(subtotalInput.value) || 0;
-            });
-            totalInput.value = total.toFixed(2);
-        }
-    
-        function actualizarSubtotal(input) {
-            const cantidadInput = input.closest("tr").querySelector("input[name='cantidad']");
-            const precioInput = input.closest("tr").querySelector("input[name='precio']");
-            const subtotalInput = input.closest("tr").querySelector("input[name='subtotal']");
-        
-            const cantidad = parseInt(cantidadInput.value) || 0;
-            const precio = parseFloat(precioInput.value) || 0;
-        
-            const subtotal = cantidad * precio;
-        
-            subtotalInput.value = subtotal.toFixed(2);
-            actualizarTotal();
-        }
-    
-        document.getElementById("agregar-producto").addEventListener("click", function() {
-            const filaProducto = document.querySelector(".fila-producto");
-            const nuevaFila = filaProducto.cloneNode(true);
-        
-            nuevaFila.querySelectorAll("input[type='text'], input[type='number']").forEach(function(campo) {
-                campo.value = "";
-            });
-        
-            const tabla = document.getElementById("tabla-productos").querySelector("tbody");
-            tabla.appendChild(nuevaFila);
-        
-            nuevaFila.querySelectorAll("input[name='cantidad'], input[name='precio']").forEach(function(input) {
-                input.addEventListener("input", function() {
-                    actualizarSubtotal(input);
+        <div class="mdl-layout__drawer">
+            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>
+            <nav class="mdl-navigation">
+                <a href="/home">Inicio</a><br><br>
+                <a href="/productos">Productos</a><br><br>
+                <a href="/ventas">Ventas</a><br><br>
+                <a href="/proveedores">Proveedores</a><br><br>
+                <a href="/clientes">Clientes</a><br><br>
+            </nav>
+        </div>
+        <!-- Contenido principal -->
+        <main class="mdl-layout__content">
+            <header>
+                <center><div class="titulo">FACTURACION</div></center>
+                <br>
+            </header>
+            <main>
+                <form id="formulario-facturacion">
+                    <!-- Información de la Venta -->
+                    <div>
+                    <center>
+                        <!-- Usuario quien hace lla venta -->
+                        <label for="id_usuario">Usuario:</label>
+                        <br>                        
+                        <span>{{ current_user.fullname }}</span>
+                        <input type="hidden" value="{{ current_user.id_trabajador }}">
+                    </center>
+                    </div>                                  
+                    <div>
+                        <!-- Seleccion del cliente -->
+                        <label for="id_cliente">Cliente:</label>
+                        <select id="id_cliente" name="id_cliente" style="width: 100%;"> 
+                            <option value="">Seleccionar Cliente</option>
+                            {% for cliente in lista_clientes %}
+                            <option value="{{ cliente.cedula }}">{{ cliente.nombres }} {{ cliente.apellidos }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                  
+                    <div>
+                        <label for="fecha_venta">Fecha de Venta:</label>
+                        <input type="date" id="fecha_venta" name="fecha_venta">
+                    </div>
+                    <div>
+                        <label for="hora_venta">Hora de Venta:</label>
+                        <input type="time" id="hora_venta" name="hora_venta">
+                    </div>
+                    <br>
+                    <!-- Tabla de Productos/Servicios -->
+                    <div>
+                        <table id="tabla-productos">
+                            <thead>
+                                <tr>
+                                    <th>Producto/Servicio</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Subtotal</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="fila-producto">
+                                    <td>
+                                        <select class="producto" name="productos">
+                                            <option value="">Seleccionar producto</option>
+                                            {% for producto in lista_productos %}
+                                            <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <input type="text" class="servicio" name="servicio" placeholder="Describir servicio">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="cantidad" name="cantidad" min="1">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="precio" name="precio" step="0.01">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="subtotal" name="subtotal" readonly>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="quitar-producto"id="agregar-producto">Quitar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <center>
+                            <button type="button" id="agregar-producto">Agregar Producto</button>
+                        </center>
+                    </div>
+                    <br>
+                    <!-- Total -->
+                    <div>
+                        <h5>Total</h5>
+                        <input type="number" name="total" readonly>
+                    </div>
+                    <br>
+                    <!-- Información del Pago -->
+                    <div>
+                        <label for="metodo-pago">Método de Pago:</label>
+                        <select id="metodo-pago" name="metodo_pago">
+                            <option value="">Seleccionar</option>
+                            {% for metodo in metodo_pagos %}
+                                <option value="{{ metodo }}">{{ metodo.capitalize() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="fecha_pago">Fecha de Pago:</label>
+                        <input type="date" id="fecha_pago" name="fecha_pago">
+                    </div>
+                    <br>
+                    <!-- Notas -->
+                    <div>
+                        <label for="notas">Nota:</label>
+                        <textarea id="notas" name="notas"></textarea>
+                    </div>
+                    <br>
+                </form>
+            </main>
+            <script>
+            $(document).ready(function() {
+                // Inicializar Select2 en los elementos select de id_cliente      
+                $('#id_cliente').select2({
+                    placeholder: "Seleccionar cliente",
+                    allowClear: true,
+                    width: 'resolve'
                 });
             });
-        });
-        
-        document.querySelectorAll("input[name='cantidad'], input[name='precio']").forEach(function(input) {
-            input.addEventListener("input", function() {
-                actualizarSubtotal(input);
-            });
-        });
-    
-    </script>
+                const totalInput = document.querySelector("input[name='total']");
+                
+                function actualizarTotal() {
+                    let total = 0;
+                    document.querySelectorAll("input[name='subtotal']").forEach(function(subtotalInput) {
+                        total += parseFloat(subtotalInput.value) || 0;
+                    });
+                    totalInput.value = total.toFixed(2);
+                }
+                
+                function actualizarSubtotal(input) {
+                    const cantidadInput = input.closest("tr").querySelector(".cantidad");
+                    const precioInput = input.closest("tr").querySelector(".precio");
+                    const subtotalInput = input.closest("tr").querySelector(".subtotal");
+                    
+                    const cantidad = parseInt(cantidadInput.value) || 0;
+                    const precio = parseFloat(precioInput.value) || 0;
+                    const subtotal = cantidad * precio;
+                    
+                    subtotalInput.value = subtotal.toFixed(2);
+                    actualizarTotal();
+                }
+                
+                document.getElementById("agregar-producto").addEventListener("click", function() {
+                    const filaProducto = document.querySelector(".fila-producto");
+                    const nuevaFila = filaProducto.cloneNode(true);
+                    
+                    nuevaFila.querySelectorAll("input[type='text'], input[type='number']").forEach(function(campo) {
+                        campo.value = "";
+                    });
+                    
+                    const tabla = document.getElementById("tabla-productos").querySelector("tbody");
+                    tabla.appendChild(nuevaFila);
+                    
+                    nuevaFila.querySelectorAll(".cantidad, .precio").forEach(function(input) {
+                        input.addEventListener("input", function() {
+                            actualizarSubtotal(input);
+                        });
+                    });
+                    
+                    nuevaFila.querySelector(".quitar-producto").addEventListener("click", function() {
+                        if (tabla.children.length > 1) {  // Verificar si no es la única fila
+                            nuevaFila.remove();
+                            actualizarTotal();
+                        } else {
+                            alert("No puedes eliminar el único producto.");
+                        }
+                    });
+                });
+                
+                document.querySelectorAll(".cantidad, .precio").forEach(function(input) {
+                    input.addEventListener("input", function() {
+                        actualizarSubtotal(input);
+                    });
+                });
+                
+                document.querySelectorAll(".quitar-producto").forEach(function(button) {
+                    button.addEventListener("click", function() {
+                        const tabla = document.getElementById("tabla-productos").querySelector("tbody");
+                        if (tabla.children.length > 1) {  // Evitar eliminar la única fila
+                            button.closest("tr").remove();
+                            actualizarTotal();
+                        } else {
+                            alert("No puedes eliminar el único producto.");
+                        }
+                    });
+                });
+            </script>
+        </main>
+    </div>
 </body>
 </html>
 {% endblock %}
