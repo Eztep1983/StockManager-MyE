@@ -8,12 +8,12 @@ development_config = config['development']
 #CLASE PARA VENTAS DE LA EMPRESA 
 
 class Venta:
-    def __init__(self, id_venta, id_usuario, fecha_venta, id_cliente, hora):
+    def __init__(self, id_venta, id_usuario, fecha_venta, id_cliente, hora_venta):
         self.id_venta = id_venta
         self.id_usuario = id_usuario
         self.fecha_venta = fecha_venta
         self.id_cliente = id_cliente
-        self.hora = hora
+        self.hora = hora_venta
 # METODO PARA OBTENER VENTAS
 def obtener_ventas():
     try:

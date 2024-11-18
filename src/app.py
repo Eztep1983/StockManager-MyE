@@ -28,18 +28,15 @@ login_manager_app.login_view = 'login'
 csrf.init_app(app)
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
 #RUTA LOGIN
 @login_manager_app.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db, id)
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
 @app.route('/')
 def index():
     return redirect(url_for('login'))
 
-#_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 
 @app.route('/login', methods=["GET", "POST"])
@@ -57,7 +54,6 @@ def login():
             flash("Contraseña invalida")
     return render_template('auth/login.html')
 
-#_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 
 #RUTA PARA EL REGISTRO DE USUARIOS
@@ -87,7 +83,6 @@ def register():
         return render_template('auth/register.html')
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
 
 #RUTA PARA EL HOME
 @app.route('/home')
@@ -95,7 +90,6 @@ def register():
 def home():
     return render_template('home.html')
 
-#_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 
 #RUTA PARA OBTENER LISTA DE PROVEEDORES
@@ -134,8 +128,6 @@ def eliminar_proveedor(id_proveedor):
         return abort(405)  # Método no permitido
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
-# RUTA PARA OBTENER LISTA DE PRODUCTOS
 
 #RUTA PARA AÑADIR PRODUCTOS 
 @app.route('/productos', methods=['GET', 'POST'])
@@ -189,7 +181,6 @@ def eliminar_producto(id):
         return jsonify({'message': 'Error al procesar la solicitud'}), 500
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
 
 #RUTA PARA OBTENER LISTA DE CATEGORIAS
 @app.route('/categorias')
@@ -200,7 +191,6 @@ def get_categorias():
 
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
 #RUTA PARA VENTAS
 @app.route('/ventas')
 @login_required
@@ -209,7 +199,7 @@ def ventas():
     return render_template('ventas.html', ventas=lista_ventas)
 
 
-#_______________________________________________________________________________________________________
+
 #_______________________________________________________________________________________________________
 
 # RUTA PARA OBTENER LISTA DE CLIENTES
@@ -293,7 +283,7 @@ def eliminar_cliente(cliente_id):
         return jsonify({'message': 'Error al procesar la solicitud'}),500
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
+
 
 #RUTA PARA LA CONFIGURACION
 @app.route('/configuracion')
@@ -302,23 +292,58 @@ def configuracion():
     return render_template('configuracion.html')
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
 
-#RUTA PARA LA FACTURACION
+
 @app.route('/facturar', methods=['POST', 'GET'])
 @login_required
 def facturar():
-    try:    
-        lista_clientes = obtener_lista_clientes()  # Obtener la lista de clientes
-        lista_productos = obtener_lista_productos()  # Obtener la lista de productos
-        metodo_pagos = metodo_pago()  # Obtener métodos de pago únicos
+    try:
         if request.method == 'POST':
-            # Lógica para procesar la factura
-            pass
+            # Extraer datos del formulario
+            usuario = request.form.get("id_usuario")
+            cliente = request.form.get("id_cliente")
+            fecha_venta = request.form.get("fecha_venta")
+            hora_venta = request.form.get("hora_venta")
+            metodo_pago_form = request.form.get("metodo_pago")
+            fecha_pago = request.form.get("fecha_pago")
+            hora_pago = request.form.get("hora_pago")
+            total = request.form.get("total")
+
+            # Detalles de los productos
+            productos = []
+            productos_ids = request.form.getlist("productos[]")
+            cantidades = request.form.getlist("cantidad[]")
+            precios = request.form.getlist("precio[]")
+            descripciones = request.form.getlist("servicio[]")
+
+            for i in range(len(productos_ids)):
+                productos.append({
+                    "id_producto": productos_ids[i],
+                    "cantidad": cantidades[i],
+                    "precio_unitario": precios[i],
+                    "descripcion": descripciones[i]
+                })
+
+            # Llamar a la función del modelo
+            resultado = añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, total, metodo_pago, fecha_pago, hora_pago)
+
+            if resultado["status"] == "success":
+                flash("Factura procesada exitosamente", "success")
+                return redirect(url_for('home'))
+            else:
+                flash(f"Error: {resultado['message']}", "danger")
+
     except Exception as e:
-        print("Error al procesar la facturación", str(e))
-    
+        flash(f"Error inesperado: {str(e)}", "danger")
+
+    # Obtener listas para el formulario
+    lista_clientes = obtener_lista_clientes()  
+    lista_productos = obtener_lista_productos()  
+    metodo_pagos = metodo_pago()  # Aquí sigue siendo una función
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos, metodo_pagos=metodo_pagos)
+
+#_______________________________________________________________________________________________________
+
 
 #RUTA PARA EDITAR PRODUCTOS
 @app.route('/editar_producto', methods=['PUT'])
@@ -360,7 +385,7 @@ def editar_producto():
 
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
+
 
 #RUTA PARA CERRAR SESION
 @app.route('/logout')
@@ -370,20 +395,16 @@ def logout():
     return redirect(url_for('logout'))
 
 #_______________________________________________________________________________________________________
-#_______________________________________________________________________________________________________
 
 # MANEJO PARA EL 404 ERROR
 def status404(error):
     return render_template('404handler.html'), 404
- #_______________________________________________________________________________________________________
 
-#_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 
 def status401(error):
     return redirect(url_for('login'))
 
-#_______________________________________________________________________________________________________
 #_______________________________________________________________________________________________________
 
 if __name__ == '__main__':
