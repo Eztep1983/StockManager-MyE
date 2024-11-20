@@ -319,8 +319,6 @@ def configuracion():
 def facturar():
     try:
         if request.method == 'POST':
-            #Extraer datos del formulario
-
             #Datos de venta
             usuario = request.form.get("id_usuario") 
             user= int(usuario)
@@ -328,7 +326,6 @@ def facturar():
             cliente = request.form.get("id_cliente")
             fecha_venta = request.form.get("fecha_venta")
             hora_venta = request.form.get("hora_venta")
-            
             #Datos de pagos
             fecha_pago = request.form.get("fecha_pago")
             hora_pago = request.form.get("hora_pago")
@@ -349,20 +346,22 @@ def facturar():
             #Validacion de las longitudaes antes de construir productos
             if not (len(productos_ids) == len(cantidades) == len(precios) == len(descripciones)):
                 raise ValueError("Datos incompletos en la lista de productos.")
-
+            
             for i in range(len(productos_ids)):
-                productos.append({
-                    "id_producto": productos_ids[i],
-                    "cantidad": cantidades[i],
-                    "precio_unitario": precios[i],
-                    "descripcion": descripciones[i]
-                })
+                if not productos_ids[i] or not cantidades[i] or not precios[i]:
+                    raise ValueError(f"Faltan datos en el producto {i + 1}.")
+                try:
+                    cantidad = int(cantidades[i])
+                    precio_unitario = float(precios[i])
+                    if cantidad <= 0 or precio_unitario <= 0:
+                        raise ValueError(f"Valores inválidos en el producto {i + 1}.")
+                except ValueError:
+                    raise ValueError(f"Datos inválidos en el producto {i + 1}.")
 
             # Llamar a la función del modelo
             resultado = añadir_facturacion(user, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago)
 
             if resultado["status"] == "success":
-                flash("Factura procesada exitosamente", "success")
                 print("Factura procesada correctamente!")
                 return redirect(url_for('home'))
             else:

@@ -59,7 +59,6 @@
                     <input type="hidden" name="id_usuario" value="{{ current_user.id }}">
                 </center>
                 </div>
-            
                 <div>
                     <label for="id_cliente">Cliente:</label>
                     <select id="id_cliente" name="id_cliente">
@@ -69,17 +68,10 @@
                         {% endfor %}
                     </select>
                 </div>
-            
                 <div>
-                    <label for="fecha_venta">Fecha de Venta:</label>
-                    <input type="date" id="fecha_venta" name="fecha_venta">
+                    <input type="hidden" id="fecha_venta" name="fecha_venta">
+                    <input type="hidden" id="hora_venta" name="hora_venta">
                 </div>
-            
-                <div>
-                    <label for="hora_venta">Hora de Venta:</label>
-                    <input type="time" id="hora_venta" name="hora_venta">
-                </div>
-            
                 <!-- Tabla de Productos/Servicios -->
                 <div>
                     <table id="tabla-productos">
@@ -123,117 +115,126 @@
                 <div>
                     <label for="total">Total:</label>
                     <input type="number" id="total" name="total" readonly>
-                </div>
-            
+                </div>            
                 <!-- Información del Pago -->
                 <div>
-                    <label for="fecha_pago">Fecha de Pago:</label>
-                    <input type="date" id="fecha_pago" name="fecha_pago">
+                    <input type="hidden" id="fecha_pago" name="fecha_pago">
+                    <input type="hidden" id="hora_pago" name="hora_pago">
                 </div>
-            
-                <div>
-                    <label for="hora_pago">Hora de Pago:</label>
-                    <input type="time" id="hora_pago" name="hora_pago">
-                </div>
-            
                 <!-- Notas -->
                 <div>
                     <label for="notas">Nota:</label>
                     <textarea id="notas" name="notas"></textarea>
                 </div>
-            
-                <button type="submit">Facturar</button>
+                <center><button type="submit">Facturar</button></center>
             </form>            
         </main>
     </div>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const tablaProductos = document.querySelector("#tabla-productos tbody");
-            const agregarProductoBtn = document.querySelector("#agregar-producto");
-            const totalInput = document.querySelector("input[name='total']");
+        const formulario = document.getElementById('formulario-facturacion');
+        // Fecha y hora de venta
+        const fechaInputVenta = document.getElementById('fecha_venta');
+        const horaInputVenta = document.getElementById('hora_venta');
+        // Fecha y hora de Pago
+        const fechaInputPago = document.getElementById('fecha_pago');
+        const horaInputPago = document.getElementById('hora_pago');
     
-            // Función para actualizar el subtotal de una fila
-            function actualizarSubtotal(fila) {
-                const cantidadInput = fila.querySelector(".cantidad");
-                const precioInput = fila.querySelector(".precio");
-                const subtotalInput = fila.querySelector(".subtotal");
-    
-                const cantidad = parseFloat(cantidadInput.value) || 0;
-                const precio = parseFloat(precioInput.value) || 0;
-                const subtotal = cantidad * precio;
-    
-                subtotalInput.value = subtotal.toFixed(2);
-                actualizarTotal();
-            }
-    
-            // Función para actualizar el total general
-            function actualizarTotal() {
-                let total = 0;
-                tablaProductos.querySelectorAll(".subtotal").forEach((subtotalInput) => {
-                    total += parseFloat(subtotalInput.value) || 0;
-                });
-                totalInput.value = total.toFixed(2);
-            }
-    
-            // Función para agregar una nueva fila de producto
-            function agregarFilaProducto() {
-                const filaBase = document.querySelector(".fila-producto");
-                const nuevaFila = filaBase.cloneNode(true);
-    
-                // Limpiar los campos de la nueva fila
-                nuevaFila.querySelectorAll("input, select").forEach((input) => {
-                    if (input.type === "number" || input.type === "text") {
-                        input.value = "";
-                    }
-                });
-    
-                // Agregar eventos a los nuevos campos
-                nuevaFila.querySelector(".cantidad").addEventListener("input", function () {
-                    actualizarSubtotal(nuevaFila);
-                });
-    
-                nuevaFila.querySelector(".precio").addEventListener("input", function () {
-                    actualizarSubtotal(nuevaFila);
-                });
-    
-                nuevaFila.querySelector(".quitar-producto").addEventListener("click", function () {
-                    quitarFilaProducto(nuevaFila);
-                });
-    
-                tablaProductos.appendChild(nuevaFila);
-            }
-    
-            // Función para quitar una fila de producto
-            function quitarFilaProducto(fila) {
-                if (tablaProductos.children.length > 1) {
-                    fila.remove();
-                    actualizarTotal();
-                } else {
-                    alert("No puedes eliminar el único producto.");
-                }
-            }
-    
-            // Evento para agregar una fila de producto
-            agregarProductoBtn.addEventListener("click", agregarFilaProducto);
-    
-            // Eventos iniciales para la primera fila
-            document.querySelectorAll(".cantidad, .precio").forEach((input) => {
-                input.addEventListener("input", function () {
-                    const fila = input.closest("tr");
-                    actualizarSubtotal(fila);
-                });
+        // Obtener la fecha y hora actuales
+        const ahora = new Date();
+        // Fecha en formato 'YYYY-MM-DD'
+        const fecha = ahora.toISOString().split('T')[0];
+        const hora = ahora.toTimeString().split(' ')[0].substring(0, 5); 
+        
+        fechaInputVenta.value = fecha;
+        horaInputVenta.value = hora;
+        fechaInputPago.value = fecha; 
+        horaInputPago.value = hora;    
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const tablaProductos = document.querySelector("#tabla-productos tbody");
+        const agregarProductoBtn = document.querySelector("#agregar-producto");
+        const totalInput = document.querySelector("input[name='total']");
+
+        // Función para actualizar el subtotal de una fila
+        function actualizarSubtotal(fila) {
+            const cantidadInput = fila.querySelector(".cantidad");
+            const precioInput = fila.querySelector(".precio");
+            const subtotalInput = fila.querySelector(".subtotal");
+
+            const cantidad = parseFloat(cantidadInput.value) || 0;
+            const precio = parseFloat(precioInput.value) || 0;
+            const subtotal = cantidad * precio;
+
+            subtotalInput.value = subtotal.toFixed(2);
+            actualizarTotal();
+        }
+
+        // Función para actualizar el total general
+        function actualizarTotal() {
+            let total = 0;
+            tablaProductos.querySelectorAll(".subtotal").forEach((subtotalInput) => {
+                total += parseFloat(subtotalInput.value) || 0;
             });
+            totalInput.value = total.toFixed(2);
+        }
     
-            document.querySelectorAll(".quitar-producto").forEach((button) => {
-                button.addEventListener("click", function () {
-                    const fila = button.closest("tr");
-                    quitarFilaProducto(fila);
-                });
-            });
+    // Función para agregar una nueva fila de producto
+    function agregarFilaProducto() {
+        const filaBase = document.querySelector(".fila-producto");
+        const nuevaFila = filaBase.cloneNode(true);
+
+        // Limpiar los campos de la nueva fila
+        nuevaFila.querySelectorAll("input, select").forEach((input) => {
+            if (input.type === "number" || input.type === "text") {
+                input.value = "";
+            }
         });
+
+        // Agregar eventos a los nuevos campos
+        nuevaFila.querySelector(".cantidad").addEventListener("input", function () {
+            actualizarSubtotal(nuevaFila);
+        });
+
+        nuevaFila.querySelector(".precio").addEventListener("input", function () {
+            actualizarSubtotal(nuevaFila);
+        });
+
+        nuevaFila.querySelector(".quitar-producto").addEventListener("click", function () {
+            quitarFilaProducto(nuevaFila);
+        });
+
+        tablaProductos.appendChild(nuevaFila);
+    }
+
+    // Función para quitar una fila de producto
+    function quitarFilaProducto(fila) {
+        if (tablaProductos.children.length > 1) {
+            fila.remove();
+            actualizarTotal();
+        } else {
+            alert("No puedes eliminar el único producto.");
+        }
+    }
+
+    // Evento para agregar una fila de producto
+    agregarProductoBtn.addEventListener("click", agregarFilaProducto);
+
+    // Eventos iniciales para la primera fila
+    document.querySelectorAll(".cantidad, .precio").forEach((input) => {
+        input.addEventListener("input", function () {
+            const fila = input.closest("tr");
+            actualizarSubtotal(fila);
+        });
+    });
+
+    document.querySelectorAll(".quitar-producto").forEach((button) => {
+        button.addEventListener("click", function () {
+            const fila = button.closest("tr");
+            quitarFilaProducto(fila);
+        });
+    });
+});
     </script>
-    
 </body>
 </html>
 {% endblock %}
