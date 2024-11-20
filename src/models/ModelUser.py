@@ -2,7 +2,6 @@ from models.entities.user import User
 import bcrypt
 
 class ModelUser:
-    
     @classmethod
     def login(cls, db, user):
         try:
@@ -12,37 +11,41 @@ class ModelUser:
                      WHERE identification = %s"""
             cursor.execute(sql, (user.identification,))
             row = cursor.fetchone()
+
             if row:
-                stored_password = row[2]
-                if bcrypt.checkpw(user.password.encode('utf-8'), stored_password.encode('utf-8')):
-                    user = User(row[0], row[1], row[3])  # Asume que si el usuario no existe guarde la contraseña
-                    return user
-                else:
-                    return None  # Si la contraseña no coincide
-            else:
-                return None  # Si el usuario no se encuentra
+                # Crea el usuario encontrado
+                return User(row[0], row[1], row[2], row[3])  # Incluye la contraseña hasheada para validación
+            return None  # Usuario no encontrado
+
         except Exception as ex:
-            raise Exception("Error al intentar iniciar sesión: {}".format(ex))
+            raise Exception(f"Error al intentar iniciar sesión: {str(ex)}")
+
         finally:
-            cursor.close()
-            
-            
+            if 'cursor' in locals():
+                cursor.close()
+                
     #Obtener usuario por medio de id
     @classmethod
     def get_by_id(cls, db, id_trabajador):
+        """
+        Obtiene un usuario por su ID.
+        """
         try:
             cursor = db.connection.cursor()
             sql = "SELECT id_trabajador, identification, fullname FROM users WHERE id_trabajador = %s"
             cursor.execute(sql, (id_trabajador,))
             row = cursor.fetchone()
-            if row is not None:
+
+            if row:
                 return User(row[0], row[1], None, row[2])
-            else:
-                return None
+            return None  # Usuario no encontrado
+
         except Exception as ex:
-            raise Exception("Error fetching user by ID: {}".format(ex))
+            raise Exception(f"Error al obtener usuario por ID: {str(ex)}")
+
         finally:
-            cursor.close()
+            if 'cursor' in locals():
+                cursor.close()
 
 
             

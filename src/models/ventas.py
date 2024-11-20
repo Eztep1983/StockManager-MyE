@@ -25,7 +25,7 @@ def obtener_ventas():
                     v.id_venta, 
                     v.id_usuario, 
                     v.fecha_venta, 
-                    v.hora, 
+                    v.hora_venta, 
                     c.identificador_c AS id_cliente, 
                     c.nombres AS nombre_cliente, 
                     u.fullname AS nombre_usuario
@@ -47,7 +47,7 @@ def obtener_ventas():
         for row in rows:
             id_venta, id_usuario, fecha_venta, id_cliente, nombre_cliente, nombre_usuario, hora = row
             venta = {
-                'id_vemta': id_venta,
+                'id_venta': id_venta,
                 'id_usuario': id_usuario,
                 'fecha_venta': fecha_venta,
                 'id_cliente': id_cliente,

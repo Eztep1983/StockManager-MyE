@@ -1,14 +1,9 @@
 from flask_mysqldb import MySQL
 from config import config
-
+from models.entities.user import User
 mysql = MySQL()
 development_config = config['development']
 
-class user:
-    def __init__(self, id_trabajador, identification, fullname):
-        self.id_trabajador = id_trabajador
-        self.identification = identification
-        self.fullname = fullname
 
 def obtener_usuarios():
     try: 
@@ -19,7 +14,7 @@ def obtener_usuarios():
         cursor.execute(sql,)
         for row in cursor.fetchall():
             id_trabajador, identification, fullname = row
-            usuario = user(id_trabajador, identification, fullname)
+            usuario = User(id_trabajador, identification, fullname)
             Usuarios.append(usuario)
         cursor.close()
         return Usuarios

@@ -4,7 +4,7 @@ from config import config
 mysql = MySQL()
 development_config = config['development']
 
-def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, total, metodo_pago, fecha_pago, hora_pago):
+def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago):
     try:
         conn = mysql.connection
         cursor = conn.cursor()
@@ -12,9 +12,9 @@ def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, to
         # Iniciar transacción
         cursor.execute("START TRANSACTION;")
 
-        # Paso 1: Insertar en `ventas`
+        # Paso 1: Insertar los datos en la tabla `ventas`
         sql_venta = """
-            INSERT INTO ventas (id_usuario, id_cliente, fecha_venta, hora)
+            INSERT INTO ventas (id_usuario, id_cliente, fecha_venta, hora_venta)
             VALUES (%s, %s, %s, %s);
         """
         cursor.execute(sql_venta, (usuario, cliente, fecha_venta, hora_venta))
@@ -34,12 +34,12 @@ def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, to
                 producto.get('descripcion', '')  # Valor por defecto si no hay descripción
             ))
 
-        # Paso 3: Insertar en `pagos`
+        # Paso 3: Insertar los datos en la tabla `pagos`
         sql_pago = """
-            INSERT INTO pagos (id_venta, monto, metodo_pago, fecha_pago, id_cliente, hora)
-            VALUES (%s, %s, %s, %s, %s, %s);
+            INSERT INTO pagos (id_venta, monto, fecha_pago, id_cliente, hora_pago)
+            VALUES (%s, %s, %s, %s, %s);
         """
-        cursor.execute(sql_pago, (id_venta, total, metodo_pago, fecha_pago, cliente, hora_pago))
+        cursor.execute(sql_pago, (id_venta, total, fecha_pago, cliente, hora_pago))
 
         # Confirmar la transacción
         conn.commit()
@@ -50,17 +50,3 @@ def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, to
         return {"status": "error", "message": str(e)}
     finally:
         cursor.close()
-
-
-def metodo_pago():  # Obtener los métodos de pago únicos para facturación
-    try: 
-        conn = mysql.connection
-        cursor = conn.cursor()
-        sql = "SELECT DISTINCT metodo_pago FROM pagos"
-        cursor.execute(sql)
-        Metodo = [row[0] for row in cursor.fetchall()]  # Extraer el primer elemento de cada fila (el método de pago)
-        cursor.close()
-        return Metodo
-    except Exception as e:
-        print("Error al obtener el metodo de pago", str(e))
-        return []

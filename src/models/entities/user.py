@@ -1,5 +1,7 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 
+
+import bcrypt
 
 class User:
     def __init__(self, id, identification, password, fullname="", active=True):
@@ -11,7 +13,9 @@ class User:
 
     @classmethod
     def check_password(cls, hashed_password, password):
-        return check_password_hash(hashed_password, password)
+        # Valida usando bcrypt
+        return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+
 
     def is_active(self):
         return self.active

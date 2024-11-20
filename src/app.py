@@ -11,7 +11,7 @@ from models.cliente import *
 from models.categorias import *
 from models.producto import *
 from models.ventas import *
-from models.users import *
+from models.usuarios import *
 from models.pagos import *
 
 #Ejecutar la API
@@ -42,16 +42,29 @@ def index():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == 'POST':
-        user = User(0, request.form['identification'], request.form['password'])
-        logged_user = ModelUser.login(db, user)
-        if logged_user is not None:
-            if logged_user.password: # Si la contraseña es correcta
+        identification = request.form.get('identification')
+        password = request.form.get('password')
+
+        # Validar campos
+        if not identification or not password:
+            flash("Por favor, completa todos los campos", "warning")
+            return render_template('auth/login.html')
+
+        # Crear instancia temporal de User
+        temp_user = User(0, identification, password)
+
+        # Buscar usuario en la base de datos
+        logged_user = ModelUser.login(db, temp_user)
+
+        if logged_user:
+            # Verificar la contraseña
+            if User.check_password(logged_user.password, password):
                 login_user(logged_user)
                 return redirect(url_for('home'))
             else:
-                flash("Usuario no encontrado")
+                flash("Contraseña inválida", "danger")
         else:
-            flash("Contraseña invalida")
+            flash("Usuario no encontrado", "danger")
     return render_template('auth/login.html')
 
 #_______________________________________________________________________________________________________
@@ -59,27 +72,34 @@ def login():
 #RUTA PARA EL REGISTRO DE USUARIOS
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    if request.method == 'POST':
-        # Obtener los datos del formulario
-        identification = request.form['identification']
-        password = request.form['password']
-        fullname = request.form['fullname']
-        for i in identification, password, fullname:
-            if i is not None:
-                # Crear un objeto User con los datos del formulario
-                user = User(None, identification, password, fullname)  # El ID se establecerá automáticamente al registrar el usuario
-                
-                # Llamar al método register de la clase Register para registrar al usuario
+    try:
+        if request.method == 'POST':
+            # Obtener datos del formulario
+            identification = request.form.get('identification')
+            password = request.form.get('password')
+            fullname = request.form.get('fullname')
+
+            # Validar campos
+            if not identification or not password or not fullname:
+                flash("Por favor, completa todos los campos", "warning")
+                return render_template('auth/register.html')
+
+            # Crear objeto User
+            user = User(None, identification, password, fullname)
+
+            # Registrar usuario
+            try:
                 registered_user = Register.register(db, user)
-                if registered_user:
-                    return redirect(url_for('login'))
-                else:
-                    flash("Error al registrar usuario")
-            else:
-                flash("Debes llenar los campos")
-            
-    else:
-        # Si la solicitud no es POST, renderizar el formulario de registro
+                flash(f"Usuario {registered_user.fullname} registrado exitosamente.", "success")
+                return redirect(url_for('login'))
+            except ValueError as ve:
+                flash(str(ve), "warning")
+            except Exception as e:
+                flash("Error al registrar usuario", "danger")
+
+        return render_template('auth/register.html')
+    except Exception as e:
+        flash(f"Error inesperado: {str(e)}", "danger")
         return render_template('auth/register.html')
 
 #_______________________________________________________________________________________________________
@@ -114,7 +134,7 @@ def provedorees():
         return render_template('proveedores.html')
     except Exception as e:
         print("Error al procesar la solicitud",e)
-        return jsonify({'message': 'Error al procesar la solicitud'})
+        return flash('Error al procesar la solicitud')
 
 #RUTA PARA ELIMINAR PROVEEDORES
 @app.route('/proveedores/<int:id_proveedor>', methods=['DELETE'])
@@ -123,7 +143,7 @@ def eliminar_proveedor(id_proveedor):
     if request.method == 'DELETE':
         eliminar_proveedor(id_proveedor)
         # Puedes redirigir a otra página o devolver algún mensaje JSON si es necesario
-        return jsonify({'message': 'Proveedor eliminado correctamente'})
+        return flash('Proveedor eliminado correctamente')
     else:
         return abort(405)  # Método no permitido
 
@@ -299,22 +319,36 @@ def configuracion():
 def facturar():
     try:
         if request.method == 'POST':
-            # Extraer datos del formulario
-            usuario = request.form.get("id_usuario")
+            #Extraer datos del formulario
+
+            #Datos de venta
+            usuario = request.form.get("id_usuario") 
+            user= int(usuario)
+            print(f"Valor de id_usuario: {user}")  # Depuración
             cliente = request.form.get("id_cliente")
             fecha_venta = request.form.get("fecha_venta")
             hora_venta = request.form.get("hora_venta")
-            metodo_pago_form = request.form.get("metodo_pago")
+            
+            #Datos de pagos
             fecha_pago = request.form.get("fecha_pago")
             hora_pago = request.form.get("hora_pago")
             total = request.form.get("total")
 
+            #Verificar que el total no sea incorrecto
+            if float(total) <= 0:
+                raise ValueError("El total no puede ser menor o igual a cero.")
+
             # Detalles de los productos
+            
             productos = []
             productos_ids = request.form.getlist("productos[]")
             cantidades = request.form.getlist("cantidad[]")
             precios = request.form.getlist("precio[]")
             descripciones = request.form.getlist("servicio[]")
+
+            #Validacion de las longitudaes antes de construir productos
+            if not (len(productos_ids) == len(cantidades) == len(precios) == len(descripciones)):
+                raise ValueError("Datos incompletos en la lista de productos.")
 
             for i in range(len(productos_ids)):
                 productos.append({
@@ -325,25 +359,25 @@ def facturar():
                 })
 
             # Llamar a la función del modelo
-            resultado = añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, total, metodo_pago, fecha_pago, hora_pago)
+            resultado = añadir_facturacion(user, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago)
 
             if resultado["status"] == "success":
                 flash("Factura procesada exitosamente", "success")
+                print("Factura procesada correctamente!")
                 return redirect(url_for('home'))
             else:
                 flash(f"Error: {resultado['message']}", "danger")
 
     except Exception as e:
-        flash(f"Error inesperado: {str(e)}", "danger")
+        flash(f"Error inesperado: {str(e)}")
+        print("Error inesperado:", str(e))
 
     # Obtener listas para el formulario
     lista_clientes = obtener_lista_clientes()  
     lista_productos = obtener_lista_productos()  
-    metodo_pagos = metodo_pago()  # Aquí sigue siendo una función
-    return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos, metodo_pagos=metodo_pagos)
+    return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos), 200
 
 #_______________________________________________________________________________________________________
-
 
 #RUTA PARA EDITAR PRODUCTOS
 @app.route('/editar_producto', methods=['PUT'])
