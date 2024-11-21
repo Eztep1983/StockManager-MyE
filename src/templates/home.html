@@ -4,52 +4,88 @@
 
 {% block body %}
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-</head>
-<body style="background-color: white;">
-    <div class="mdl-layout mdl-js-layout">
-		<!-- Navegación -->
-        <nav class="mdl-navigation">
-            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
-                <span class="gg-menu"></span>
-            </button>
-            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
-                <i class="fas fa-sign-out-alt"></i> Salir
-            </a>
-        </nav>
-		<div class="mdl-layout__drawer">
-			<i class="mdi--user-tie"></i>
-			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
-			<nav class="mdl-navigation">
-				<a href="/home">Inicio</a><br>
-				<br>
-				<a href="/productos">Productos</a><br>
-				<br>
-				<a href="/ventas">Ventas</a><br>
-				<br>
-				<a href="/proveedores">Proveedores</a><br>
-				<br>
-				<a href="/clientes">Clientes</a><br>
-				<br>
-			</nav>
-		</div>
-		<!-- Contenido principal -->
-<main class="mdl-layout__content">
-        <section id="funciones-clave">
-            <center><h2>Bienvenido, {{ current_user.fullname }}!</h2></center>
-            <div class="funciones-enlaces">
-               <center> <a href="/productos">Gestión de Productos</a><br></center>
-               <center> <a href="/clientes">Gestión de Clientes</a><br></center>
-               <center> <a href="/ventas">Registro de Ventas</a><br></center>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inicio</title>
+    </head>
+    <body style="background-color: white;">
+        <div class="mdl-layout mdl-js-layout">
+            <!-- Navegación -->
+            <nav class="mdl-navigation">
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
+                    <span class="gg-menu"></span>
+                </button>
+                <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </a>
+            </nav>
+            <div class="mdl-layout__drawer">
+                <i class="mdi--user-tie"></i>
+                <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+                <nav class="mdl-navigation">
+                    <a href="/home">Inicio</a><br>
+                    <br>
+                    <a href="/productos">Productos</a><br>
+                    <br>
+                    <a href="/ventas">Ventas</a><br>
+                    <br>
+                    <a href="/proveedores">Proveedores</a><br>
+                    <br>
+                    <a href="/clientes">Clientes</a><br>
+                    <br>
+                </nav>
             </div>
-        </section>
-    <footer>
-        <p>&copy; 2024 StockManager JyE</p>
-    </footer>
-    </main>
-</body>
+            <!-- Contenido principal -->
+            <main class="mdl-layout__content">
+                <section id="funciones-clave">
+                    <center><h2>Bienvenido, {{ current_user.fullname }}!</h2></center>
+                    <div class="funciones-enlaces">
+                    <center> <a href="/productos">Gestión de Productos</a><br></center>
+                    <center> <a href="/clientes">Gestión de Clientes</a><br></center>
+                    <center> <a href="/ventas">Registro de Ventas</a><br></center>
+                    </div>
+                </section>
+            
+            {% if ultimas_ventas is not none and ultimas_ventas |length > 0 %}
+                <!-- Sección de Últimos Productos Vendidos -->
+                <section id="ultimos-productos">
+                    <center><h3>Últimos Productos Vendidos</h3></center>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; table-layout: auto;">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 150px; word-wrap: break-word; white-space: normal;">Producto</th>
+                                    <th style="min-width: 120px; word-wrap: break-word; white-space: normal;">Precio Producto</th>
+                                    <th style="min-width: 100px; word-wrap: break-word; white-space: normal;">Cantidad</th>
+                                    <th style="min-width: 150px; word-wrap: break-word; white-space: normal;">Vendido en</th>
+                                    <th style="min-width: 200px; word-wrap: break-word; white-space: normal;">Descripción</th>
+                                    <th style="min-width: 150px; word-wrap: break-word; white-space: normal;">Fecha de Venta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for venta in ultimas_ventas %}
+                                <tr>
+                                    <td>{{ venta.nombre_producto }}</td>
+                                    <td>${{ venta.precio_producto }}</td>
+                                    <td>{{ venta.cantidad }}</td>
+                                    <td>${{ venta.precio_unitario }}</td>
+                                    <td>{{ venta.descripcion }}</td>
+                                    <td>{{ venta.fecha_venta }} / {{ venta.hora_venta }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                {%else%}
+                     <center> <p class="no-ultimas-ventas">Aun no hay productos vendidos.</p> </center>
+                {% endif %}                                                       
+                <footer>
+                    <p>&copy; 2024 StockManager JyE</p>
+                </footer>
+            </main>        
+    </body>
 </html>
 {% endblock %}

@@ -13,6 +13,7 @@ from models.producto import *
 from models.ventas import *
 from models.usuarios import *
 from models.pagos import *
+from models.ultimas_ventas import *
 
 #Ejecutar la API
 app = Flask(__name__)
@@ -105,10 +106,12 @@ def register():
 #_______________________________________________________________________________________________________
 
 #RUTA PARA EL HOME
+
 @app.route('/home')
-@login_required
 def home():
-    return render_template('home.html')
+    ultimas_ventas = obtener_ultimas_ventas()
+    return render_template('home.html', ultimas_ventas=ultimas_ventas)
+
 
 #_______________________________________________________________________________________________________
 

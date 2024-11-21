@@ -104,12 +104,12 @@
                                     <input type="number" class="subtotal" name="subtotal[]" readonly>
                                 </td>
                                 <td>
-                                    <button type="button" class="quitar-producto">Quitar</button>
+                                    <button type="button" class="quitar-producto"><i class="zmdi zmdi-delete"></i></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" id="agregar-producto">Agregar Producto</button>                    
+                    <button type="button" id="agregar-producto">Agregar</button>                    
                 </div>
                 <!-- Total -->
                 <div>
@@ -149,6 +149,60 @@
         horaInputVenta.value = hora;
         fechaInputPago.value = fecha; 
         horaInputPago.value = hora;    
+
+    document.getElementById("formulario-facturacion").addEventListener("submit", function(event) {
+        // Evita el envío del formulario mientras se valida
+        event.preventDefault();
+
+        // Variables para validar
+        const idCliente = document.getElementById("id_cliente").value.trim();
+        const filasProductos = document.querySelectorAll(".fila-producto");
+        const notas = document.getElementById("notas").value.trim();
+        let productosValidos = true;
+
+        // Validar Cliente
+        if (!idCliente) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Por favor, selecciona un cliente.",
+            });
+            return;
+        }
+
+        // Validar Productos/Servicios
+        filasProductos.forEach(fila => {
+            const producto = fila.querySelector(".producto").value.trim();
+            const cantidad = fila.querySelector(".cantidad").value.trim();
+            const precio = fila.querySelector(".precio").value.trim();
+
+            if (!producto || !cantidad || !precio) {
+                productosValidos = false;
+            }
+        });
+
+        if (!productosValidos) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Por favor, completa todos los campos de productos/servicios.",
+            });
+            return;
+        }
+
+        // Validar Nota opcional (puedes omitir si no es obligatorio)
+        if (notas.length > 500) {
+            Swal.fire({
+                icon: "warning",
+                title: "Nota demasiado larga",
+                text: "La nota no debe superar los 500 caracteres.",
+            });
+            return;
+        }
+
+        // Si todo está validado, envía el formulario
+        this.submit();
+    });
 
     document.addEventListener("DOMContentLoaded", function () {
         const tablaProductos = document.querySelector("#tabla-productos tbody");
