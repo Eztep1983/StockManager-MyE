@@ -67,7 +67,7 @@
                     <!-- Etiquetas y campos de entrada -->
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <label for="identification">Cédula</label>
-                    <input type="text" id="identification" name="identification" inputmode="numeric" pattern="[0-9]*" maxlength="10">
+                    <input type="text" id="identification" name="identification" inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="off">
                     <label for="password">Contraseña</label>
                     <input type="password" id="password" name="password">
                     <label for="confirm_password">Confirmar Contraseña</label>
@@ -138,7 +138,8 @@
             var password = document.getElementById("password").value.trim();
             var confirm_password = document.getElementById("confirm_password").value.trim();
             var fullname = document.getElementById("fullname").value.trim();
-
+            const namePattern = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+           
             if (identification === "" || password === "" || confirm_password === "" || fullname === "") {
                 swal.fire({
                     title: '¡Advertencia!',
@@ -158,7 +159,26 @@
                     if (result.isConfirmed) {
                         document.getElementById("formulario_registro").submit();  // Envía el formulario con JavaScript
                     }
+
                 });
+                if (!namePattern.test(fullname)) {
+                    swal.fire({
+                        title: 'Error',
+                        text: 'El nombre solo debe contener letras y espacios.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                if (password.includes(" ")) {
+                    swal.fire({
+                        title: 'Error',
+                        text: 'La contraseña no debe contener espacios.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                } 
             }
         });
     });

@@ -659,3 +659,15 @@ button {
   border-radius: 10px; 
   margin: 20px 0; 
 }
+
+.no-ultimas-ventas{
+  background-color: #007bff; 
+  color: #ffffff; 
+  font-size: 18px; 
+  font-weight: bold; 
+  text-align: center; 
+  padding: 20px; 
+  border-radius: 50px; 
+  margin: 20px 0; 
+}
+

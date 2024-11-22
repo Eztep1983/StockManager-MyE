@@ -49,7 +49,7 @@ def login():
         # Validar campos
         if not identification or not password:
             flash("Por favor, completa todos los campos", "warning")
-            return render_template('auth/login.html')
+            return render_template('/login.html')
 
         # Crear instancia temporal de User
         temp_user = User(0, identification, password)
@@ -91,12 +91,12 @@ def register():
             # Registrar usuario
             try:
                 registered_user = Register.register(db, user)
-                flash(f"Usuario {registered_user.fullname} registrado exitosamente.", "success")
                 return redirect(url_for('login'))
             except ValueError as ve:
                 flash(str(ve), "warning")
             except Exception as e:
                 flash("Error al registrar usuario", "danger")
+                return('register')
 
         return render_template('auth/register.html')
     except Exception as e:
