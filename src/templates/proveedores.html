@@ -60,7 +60,7 @@
                                         Nuevo Proveedor
                                     </div>
                                     <div class="full-width panel-content">
-                                        <form action="/proveedor" method="POST">
+                                        <form id = "providerForm" action="/proveedor" method="POST">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <h5 class="text-condensedLight">Información del proveedor</h5>
                                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -103,10 +103,6 @@
                                         Lista de Proveedores
                                     </div>
                                     <div class="full-width panel-content">
-                                        <form action="#">
-                                            <br>
-                                            <br>
-                                        </form>
                                         <div class="mdl-list">
                                             {% if proveedores | length == 0 %}
                                                 <center><p class="no-clients-message">Aún no hay proveedores, añade para visualizarlos</p></center>
@@ -174,7 +170,7 @@
                 }).then((result) => {
                     // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
                     if (result.isConfirmed) {
-                        document.getElementById("clientForm").submit();  // Envía el formulario con JavaScript
+                        document.getElementById("providerForm").submit();  // Envía el formulario con JavaScript
                     }
                 });
             }

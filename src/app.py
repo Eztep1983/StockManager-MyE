@@ -1,4 +1,4 @@
-from flask import Flask, abort, render_template, jsonify, redirect, url_for, request, flash
+from flask import Flask, abort, render_template, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_wtf import CSRFProtect
@@ -132,12 +132,15 @@ def provedorees():
             direccion = request.form.get("addressProvider")
             telefono = request.form.get("phoneProvider")
             correo_electronico = request.form.get("emailProvider")
-            
+            #Validacion de los campos
+            if not nombre_empresa or not direccion or not telefono or not correo_electronico:
+                print("Datos incompletos")
+                raise ValueError(f"Datos incompletos para el proveedor ")
             añadir_proveedor(nombre_empresa=nombre_empresa, direccion=direccion, telefono=telefono, correo_electronico=correo_electronico)
         return render_template('proveedores.html')
     except Exception as e:
         print("Error al procesar la solicitud",e)
-        return flash('Error al procesar la solicitud')
+        return flash(f'Error al procesar la solicitud{e}','danger')
 
 #RUTA PARA ELIMINAR PROVEEDORES
 @app.route('/proveedores/<int:id_proveedor>', methods=['DELETE'])
@@ -145,7 +148,6 @@ def provedorees():
 def eliminar_proveedor(id_proveedor):
     if request.method == 'DELETE':
         eliminar_proveedor(id_proveedor)
-        # Puedes redirigir a otra página o devolver algún mensaje JSON si es necesario
         return flash('Proveedor eliminado correctamente')
     else:
         return abort(405)  # Método no permitido
@@ -181,7 +183,7 @@ def nuevo_producto():
                 return redirect('/productos')
     except Exception as e:
         print("Error al procesar la solicitud DELETE:", e)
-        return jsonify({'message': 'Error al procesar la solicitud'}), 500
+        return flash(f'Error al procesar la solicitud{e}'), 500
 
     # Obtener las listas de proveedores y categorías
     lista_proveedores = obtener_proveedores()
@@ -196,12 +198,12 @@ def nuevo_producto():
 def eliminar_producto(id):
     try:
         if eliminar_productos(id):
-            return jsonify({'message': 'Producto eliminado exitosamente'}), 200
+            return 200
         else:
-            return jsonify({'message': 'Error al eliminar el producto'}), 500
+            return flash("Error al eliminar el producto", "danger"), 500
     except Exception as e:
         print("Error al procesar la solicitud DELETE:", e)
-        return jsonify({'message': 'Error al procesar la solicitud'}), 500
+        return flash(f"Error al procesar la solicitud{e}", "danger"), 500
 
 #_______________________________________________________________________________________________________
 
@@ -255,7 +257,7 @@ def nuevo_cliente():
             else:
                 return "Error al añadir cliente"
     except Exception as e:
-        return jsonify({'message': 'Error al procesar la solicitud'}),500
+        return flash(f"Error al procesar la solicitud{e}", "danger"),500
     return render_template('clientes.html')
 
 # RUTA PARA EDITAR CLIENTES
@@ -274,20 +276,20 @@ def editar_cliente():
 
         # Verificar que todos los campos necesarios estén presentes
         if not all([identificador_c, nombre, apellido, direccion, telefono, email, cedul]):
-            return jsonify(success=False, message="Faltan datos"), 400
+            return flash('Faltan datos!', 'danger'), 400
 
         # Actualizar cliente
         if actualizar_cliente(identificador_c, nombre, apellido, direccion, telefono, email, cedul):
-            return jsonify(success=True)
+            return flash()
         else:
-            return jsonify(success=False, message="Error al actualizar el cliente"), 400
+            return flash(f"Error al procesar la solicitud{e}", "danger"), 400
     except Exception as e:
-        return jsonify(success=False, message=str(e)), 500
+        return 500
 
 #EN CASO DE METODO INCORRECTO
 @app.errorhandler(405)
 def method_not_allowed(e):
-    return jsonify(success=False, message="Método no permitido"), 405
+    return 405
 
 
 #RUTA PARA ELIMINAR CLIENTES
@@ -297,13 +299,13 @@ def eliminar_cliente(cliente_id):
     try:
         if request.method=='DELETE':
             eliminarr_client(cliente_id)
-            return jsonify({'message': 'Cliente eliminado exitosamente'}),200
+            return 200
         else:
-            return jsonify({'message': '>Error al elimina al cliente'}),500
+            return flash(f"Error al eliminar el cliente", "danger"),500
 
     except Exception as e:
         print("Error al procesar la solicitud DELETE:", e)
-        return jsonify({'message': 'Error al procesar la solicitud'}),500
+        return flash(f"Error al procesar la solicitud{e}", "danger"),500
 
 #_______________________________________________________________________________________________________
 
@@ -397,27 +399,27 @@ def editar_producto():
 
             # Verificación de que los datos no estén vacíos
             if not all([nombre, descripcion, precio, stock, identificador_p]):
-                return jsonify(success=False, message="Datos incompletos o inválidos"), 400
+                return 400
 
             # Validar que el precio y el stock sean números válidos
             try:
                 precio = float(precio)
                 stock = int(stock)
                 if precio < 0 or stock < 0:
-                    return jsonify(success=False, message="Precio y stock deben ser numeros positivos"), 400
+                    return 400
             except ValueError:
-                return jsonify(success=False, message="Precio o stock inválido"), 400
+                return 400
 
             # Intentar actualizar el producto
             if actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
-                return jsonify(success=True)
+                return True
             else:
-                return jsonify(success=False, message="Error en la actualización del producto"), 400
+                return 400
 
         except Exception as e:
-            return jsonify(success=False, message=f"Ocurrió un error en el servidor: {str(e)}"), 500
+            return 500
 
-    return jsonify(success=False, message="Solo se permite el método PUT"), 405
+    return 405
 
 
 #_______________________________________________________________________________________________________
