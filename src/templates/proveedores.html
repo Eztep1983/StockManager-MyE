@@ -60,7 +60,7 @@
                                         Nuevo Proveedor
                                     </div>
                                     <div class="full-width panel-content">
-                                        <form id = "providerForm" action="/proveedor" method="POST">
+                                        <form id="formProvider" action="/proveedor" method="POST">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <h5 class="text-condensedLight">Información del proveedor</h5>
                                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -156,21 +156,21 @@
                 // Mostrar mensaje de advertencia si algún campo está vacío
                 swal.fire({
                     title: '¡Advertencia!',
-                    text: 'Por favor completa todos los campos antes de agregar el cliente.',
+                    text: 'Por favor completa todos los campos antes de agregar el proveedor.',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                 });
             } else {
                 // Mostrar confirmación y enviar el formulario si todos los campos están llenos
                 swal.fire({
-                    title: '¡Se guardó el cliente con éxito!',
+                    title: '¡Se guardó el proveedor con éxito!',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     showCancelButton: false
                 }).then((result) => {
                     // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
                     if (result.isConfirmed) {
-                        document.getElementById("providerForm").submit();  // Envía el formulario con JavaScript
+                        document.getElementById("formProvider").submit(); 
                     }
                 });
             }
@@ -215,11 +215,9 @@
                 event.preventDefault();
             }
         });
-        // Obtener el campo de búsqueda
-        var searchInput = document.getElementById("searchClient");
 
         // Obtener la lista de clientes
-        var clientList = document.getElementsByClassName("mdl-list")[0];
+        var ProviderList = document.getElementsByClassName("mdl-list")[0];
 
         // Agregar evento keyup al campo de búsqueda
         searchInput.addEventListener("keyup", function(event) {
@@ -227,15 +225,15 @@
             var searchTerm = event.target.value.toLowerCase();
 
             // Obtener todos los elementos de clientes
-            var clients = clientList.getElementsByClassName("mdl-list__item");
+            var providers = providerList.getElementsByClassName("mdl-list__item");
 
             // Iterar sobre los elementos de clientes
-            Array.from(clients).forEach(function(client) {
+            Array.from(providers).forEach(function(provider) {
                 // Obtener el contenido de cliente
-                var clientContent = client.textContent.toLowerCase();
+                var providerContent = provider.textContent.toLowerCase();
 
                 // Mostrar u ocultar el cliente según el término de búsqueda
-                if (clientContent.includes(searchTerm)) {
+                if (providerContent.includes(searchTerm)) {
                     client.style.display = "block";
                 } else {
                     client.style.display = "none";

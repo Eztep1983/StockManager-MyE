@@ -1,6 +1,7 @@
 from flask import Flask, abort, render_template, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
+from flask import jsonify, render_template, request, flash, redirect, url_for
 from flask_wtf import CSRFProtect
 from config import config
 from models.proveedor import *
@@ -126,21 +127,19 @@ def get_proveedores():
 @app.route('/proveedor', methods=['POST','DELETE'])
 @login_required
 def provedorees():
+    lista_proveedores = obtener_proveedores()
     try: 
         if request.method == 'POST':
             nombre_empresa = request.form.get("NameProvider")
             direccion = request.form.get("addressProvider")
             telefono = request.form.get("phoneProvider")
             correo_electronico = request.form.get("emailProvider")
-            #Validacion de los campos
-            if not nombre_empresa or not direccion or not telefono or not correo_electronico:
-                print("Datos incompletos")
-                raise ValueError(f"Datos incompletos para el proveedor ")
-            añadir_proveedor(nombre_empresa=nombre_empresa, direccion=direccion, telefono=telefono, correo_electronico=correo_electronico)
-        return render_template('proveedores.html')
+            
+            añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico)
+        return render_template('proveedores.html', proveedores=lista_proveedores)
     except Exception as e:
         print("Error al procesar la solicitud",e)
-        return flash(f'Error al procesar la solicitud{e}','danger')
+        return jsonify({'message': 'Error al procesar la solicitud'})
 
 #RUTA PARA ELIMINAR PROVEEDORES
 @app.route('/proveedores/<int:id_proveedor>', methods=['DELETE'])
@@ -148,7 +147,8 @@ def provedorees():
 def eliminar_proveedor(id_proveedor):
     if request.method == 'DELETE':
         eliminar_proveedor(id_proveedor)
-        return flash('Proveedor eliminado correctamente')
+        # Puedes redirigir a otra página o devolver algún mensaje JSON si es necesario
+        return jsonify({'message': 'Proveedor eliminado correctamente'})
     else:
         return abort(405)  # Método no permitido
 
@@ -183,7 +183,7 @@ def nuevo_producto():
                 return redirect('/productos')
     except Exception as e:
         print("Error al procesar la solicitud DELETE:", e)
-        return flash(f'Error al procesar la solicitud{e}'), 500
+        return jsonify({'message': 'Error al procesar la solicitud'}), 500
 
     # Obtener las listas de proveedores y categorías
     lista_proveedores = obtener_proveedores()
@@ -198,12 +198,12 @@ def nuevo_producto():
 def eliminar_producto(id):
     try:
         if eliminar_productos(id):
-            return 200
+            return jsonify({'message': 'Producto eliminado exitosamente'}), 200
         else:
-            return flash("Error al eliminar el producto", "danger"), 500
+            return jsonify({'message': 'Error al eliminar el producto'}), 500
     except Exception as e:
         print("Error al procesar la solicitud DELETE:", e)
-        return flash(f"Error al procesar la solicitud{e}", "danger"), 500
+        return jsonify({'message': 'Error al procesar la solicitud'}), 500
 
 #_______________________________________________________________________________________________________
 
@@ -257,7 +257,7 @@ def nuevo_cliente():
             else:
                 return "Error al añadir cliente"
     except Exception as e:
-        return flash(f"Error al procesar la solicitud{e}", "danger"),500
+        return jsonify({'message': 'Error al procesar la solicitud'}),500
     return render_template('clientes.html')
 
 # RUTA PARA EDITAR CLIENTES
@@ -276,20 +276,22 @@ def editar_cliente():
 
         # Verificar que todos los campos necesarios estén presentes
         if not all([identificador_c, nombre, apellido, direccion, telefono, email, cedul]):
-            return flash('Faltan datos!', 'danger'), 400
+            return jsonify(success=False, message="Faltan datos"), 400
 
         # Actualizar cliente
         if actualizar_cliente(identificador_c, nombre, apellido, direccion, telefono, email, cedul):
-            return flash()
+            return jsonify(success=True)
         else:
-            return flash(f"Error al procesar la solicitud{e}", "danger"), 400
+            return jsonify(success=False, message="Error al actualizar el cliente"), 400
     except Exception as e:
-        return 500
+        return jsonify(success=False, message=str(e)), 500
 
 #EN CASO DE METODO INCORRECTO
 @app.errorhandler(405)
 def method_not_allowed(e):
-    return 405
+    return jsonify(success=False, message="Método no permitido"), 405
+
+
 
 
 #RUTA PARA ELIMINAR CLIENTES
@@ -299,13 +301,13 @@ def eliminar_cliente(cliente_id):
     try:
         if request.method=='DELETE':
             eliminarr_client(cliente_id)
-            return 200
+            return jsonify({'message': 'Cliente eliminado exitosamente'}),200
         else:
-            return flash(f"Error al eliminar el cliente", "danger"),500
+            return jsonify({'message': '>Error al elimina al cliente'}),500
 
     except Exception as e:
         print("Error al procesar la solicitud DELETE:", e)
-        return flash(f"Error al procesar la solicitud{e}", "danger"),500
+        return jsonify({'message': 'Error al procesar la solicitud'}),500
 
 #_______________________________________________________________________________________________________
 
@@ -352,16 +354,25 @@ def facturar():
             if not (len(productos_ids) == len(cantidades) == len(precios) == len(descripciones)):
                 raise ValueError("Datos incompletos en la lista de productos.")
             
+            # Construcción de la lista de productos
             for i in range(len(productos_ids)):
                 if not productos_ids[i] or not cantidades[i] or not precios[i]:
                     raise ValueError(f"Faltan datos en el producto {i + 1}.")
                 try:
                     cantidad = int(cantidades[i])
                     precio_unitario = float(precios[i])
+                    descripcion = descripciones[i] if i < len(descripciones) else ""
                     if cantidad <= 0 or precio_unitario <= 0:
                         raise ValueError(f"Valores inválidos en el producto {i + 1}.")
+                    productos.append({
+                        'id_producto': int(productos_ids[i]),
+                        'cantidad': cantidad,
+                        'precio_unitario': precio_unitario,
+                        'descripcion': descripcion.strip()
+                    })
                 except ValueError:
                     raise ValueError(f"Datos inválidos en el producto {i + 1}.")
+
 
             # Llamar a la función del modelo
             resultado = añadir_facturacion(user, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago)
@@ -399,27 +410,26 @@ def editar_producto():
 
             # Verificación de que los datos no estén vacíos
             if not all([nombre, descripcion, precio, stock, identificador_p]):
-                return 400
+                return 
 
             # Validar que el precio y el stock sean números válidos
             try:
                 precio = float(precio)
                 stock = int(stock)
                 if precio < 0 or stock < 0:
-                    return 400
+                    return 
             except ValueError:
-                return 400
-
+                return 
             # Intentar actualizar el producto
             if actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
                 return True
             else:
-                return 400
+                return 
 
         except Exception as e:
-            return 500
+            return 
 
-    return 405
+    return 
 
 
 #_______________________________________________________________________________________________________

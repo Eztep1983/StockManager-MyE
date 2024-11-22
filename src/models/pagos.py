@@ -46,7 +46,8 @@ def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, to
         return {"status": "success", "message": "Factura procesada correctamente"}
     except Exception as e:
         conn.rollback()  # Revertir la transacción en caso de error
-        print("Error al procesar la facturación:", str(e))
+        print(f"Error al procesar la facturación. Venta: {usuario}, Cliente: {cliente}, Total: {total}")
+        print("Error:", str(e))
         return {"status": "error", "message": str(e)}
     finally:
         cursor.close()
