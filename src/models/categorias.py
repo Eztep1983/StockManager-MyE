@@ -28,7 +28,7 @@ def obtener_categorias():
     conn=mysql.connection
     cursor=conn.cursor()
     try:
-        sql="SELECT id, nombre FROM categorias_productos"
+        sql="SELECT id_categoria, nombre FROM categorias_productos"
         cursor.execute(sql)
         categorias=[]
         for row in cursor.fetchall():

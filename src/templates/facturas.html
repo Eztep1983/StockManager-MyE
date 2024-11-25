@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %} Productos {% endblock %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ventas</title>
+	<style>
+        @media only screen and (max-width: 600px) {
+            .mdl-cell {
+                width: 100% !important; 
+				margin : 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+	<div class="mdl-layout mdl-js-layout">
+		<!-- Navegación -->
+        <nav class="mdl-navigation">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
+                <span class="gg-menu"></span>
+            </button>
+            <a id = "logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </nav>
+		<div class="mdl-layout__drawer">
+			<i class="mdi--user-tie"></i>
+			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+			<nav class="mdl-navigation">
+				<a href="/home">Inicio</a><br>
+				<br>
+				<a href="/productos">Productos</a><br>
+				<br>
+				<a href="/ventas">Ventas</a><br>
+				<br>
+				<a href="/proveedores">Proveedores</a><br>
+				<br>
+				<a href="/clientes">Clientes</a><br>
+				<br>
+			</nav>
+		</div>
+		<!-- Contenido principal -->
+<main class="mdl-layout__content">
+		<center><div class="titulo">LISTA DE VENTAS</center>
+			<br>
+			<section class="table-container">
+				{% if ventas is not none and ventas|length > 0 %}
+					<div class="mdl-grid" style="overflow-x:auto;">
+						<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+							<ol>
+								<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+									<thead>
+										<tr>
+											<th class="mdl-data-table__cell--non-numeric">Fecha</th>
+											<th>Vendido por</th>											
+											<th>Cliente</th>
+											<th>Hora</th>
+											<th>Detalles</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for venta in ventas %}
+										<tr>											
+											<td class="mdl-data-table__cell--non-numeric">{{ venta.fecha_venta }}</td>
+											<td>{{ venta.hora }}</td>
+											<td>{{ venta.nombre_usuario }}</td> <!-- Mostrar el nombre del usuario -->
+											<td>{{ venta.id_cliente }} {{ venta.nombre_cliente }}</td> <!-- Mostrar nombre del cliente -->
+											<td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i class="zmdi zmdi-shopping-basket"></i></button></td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</ol>
+						</div>
+					</div>
+				{% else %}
+				{% endif %}
+				<section><button id="boton_vender" onclick="window.location.href='/facturar'">Facturacion</button></section>		
+		</div>
+	</div>
+		<footer>
+			<p>&copy; 2024 StockManager JyE</p>
+		</footer>
+	</section>
+</main>
+
+{% endblock %}

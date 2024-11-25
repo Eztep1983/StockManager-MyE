@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask import jsonify, render_template, request, flash, redirect, url_for
 from flask_wtf import CSRFProtect
+from flask import send_file
 from config import config
 from models.proveedor import *
 from models.ModelUser import ModelUser 
@@ -343,77 +344,141 @@ def eliminar_cliente(cliente_id):
         return jsonify({'message': 'Error al procesar la solicitud'}),500
 
 #_______________________________________________________________________________________________________
-
-
+#RUTA PARA VENDER
 @app.route('/facturar', methods=['POST', 'GET'])
 @login_required
 def facturar():
     try:
         if request.method == 'POST':
-            #Datos de venta
-            usuario = request.form.get("id_usuario") 
-            user= int(usuario)
-            print(f"Valor de id_usuario: {user}")  # Depuración
-            cliente = request.form.get("id_cliente")
+            # Datos de la venta
+            usuario = int(request.form.get("id_usuario"))
+            cliente = int(request.form.get("id_cliente"))
             fecha_venta = request.form.get("fecha_venta")
             hora_venta = request.form.get("hora_venta")
-            #Datos de pagos
+            
+            # Datos de los pagos
             fecha_pago = request.form.get("fecha_pago")
             hora_pago = request.form.get("hora_pago")
-            total = request.form.get("total")
+            total = float(request.form.get("total"))
             nota = request.form.get("notas")
-            #Verificar que el total no sea incorrecto
-            if float(total) <= 0:
+            
+            if total <= 0:
                 raise ValueError("El total no puede ser menor o igual a cero.")
 
             # Detalles de los productos
-            
             productos = []
             productos_ids = request.form.getlist("productos[]")
             cantidades = request.form.getlist("cantidad[]")
             precios = request.form.getlist("precio[]")
             descripciones = request.form.getlist("servicio[]")
 
-            #Validacion de las longitudaes antes de construir productos
             if not (len(productos_ids) == len(cantidades) == len(precios) == len(descripciones)):
                 raise ValueError("Datos incompletos en la lista de productos.")
-            
-            # Construcción de la lista de productos
+
             for i in range(len(productos_ids)):
-                if not productos_ids[i] or not cantidades[i] or not precios[i]:
-                    raise ValueError(f"Faltan datos en el producto {i + 1}.")
-                try:
-                    cantidad = int(cantidades[i])
-                    precio_unitario = float(precios[i])
-                    descripcion = descripciones[i] if i < len(descripciones) else ""
-                    if cantidad <= 0 or precio_unitario <= 0:
-                        raise ValueError(f"Valores inválidos en el producto {i + 1}.")
-                    productos.append({
-                        'id_producto': int(productos_ids[i]),
-                        'cantidad': cantidad,
-                        'precio_unitario': precio_unitario,
-                        'descripcion': descripcion.strip()
-                    })
-                except ValueError:
-                    raise ValueError(f"Datos inválidos en el producto {i + 1}.")
+                cantidad = int(cantidades[i])
+                precio_unitario = float(precios[i])
+                descripcion = descripciones[i] if i < len(descripciones) else ""
+                if cantidad <= 0 or precio_unitario <= 0:
+                    raise ValueError(f"Valores inválidos en el producto {i + 1}.")
+                productos.append({
+                    'id_producto': int(productos_ids[i]),
+                    'cantidad': cantidad,
+                    'precio_unitario': precio_unitario,
+                    'descripcion': descripcion.strip()
+                })
 
-            resultado = añadir_facturacion(user, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago, nota)
-
-            if resultado["status"] == "success":
-                print("Factura procesada correctamente!")
-                return redirect(url_for('ventas'))
-            else:
-                flash(f"Error: {resultado['message']}", "danger")
+            # Registrar la venta y la factura
+            resultado_facturacion = añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago, nota)
+            
+            if resultado_facturacion["status"] != "success":
+                raise Exception(resultado_facturacion["message"])
+            
+            # Extraer datos de la factura generada
+            numero_factura = resultado_facturacion["numero_factura"]
+            id_factura = resultado_facturacion["id_factura"]
+            
+            # Confirmar éxito
+            flash(f"Venta registrada exitosamente. Número de factura: {numero_factura}", "success")
+            return redirect(url_for('ventas'))
 
     except Exception as e:
-        flash(f"Error inesperado: {str(e)}")
+        flash(f"Error inesperado: {str(e)}", "danger")
         print("Error inesperado:", str(e))
 
-    # Obtener listas para el formulario
-    lista_clientes = obtener_lista_clientes()  
-    lista_productos = obtener_lista_productos()  
+    # Renderizar formulario de facturación
+    lista_clientes = obtener_lista_clientes()
+    lista_productos = obtener_lista_productos()
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos), 200
 
+#RUTA PARA OBTENER FACTURAS
+@app.route('/obtener_pago/<int:id_venta>', methods=['GET'])
+@login_required
+def obtener_pago(id_venta):
+    try:
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql_pago = """
+            SELECT 
+                p.id_pagos, p.id_venta, p.monto, p.fecha_pago, 
+                p.hora_pago, p.nota, p.id_factura, f.numero_factura
+            FROM pagos p
+            LEFT JOIN facturas f ON p.id_factura = f.id_factura
+            WHERE p.id_venta = %s;
+        """
+        cursor.execute(sql_pago, (id_venta,))
+        pago = cursor.fetchone()
+
+        # Verifica si no se encontró ningún pago
+        if not pago:
+            return jsonify({"status": "error", "message": "No se encontró información del pago."}), 404
+
+        # Devuelve los datos del pago como JSON
+        return jsonify({
+            "status": "success",
+            "pago": {
+                "id_pagos": pago[0],
+                "id_venta": pago[1],
+                "monto": float(pago[2]),
+                "fecha_pago": str(pago[3]),
+                "hora_pago": str(pago[4]),
+                "nota": pago[5],
+                "id_factura": pago[6],
+                "numero_factura": pago[7]
+            }
+        }), 200
+
+    except Exception as e:
+        print("Error al obtener el pago:", str(e))
+        return jsonify({"status": "error", "message": "Error al obtener el pago."}), 500
+
+
+    
+#RUTA PARA IMPRIMIR FACTURAS
+"""@app.route('/imprimir_factura/<int:id_factura>', methods=['GET'])
+@login_required
+def imprimir_factura(id_factura):
+    try:
+        conn = mysql.connection
+        cursor = conn.cursor()
+
+        # Obtener datos de la factura
+        datos_factura, error = obtener_datos_factura(cursor, id_factura)
+        if error:
+            return f"Error al obtener datos de la factura: {error}", 404
+
+        # Generar PDF
+        pdf_path, error = generar_pdf_factura(datos_factura)
+        if error:
+            return f"Error al generar el PDF: {error}", 500
+
+        # Enviar el archivo PDF como respuesta
+        return send_file(pdf_path, as_attachment=True, download_name=f"factura_{datos_factura['numero_factura']}.pdf")
+
+    except Exception as e:
+        print("Error al procesar la solicitud:", str(e))
+        return "Error interno del servidor.", 500
+"""
 #_______________________________________________________________________________________________________
 
 #RUTA PARA EDITAR PRODUCTOS

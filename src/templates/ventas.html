@@ -53,8 +53,7 @@
 			<section class="table-container">
 				{% if ventas is not none and ventas|length > 0 %}
 					<div class="mdl-grid" style="overflow-x:auto;">
-						<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
-							<ol>
+						<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">							
 								<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
 									<thead>
 										<tr>
@@ -67,17 +66,22 @@
 									</thead>
 									<tbody>
 										{% for venta in ventas %}
-										<tr>											
+										<tr>                                            
 											<td class="mdl-data-table__cell--non-numeric">{{ venta.fecha_venta }}</td>
 											<td>{{ venta.hora }}</td>
 											<td>{{ venta.nombre_usuario }}</td> <!-- Mostrar el nombre del usuario -->
 											<td>{{ venta.id_cliente }} {{ venta.nombre_cliente }}</td> <!-- Mostrar nombre del cliente -->
-											<td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i class="zmdi zmdi-shopping-basket"></i></button></td>
+											<td>										
+												<button 
+													class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect ver-factura" 
+													data-id-venta="{{ venta.id_venta }}">
+													<i class="zmdi zmdi-receipt"></i>
+												</button>												
+											</td>
 										</tr>
-										{% endfor %}
+										{% endfor %}										
 									</tbody>
-								</table>
-							</ol>
+								</table>							
 						</div>
 					</div>
 				{% else %}
@@ -87,6 +91,66 @@
 		</div>
 	</div>
 		<footer>
+			<script>
+				document.addEventListener("DOMContentLoaded", () => {
+					// Seleccionar todos los botones con la clase "ver-factura"
+					const botonesFactura = document.querySelectorAll(".ver-factura");
+				
+					botonesFactura.forEach((boton) => {
+						boton.addEventListener("click", async () => {
+							// Obtener el id_venta desde el atributo data-id-venta
+							const idVenta = boton.getAttribute("data-id-venta");
+				
+							try {
+								// Solicitar los datos de la factura y pago al servidor
+								const response = await fetch(`/obtener_pago/${idVenta}`);
+								const data = await response.json();
+				
+								if (data.status === "success") {
+									const pago = data.pago;
+				
+									// Construir un Swal con los datos de la factura y el pago
+									Swal.fire({
+										title: `Factura y Pago - Venta #${pago.id_venta}`,
+										html: `
+											<strong>Número de Factura:</strong> ${pago.numero_factura || "No disponible"}<br>
+											<strong>Monto:</strong> $${pago.monto.toFixed(2)}<br>
+											<strong>Fecha de Pago:</strong> ${pago.fecha_pago}<br>
+											<strong>Hora de Pago:</strong> ${pago.hora_pago}<br>
+											<strong>Nota:</strong> ${pago.nota || "Sin nota"}<br>
+											<strong>ID Pago:</strong> ${pago.id_pagos}<br>
+											<strong>ID Factura:</strong> ${pago.id_factura || "No disponible"}<br>
+										`,
+										icon: "info",
+										confirmButtonText: "Cerrar",
+										customClass: {
+											popup: "swal-wide",
+										},
+									});
+								} else {
+									// Mostrar un Swal de error si no se encuentran datos
+									Swal.fire({
+										title: "Error",
+										text: data.message,
+										icon: "error",
+										confirmButtonText: "Cerrar",
+									});
+								}
+							} catch (error) {
+								console.error("Error al obtener los datos:", error);
+				
+								// Mostrar un Swal de error genérico
+								Swal.fire({
+									title: "Error",
+									text: "Ocurrió un error al procesar la solicitud.",
+									icon: "error",
+									confirmButtonText: "Cerrar",
+								});
+							}
+						});
+					});
+				});							
+			</script>
 			<p>&copy; 2024 StockManager JyE</p>
 		</footer>
 	</section>

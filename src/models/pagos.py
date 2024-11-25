@@ -1,8 +1,12 @@
 from flask_mysqldb import MySQL
 from config import config
+from flask import jsonify
+
 
 mysql = MySQL()
 development_config = config['development']
+
+import datetime
 
 def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago, nota):
     try:
@@ -59,9 +63,36 @@ def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, to
         """
         cursor.execute(sql_pago, (id_venta, total, fecha_pago, cliente, hora_pago, nota))
 
+        # Paso 4: Generar la factura
+        fecha_actual = datetime.date.today().strftime("%Y%m%d")
+        cursor.execute("SELECT COUNT(*) FROM facturas WHERE DATE(fecha_emision) = CURDATE();")
+        total_facturas_hoy = cursor.fetchone()[0]
+        numero_factura = f"FAC-{fecha_actual}-{total_facturas_hoy + 1:03d}"
+
+        sql_factura = """
+            INSERT INTO facturas (numero_factura, id_venta, fecha_emision)
+            VALUES (%s, %s, CURDATE());
+        """
+        cursor.execute(sql_factura, (numero_factura, id_venta))
+        id_factura = cursor.lastrowid
+
+        # Paso 5: Actualizar el registro en la tabla `pagos` con el `id_factura`
+        sql_actualizar_pago = """
+            UPDATE pagos
+            SET id_factura = %s
+            WHERE id_venta = %s;
+        """
+        cursor.execute(sql_actualizar_pago, (id_factura, id_venta))
+
         # Confirmar la transacción
         conn.commit()
-        return {"status": "success", "message": "Factura procesada correctamente"}
+
+        return {
+            "status": "success",
+            "message": "Factura procesada correctamente",
+            "id_factura": id_factura,
+            "numero_factura": numero_factura
+        }
     except Exception as e:
         conn.rollback()  # Revertir la transacción en caso de error
         print(f"Error al procesar la facturación. Venta: {usuario}, Cliente: {cliente}, Total: {total}")
@@ -69,3 +100,38 @@ def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, to
         return {"status": "error", "message": str(e)}
     finally:
         cursor.close()
+   
+        
+def obtener_datos_factura(cursor, id_factura):
+    try:
+        # Consulta los datos de la factura
+        sql_factura = """
+            SELECT 
+                p.id_factura AS numero_factura,
+                f.fecha_emision, 
+                v.id_cliente, 
+                c.nombres AS cliente, 
+                SUM(dv.cantidad * dv.precio_unitario) AS total
+            FROM pagos p
+            JOIN facturas f ON p.id_factura = f.id_factura
+            JOIN ventas v ON p.id_venta = v.id_venta
+            JOIN clientes c ON p.id_cliente = c.identificador_c
+            JOIN detalles_ventas dv ON v.id_venta = dv.id_venta
+            WHERE p.id_factura = %s
+            GROUP BY p.id_factura, f.fecha_emision, v.id_cliente, c.nombres;
+        """
+        cursor.execute(sql_factura, (id_factura,))
+        factura = cursor.fetchone()
+
+        if not factura:
+            return None, "Factura no encontrada."
+        
+        return {
+            "numero_factura": factura['numero_factura'],
+            "fecha_emision": factura['fecha_emision'],
+            "cliente": factura['cliente'],
+            "total": factura['total']
+        }, None
+
+    except Exception as e:
+        return None, str(e)
