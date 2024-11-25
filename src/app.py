@@ -223,14 +223,14 @@ def get_categorias():
 @login_required
 def crear_categoria():
     try:
-        # Obtener el nombre de la categoría
-        nombre_categoria = request.form.get('CategoryName')  # Flask debe interpretar esto correctamente
-        if not nombre_categoria:  # Validar si el dato es válido
+        nombre_categoria = request.form.get('CategoryName')  
+        if not nombre_categoria: 
             return jsonify(success=False, message="El nombre de la categoría es obligatorio."), 400
 
-        # Lógica para insertar la categoría
-        if ingresar_categoria(nombre_categoria):  # Asegúrate de que esta función exista y funcione
-            return jsonify(success=True, id=123, message="Categoría creada exitosamente")  # Retorna ID ficticio
+        # Llamar a la función para insertar la categoría
+        categoria_id = ingresar_categoria(nombre_categoria)
+        if categoria_id:  # Verifica si se obtuvo un ID válido
+            return jsonify(success=True, id=categoria_id, message="Categoría creada exitosamente") 
         else:
             return jsonify(success=False, message="Error al añadir la categoría."), 500
     except Exception as e:

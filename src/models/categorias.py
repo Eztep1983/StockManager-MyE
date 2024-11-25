@@ -1,6 +1,6 @@
 from flask_mysqldb import MySQL
 from config import config
-
+from flask import logging
 mysql = MySQL()
 development_config = config['development']
 
@@ -9,20 +9,20 @@ class Categoria:
         self.id= id
         self.nombre=nombre
 
-def añadir_categoria(nombre):
-    conn=mysql.connection
-    cursor=conn.cursor()
+def ingresar_categoria(category):
     try:
-        sql="INSERT INTO categorias_productos (nombre) VALUES (%s) "
-        cursor.execute(sql, (nombre))
+        conn = mysql.connection
+        with conn.cursor() as cursor:
+            sql = 'INSERT INTO categorias_productos(nombre) VALUES (%s)'
+            cursor.execute(sql, (category,))
+            categoria_id = cursor.lastrowid  
         conn.commit()
-        cursor.close()
-        return True
+        return categoria_id 
     except Exception as e:
         conn.rollback()
-        cursor.close()
-        print("Error al añadadir el proveedor:", str(e))
-        return False
+        logging.error("Error al añadir la categoría: %s", str(e))
+        return None  
+
 
 def obtener_categorias():
     conn=mysql.connection

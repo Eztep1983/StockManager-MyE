@@ -302,17 +302,17 @@ document.getElementById('AddCategoryBtn').addEventListener('click', async () => 
         });
 
         // Manejar la respuesta
-        const result = await response.json(); // Intentar convertir a JSON
+        const result = await response.json(); 
         if (response.ok) {
             const select = document.getElementById('CategoryProduct');
             const option = document.createElement('option');
-            option.value = result.id || categoryName; // Usar el ID retornado
+            option.value = result.id;  // Asegúrate de usar el ID devuelto por el backend
             option.textContent = categoryName;
             select.appendChild(option);
-
+        
             categoryMessage.style.color = "green";
             categoryMessage.textContent = "Categoría añadida exitosamente.";
-            document.getElementById('NewCategoryName').value = ""; // Limpiar campo
+            document.getElementById('NewCategoryName').value = ""; 
         } else {
             categoryMessage.style.color = "red";
             categoryMessage.textContent = result.message || "No se pudo añadir la categoría.";
