@@ -73,3 +73,17 @@ def eliminar_productos(prd_id):
         conn.rollback()
         logging.error("Error al eliminar el Cliente: %s", str(e))
         return False
+
+
+def ingresar_categoria(category):
+    try:
+        conn = mysql.connection
+        with conn.cursor() as cursor:
+            sql = 'INSERT INTO categorias_productos(nombre)VALUES (%s)'
+            cursor.execute(sql,(category,))
+        conn.commit()
+        return True
+    except Exception as e:
+        conn.rollback()
+        logging.error("Error al añadir la categoria: %s", str(e))
+

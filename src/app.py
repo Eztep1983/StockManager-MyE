@@ -52,7 +52,7 @@ def login():
             flash("Por favor, completa todos los campos", "warning")
             return render_template('/login.html')
 
-        # Crear instancia temporal de User
+        # instancia temporal de User
         temp_user = User(0, identification, password)
 
         # Buscar usuario en la base de datos
@@ -76,12 +76,10 @@ def login():
 def register():
     try:
         if request.method == 'POST':
-            # Obtener datos del formulario
             identification = request.form.get('identification')
             password = request.form.get('password')
             fullname = request.form.get('fullname')
 
-            # Validar campos
             if not identification or not password or not fullname:
                 flash("Por favor, completa todos los campos", "warning")
                 return render_template('auth/register.html')
@@ -89,7 +87,6 @@ def register():
             # Crear objeto User
             user = User(None, identification, password, fullname)
 
-            # Registrar usuario
             try:
                 registered_user = Register.register(db, user)
                 return redirect(url_for('login'))
@@ -120,23 +117,29 @@ def home():
 @app.route('/proveedores')
 @login_required
 def get_proveedores():
-    lista_proveedores = obtener_proveedores()
+    try:
+        lista_proveedores = obtener_proveedores()
+    except Exception as e:
+        return e
     return render_template('proveedores.html', proveedores=lista_proveedores)
 
 # RUTA PARA AÑADIR PROVEEDORES
-@app.route('/proveedor', methods=['POST','DELETE'])
+@app.route('/proveedor', methods=['POST', 'GET'])
 @login_required
 def provedorees():
-    lista_proveedores = obtener_proveedores()
     try: 
         if request.method == 'POST':
             nombre_empresa = request.form.get("NameProvider")
             direccion = request.form.get("addressProvider")
             telefono = request.form.get("phoneProvider")
             correo_electronico = request.form.get("emailProvider")
-            
-            añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico)
-        return render_template('proveedores.html', proveedores=lista_proveedores)
+            if not nombre_empresa or not direccion or not telefono or not correo_electronico:
+                return 'Los campos estan incompletos', 400
+            else:
+                if añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
+                    return redirect('/proveedores')                
+                else: 
+                    return jsonify({'message': 'Error al añadir el proveedor'})
     except Exception as e:
         print("Error al procesar la solicitud",e)
         return jsonify({'message': 'Error al procesar la solicitud'})
@@ -147,10 +150,9 @@ def provedorees():
 def eliminar_proveedor(id_proveedor):
     if request.method == 'DELETE':
         eliminar_proveedor(id_proveedor)
-        # Puedes redirigir a otra página o devolver algún mensaje JSON si es necesario
         return jsonify({'message': 'Proveedor eliminado correctamente'})
     else:
-        return abort(405)  # Método no permitido
+        return abort(405) 
 
 #_______________________________________________________________________________________________________
 
@@ -168,10 +170,8 @@ def nuevo_producto():
             proveedor = request.form.get('ProviderProduct')
             fecha_ingreso = request.form.get('IngresoProduct')
             
-            # Verificar si alguno de los campos requeridos está vacío
             if not nombre or not descripcion or not precio or not stock or not categoria or not proveedor or not fecha_ingreso:
                 return "Por favor, complete todos los campos del formulario.", 400
-
             # Convertir el precio y el stock a los tipos de datos apropiados
             try:
                 precio = float(precio)
@@ -185,12 +185,13 @@ def nuevo_producto():
         print("Error al procesar la solicitud DELETE:", e)
         return jsonify({'message': 'Error al procesar la solicitud'}), 500
 
-    # Obtener las listas de proveedores y categorías
     lista_proveedores = obtener_proveedores()
     lista_categorias = obtener_categorias()
     lista_productos = obtener_lista_productos() 
 
     return render_template('productos.html', proveedores=lista_proveedores, categorias=lista_categorias, productos=lista_productos)
+
+#_______________________________________________________________________________________________________
 
 #PARA ELIMINAR PRODUCTOS
 @app.route('/eliminar_productos/<int:id>', methods=['DELETE'])
@@ -214,6 +215,26 @@ def get_categorias():
     lista_categorias = obtener_categorias()
     return render_template('productos.html', lista_categorias=lista_categorias)
 
+#_______________________________________________________________________________________________________
+
+#RUTA PARA AÑADIR UNA CATEGORIA
+@app.route('/addCategorias', methods=['POST'])
+@login_required
+def crear_categoria():
+    try:
+        # Obtener el nombre de la categoría
+        nombre_categoria = request.form.get('CategoryName')  # Flask debe interpretar esto correctamente
+        if not nombre_categoria:  # Validar si el dato es válido
+            return jsonify(success=False, message="El nombre de la categoría es obligatorio."), 400
+
+        # Lógica para insertar la categoría
+        if ingresar_categoria(nombre_categoria):  # Asegúrate de que esta función exista y funcione
+            return jsonify(success=True, id=123, message="Categoría creada exitosamente")  # Retorna ID ficticio
+        else:
+            return jsonify(success=False, message="Error al añadir la categoría."), 500
+    except Exception as e:
+        return jsonify(success=False, message=str(e)), 500
+
 
 #_______________________________________________________________________________________________________
 #RUTA PARA VENTAS
@@ -231,8 +252,16 @@ def ventas():
 @app.route('/clientes')
 @login_required
 def clientes():
-    lista_clientes = obtener_lista_clientes()  
-    return render_template('clientes.html', clientes=lista_clientes)
+    try:
+        lista_clientes = obtener_lista_clientes()
+        return render_template('clientes.html', clientes=lista_clientes)
+    except Exception as e:
+        print(f"Error al obtener la lista de clientes: {e}")
+        mensaje_error = 'No se ha podido obtener la lista de clientes.'
+        return render_template('clientes.html', clientes=lista_clientes, mensaje_error = mensaje_error)
+
+#_______________________________________________________________________________________________________
+
 
 #RUTA PARA AÑADIR CLIENTES 
 @app.route('/cliente', methods=['POST'])
@@ -248,8 +277,8 @@ def nuevo_cliente():
             email = request.form.get('emailClient')
             
             # Verificar si alguno de los campos requeridos está vacío
-            if not cedula or not nombres or not apellidos or not direccion or not telefono or not email:
-                return "Por favor, complete todos los campos del formulario."
+            if not all([cedula, nombres, apellidos, direccion, telefono, email]):
+                return jsonify(success=False, message="Faltan datos"), 400
 
             # Llamado a la función con los datos del nuevo cliente
             if añadir_cliente(cedula, nombres, apellidos, direccion, telefono, email):
@@ -257,8 +286,12 @@ def nuevo_cliente():
             else:
                 return "Error al añadir cliente"
     except Exception as e:
+        print(f"Error al procesar la solicitud {e}")
         return jsonify({'message': 'Error al procesar la solicitud'}),500
     return render_template('clientes.html')
+
+#_______________________________________________________________________________________________________
+
 
 # RUTA PARA EDITAR CLIENTES
 @app.route('/editar_cliente', methods=['PUT'])
@@ -274,11 +307,8 @@ def editar_cliente():
         email = request.form.get('edit_emailClient')
         cedul = request.form.get('edit_cedulaClient')
 
-        # Verificar que todos los campos necesarios estén presentes
         if not all([identificador_c, nombre, apellido, direccion, telefono, email, cedul]):
             return jsonify(success=False, message="Faltan datos"), 400
-
-        # Actualizar cliente
         if actualizar_cliente(identificador_c, nombre, apellido, direccion, telefono, email, cedul):
             return jsonify(success=True)
         else:
@@ -286,12 +316,15 @@ def editar_cliente():
     except Exception as e:
         return jsonify(success=False, message=str(e)), 500
 
+#_______________________________________________________________________________________________________
+
+
 #EN CASO DE METODO INCORRECTO
 @app.errorhandler(405)
 def method_not_allowed(e):
     return jsonify(success=False, message="Método no permitido"), 405
 
-
+#_______________________________________________________________________________________________________
 
 
 #RUTA PARA ELIMINAR CLIENTES
@@ -312,15 +345,6 @@ def eliminar_cliente(cliente_id):
 #_______________________________________________________________________________________________________
 
 
-#RUTA PARA LA CONFIGURACION
-@app.route('/configuracion')
-@login_required
-def configuracion():
-    return render_template('configuracion.html')
-
-#_______________________________________________________________________________________________________
-
-
 @app.route('/facturar', methods=['POST', 'GET'])
 @login_required
 def facturar():
@@ -337,7 +361,7 @@ def facturar():
             fecha_pago = request.form.get("fecha_pago")
             hora_pago = request.form.get("hora_pago")
             total = request.form.get("total")
-
+            nota = request.form.get("notas")
             #Verificar que el total no sea incorrecto
             if float(total) <= 0:
                 raise ValueError("El total no puede ser menor o igual a cero.")
@@ -373,13 +397,11 @@ def facturar():
                 except ValueError:
                     raise ValueError(f"Datos inválidos en el producto {i + 1}.")
 
-
-            # Llamar a la función del modelo
-            resultado = añadir_facturacion(user, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago)
+            resultado = añadir_facturacion(user, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago, nota)
 
             if resultado["status"] == "success":
                 print("Factura procesada correctamente!")
-                return redirect(url_for('home'))
+                return redirect(url_for('ventas'))
             else:
                 flash(f"Error: {resultado['message']}", "danger")
 
@@ -400,19 +422,17 @@ def facturar():
 def editar_producto():
     if request.method == 'PUT':
         try:
-            # Obtener los datos desde el formulario HTML
             data = request.form
             identificador_p = data.get('producto_id')
             nombre = data.get('edit_NameProduct')
             descripcion = data.get('edit_Description')
             precio = data.get('edit_Price')
             stock = data.get('edit_Stock')
-
-            # Verificación de que los datos no estén vacíos
+            
             if not all([nombre, descripcion, precio, stock, identificador_p]):
-                return 
+                return jsonify(success=False, message="Faltan datos"), 400
 
-            # Validar que el precio y el stock sean números válidos
+            # Validar de los datos correctos
             try:
                 precio = float(precio)
                 stock = int(stock)
@@ -422,15 +442,12 @@ def editar_producto():
                 return 
             # Intentar actualizar el producto
             if actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
-                return True
+                return jsonify(success=True), 200
             else:
-                return 
-
+                return jsonify(success=False, message="Error al actualizar el producto"), 400
         except Exception as e:
-            return 
-
-    return 
-
+            print(f"Error al procesar la solicitud {e}")
+            return jsonify({'message': 'Error al procesar la solicitud'}),500
 
 #_______________________________________________________________________________________________________
 

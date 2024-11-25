@@ -126,13 +126,12 @@
                                                         <input class="mdl-textfield__input" type="text" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚ ]+" id="NameProduct" name="NameProduct" >
                                                         <label class="mdl-textfield__label" for="NameProduct">Nombre</label>
                                                         <span class="mdl-textfield__error">Nombre inválido</span>
-                                                    </div>                                                
+                                                    </div>
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                                         <input class="mdl-textfield__input" type="text" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚ ]+" id="Description" name="Description" >
                                                         <label class="mdl-textfield__label" for="Description">Descripción</label>
                                                         <span class="mdl-textfield__error">Descripción inválida</span>
                                                     </div>
-                                                    
                                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                                         <input class="mdl-textfield__input" type="text" pattern="\d+(\.\d{1,2})?" id="PriceProduct" name="PriceProduct" >
                                                         <label class="mdl-textfield__label" for="PriceProduct">Precio</label>
@@ -143,40 +142,65 @@
                                                         <label class="mdl-textfield__label" for="StockProduct">Unidades</label>
                                                         <span class="mdl-textfield__error">Cantidad inválida</span>
                                                     </div>
-                                                </div>                                                
-                                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">                                                    
+                                                </div>
+                                                <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--6-col-desktop">
                                                     <h5 class="text-condensedLight">Información y modelo</h5>
-                                                    <div class="mdl-textfield mdl-js-textfield">   
+                                                    <div class="mdl-textfield mdl-js-textfield">
+                                                        {% if proveedores|length == 0 %}
                                                         <label class="mdl-textfield__label" for="ProviderProduct"></label>                                                                                                            
-                                                        <select class="mdl-textfield__input" id="ProviderProduct" name="ProviderProduct">                                                            
+                                                        <select class="mdl-textfield__input" id="ProviderProduct" name="ProviderProduct" disabled>
+                                                            <option value="">Seleccionar proveedor</option>                                                         
+                                                        </select>
+                                                        <center>
+                                                            <p class="no-clients-message">
+                                                                Para añadir un producto necesitas crear el proveedor.
+                                                                <a href="/proveedores" style="text-decoration: none; color: red; font-weight: bold;" id="createProviderLink">
+                                                                    Click para crearlo.
+                                                                </a>
+                                                            </p>
+                                                        </center>
+
+                                                    {% else %}
+                                                        <label class="mdl-textfield__label" for="ProviderProduct">Proveedor</label>
+                                                        <br>                                                                                                            
+                                                        <select class="mdl-textfield__input" id="ProviderProduct" name="ProviderProduct">
                                                             <option value="">Seleccionar proveedor</option>
                                                             {% for proveedor in proveedores %}
                                                                 <option value="{{ proveedor.id_proveedor }}">{{ proveedor.nombre_empresa }}</option>
                                                             {% endfor %}
-                                                        </select>                                                                                                                                                                     
-                                                    </div>                                                                                                                                                                                                       
-                                                    <div class="mdl-textfield mdl-js-textfield">              
-                                                        <label class="mdl-textfield__label" for="CategoryProduct"></label>                                          
-                                                        <select class="mdl-textfield__input" id="CategoryProduct" name="CategoryProduct" > 
-                                                            <option value="">Seleccionar Categoria</option>                                                                                                                                          
-                                                            {% for categoria in categorias %} 
-                                                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>                                                            
-                                                            {% endfor %}                                            
-                                                        </select>                                                            
-                                                    </div>                                                                                                    
+                                                        </select>
+                                                        {%endif%}
+
+                                                        <h5>Categorías</h5>
+                                                        <div>
+                                                            <label for="NewCategoryName">Añadir nueva categoría:</label>
+                                                            <input type="text" id="NewCategoryName" class="mdl-textfield__input" placeholder="Nombre de la categoría">
+                                                            <button id="AddCategoryBtn" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                                                Crear categoría
+                                                            </button>
+                                                            <span id="CategoryMessage" style="color: green;"></span>
+                                                        </div>
+                                                        <br>
+                                                    </div>                                                    
+                                                    <div class="mdl-textfield mdl-js-textfield">
+                                                        <label class="mdl-textfield__label" for="CategoryProduct"></label>
+                                                        <select class="mdl-textfield__input" id="CategoryProduct" name="CategoryProduct" >
+                                                            <option value="">Seleccionar Categoria Existente</option>
+                                                            {% for categoria in categorias %}
+                                                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
                                                     <h5 class="text-condensedLight">Fecha de ingreso del producto</h5>
                                                     <div class="mdl-textfield mdl-js-textfield">
                                                         <input type="date" class="mdl-textfield__input" id="IngresoProduct" name="IngresoProduct" >
                                                     </div>
-                                                </div>                                                
+                                                    <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProduct">
+                                                        <i class="zmdi zmdi-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <p class="text-center">
-                                                <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProduct">
-                                                    <i class="zmdi zmdi-plus"></i>
-                                                </button>
-                                                <div class="mdl-tooltip" for="btn-addProduct" id="add">Añadir producto</div>
-                                        </form>                                                                               
-                                        </div>                                               
+                                        </form>                                                                                                                      
                                     </div>
                                 </div>
                             </div>
@@ -186,6 +210,11 @@
             </section>
         </main>
         <script>
+
+function getCSRFToken() {
+    return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
+
 function showEditProductModal(id, nombre, descripcion, precio, stock) {
     Swal.fire({
         title: 'Editar Producto',
@@ -245,105 +274,151 @@ function showEditProductModal(id, nombre, descripcion, precio, stock) {
         Swal.fire('Error', error.message, 'error');
     });
 }
+document.getElementById('AddCategoryBtn').addEventListener('click', async () => {
+    const categoryName = document.getElementById('NewCategoryName').value.trim();
+    const categoryMessage = document.getElementById('CategoryMessage');
+    const csrf_t = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    // Validar entrada
+    if (!categoryName) {
+        categoryMessage.style.color = "red";
+        categoryMessage.textContent = "El nombre de la categoría es obligatorio.";
+        return;
+    }
+
+    try {
+        // Crear parámetros codificados como URL
+        const urlParams = new URLSearchParams();
+        urlParams.append('CategoryName', categoryName);
+
+        // Enviar solicitud
+        const response = await fetch('/addCategorias', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrf_t
+            },
+            body: urlParams.toString(),
+        });
+
+        // Manejar la respuesta
+        const result = await response.json(); // Intentar convertir a JSON
+        if (response.ok) {
+            const select = document.getElementById('CategoryProduct');
+            const option = document.createElement('option');
+            option.value = result.id || categoryName; // Usar el ID retornado
+            option.textContent = categoryName;
+            select.appendChild(option);
+
+            categoryMessage.style.color = "green";
+            categoryMessage.textContent = "Categoría añadida exitosamente.";
+            document.getElementById('NewCategoryName').value = ""; // Limpiar campo
+        } else {
+            categoryMessage.style.color = "red";
+            categoryMessage.textContent = result.message || "No se pudo añadir la categoría.";
+        }
+    } catch (error) {
+        console.error("Error al crear la categoría:", error);
+        categoryMessage.style.color = "red";
+        categoryMessage.textContent = "Error al conectar con el servidor.";
+    }
+});
 
 
-        document.getElementById("btn-addProduct").addEventListener("click", function(event) {
-            // Evita que el formulario se envíe automáticamente
-            event.preventDefault();
+document.getElementById("btn-addProduct").addEventListener("click", function(event) {
+    event.preventDefault();
+    const camposRequeridos = ["NameProduct", "Description", "PriceProduct", "StockProduct", "ProviderProduct", "CategoryProduct", "IngresoProduct"];
+    const vacios = camposRequeridos.filter(id => !document.getElementById(id).value.trim());
+    const requiredFields = ["NameProduct", "Description", "PriceProduct", "StockProduct", "ProviderProduct", "CategoryProduct", "IngresoProduct"];
+    const submitButton = document.getElementById("btn-addProduct");
     
-            // Validar que todos los campos obligatorios estén llenos
-            var nombreP = document.getElementById("NameProduct").value.trim();
-            var Descripcion = document.getElementById("Description").value.trim();
-            var Precio = document.getElementById("PriceProduct").value.trim();
-            var Cantidad = document.getElementById("StockProduct").value.trim();
-            var Proveedor = document.getElementById("ProviderProduct").value.trim();
-            var Categoria = document.getElementById("CategoryProduct").value.trim();
-            var Fecha = document.getElementById("IngresoProduct").value.trim();
+    requiredFields.forEach(id => {
+        document.getElementById(id).addEventListener("input", validateForm);
+    });
     
-            if ( nombreP === "" || Descripcion === "" || Precio === "" || Cantidad === "" || Proveedor === "" || Categoria === ""||Fecha === "") {
-                // Mostrar mensaje de advertencia si algún campo está vacío
+    function validateForm() {
+        const allFilled = requiredFields.every(id => document.getElementById(id).value.trim() !== "");
+        submitButton.disabled = !allFilled;
+    }
+    
+    if (vacios.length > 0) {
+        swal.fire({
+            title: '¡Advertencia!',
+            text: 'Por favor completa todos los campos obligatorios.',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+
+    } else {
+        swal.fire({
+            title: '¡Éxito!',
+            text: 'Producto guardado correctamente.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("productForm").submit();
+            }
+        });
+    }
+});
+
+function deleteOption(productoId) {
+    console.log('Producto ID:', productoId);  //línea para depuración
+    swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción eliminará el producto permanentemente. ¿Estás seguro de que deseas continuar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/eliminar_productos/${productoId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Error desconocido');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                swal.fire('¡Eliminado!', data.message, 'success')
+                    .then(() => location.reload());
+            })
+            .catch(error => {
+                console.error('Error:', error);
                 swal.fire({
-                    title: '¡Advertencia!',
-                    text: 'Por favor completa todos los campos antes de agregar el producto.',
-                    icon: 'warning',
+                    title: 'Error',
+                    text: error.message,
+                    icon: 'error',
                     confirmButtonText: 'OK'
                 });
-            } else {
-                // Mostrar confirmación y enviar el formulario si todos los campos están llenos
-                swal.fire({
-                    title: '¡Se guardó el producto con éxito!',
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    showCancelButton: false
-                }).then((result) => {
-                    // Envía manualmente el formulario solo si el usuario hizo clic en "OK"
-                    if (result.isConfirmed) {
-                        document.getElementById("productForm").submit();  // Envía el formulario con JavaScript
-                    }
-                });
-            }
-        });
-
-            function getCSRFToken() {
-                return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            }
-            
-            function deleteOption(productoId) {
-                console.log('Producto ID:', productoId);  //línea para depuración
-                swal.fire({
-                    title: '¿Estás seguro?',
-                    text: 'Esta acción eliminará el producto permanentemente. ¿Estás seguro de que deseas continuar?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/eliminar_productos/${productoId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': getCSRFToken()
-                            }
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(data => {
-                                    throw new Error(data.message || 'Error desconocido');
-                                });
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            swal.fire('¡Eliminado!', data.message, 'success')
-                                .then(() => location.reload());
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            swal.fire({
-                                title: 'Error',
-                                text: error.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
-                        });
-                    }
-                });
-            }
-
-        document.getElementById('searchProduct').addEventListener('input', function () {
-            const searchValue = this.value.toLowerCase();
-            const clientItems = document.querySelectorAll('.producto-item');
-
-            clientItems.forEach(function (clientItem) {
-                const clientName = clientItem.querySelector('.mdl-list__item-sub-title').textContent.toLowerCase();
-                if (clientName.includes(searchValue)) {
-                    clientItem.style.display = '';
-                } else {
-                    clientItem.style.display = 'none';
-                }
             });
-        });
+        }
+    });
+}
+
+document.getElementById('searchProduct').addEventListener('input', function () {
+const searchValue = this.value.toLowerCase();
+const clientItems = document.querySelectorAll('.producto-item');
+
+clientItems.forEach(function (clientItem) {
+    const clientName = clientItem.querySelector('.mdl-list__item-sub-title').textContent.toLowerCase();
+    if (clientName.includes(searchValue)) {
+        clientItem.style.display = '';
+    } else {
+        clientItem.style.display = 'none';
+    }
+});
+});
         </script>        
         <footer>
             <p>&copy; 2024 StockManager JyE</p>
