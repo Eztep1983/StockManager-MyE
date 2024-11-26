@@ -16,7 +16,7 @@ from models.ventas import *
 from models.usuarios import *
 from models.pagos import *
 from models.ultimas_ventas import *
-
+import re
 #Ejecutar la API
 app = Flask(__name__)
 
@@ -38,7 +38,7 @@ def load_user(id):
 #_______________________________________________________________________________________________________
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return redirect(url_for('login')) #Redireccion directa a login
 
 #_______________________________________________________________________________________________________
 
@@ -107,10 +107,14 @@ def register():
 #RUTA PARA EL HOME
 
 @app.route('/home')
+@login_required 
 def home():
-    ultimas_ventas = obtener_ultimas_ventas()
+    try:
+        ultimas_ventas = obtener_ultimas_ventas()
+    except Exception as e:
+        print(f"Error obteniendo las últimas ventas: {e}")
+        abort(500) 
     return render_template('home.html', ultimas_ventas=ultimas_ventas)
-
 
 #_______________________________________________________________________________________________________
 
@@ -121,26 +125,35 @@ def get_proveedores():
     try:
         lista_proveedores = obtener_proveedores()
     except Exception as e:
-        return e
+        print(f"Error obteniendo al proveedor: {e}")
+        abort(500) 
     return render_template('proveedores.html', proveedores=lista_proveedores)
+
+
+def validar_correo(correo):
+    patron = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(patron, correo)
 
 # RUTA PARA AÑADIR PROVEEDORES
 @app.route('/proveedor', methods=['POST', 'GET'])
 @login_required
-def provedorees():
-    try: 
+def provedor():
+    try:
         if request.method == 'POST':
             nombre_empresa = request.form.get("NameProvider")
             direccion = request.form.get("addressProvider")
             telefono = request.form.get("phoneProvider")
             correo_electronico = request.form.get("emailProvider")
-            if not nombre_empresa or not direccion or not telefono or not correo_electronico:
-                return 'Los campos estan incompletos', 400
-            else:
-                if añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
-                    return redirect('/proveedores')                
-                else: 
-                    return jsonify({'message': 'Error al añadir el proveedor'})
+        if not nombre_empresa or not direccion or not telefono or not correo_electronico:
+            return jsonify({'message': 'Los campos están incompletos'}), 400
+        if not validar_correo(correo_electronico):  # Validación adicional (función auxiliar)
+            return jsonify({'message': 'Correo electrónico inválido'}), 400
+
+        if añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
+            flash('Proveedor añadido exitosamente', 'success')
+            return redirect('/proveedores')
+        else: 
+            return jsonify({'message': 'Error al añadir el proveedor'}), 500
     except Exception as e:
         print("Error al procesar la solicitud",e)
         return jsonify({'message': 'Error al procesar la solicitud'})
