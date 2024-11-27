@@ -1,9 +1,9 @@
 from flask import Flask, abort, render_template, redirect, url_for, request, flash
 from flask_mysqldb import MySQL
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask import jsonify, render_template, request, flash, redirect, url_for
 from flask_wtf import CSRFProtect
-from flask import send_file
+from functools import wraps
 from config import config
 from models.proveedor import *
 from models.ModelUser import ModelUser 
@@ -17,6 +17,8 @@ from models.usuarios import *
 from models.pagos import *
 from models.ultimas_ventas import *
 import re
+import logging
+
 #Ejecutar la API
 app = Flask(__name__)
 
@@ -30,18 +32,29 @@ login_manager_app.login_view = 'login'
 # Inicialización de la protección CSRF
 csrf.init_app(app)
 
+#Logs para los errores
+logger = logging.getLogger(__name__)
+
+
 #_______________________________________________________________________________________________________
 #RUTA LOGIN
-@login_manager_app.user_loader
-def load_user(id):
-    return ModelUser.get_by_id(db, id)
-#_______________________________________________________________________________________________________
 @app.route('/')
 def index():
     return redirect(url_for('login')) #Redireccion directa a login
 
-#_______________________________________________________________________________________________________
+@login_manager_app.user_loader
+def load_user(id):
+    return ModelUser.get_by_id(db, id)
 
+#RUTA PARA CERRAR SESION
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('logout'))
+
+#_______________________________________________________________________________________________________
+                                                #Login
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == 'POST':
@@ -71,7 +84,7 @@ def login():
     return render_template('auth/login.html')
 
 #_______________________________________________________________________________________________________
-
+                                            #Registro de usuarios
 #RUTA PARA EL REGISTRO DE USUARIOS
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -103,9 +116,8 @@ def register():
         return render_template('auth/register.html')
 
 #_______________________________________________________________________________________________________
-
+                                                 #Inicio
 #RUTA PARA EL HOME
-
 @app.route('/home')
 @login_required 
 def home():
@@ -117,13 +129,13 @@ def home():
     return render_template('home.html', ultimas_ventas=ultimas_ventas)
 
 #_______________________________________________________________________________________________________
-
+                                                #Proveedores
 #RUTA PARA OBTENER LISTA DE PROVEEDORES
 @app.route('/proveedores')
 @login_required
 def get_proveedores():
     try:
-        lista_proveedores = obtener_proveedores()
+        lista_proveedores = obtener_proveedores() #Esta funcion esta en models/proveedor.py
     except Exception as e:
         print(f"Error obteniendo al proveedor: {e}")
         abort(500) 
@@ -131,7 +143,7 @@ def get_proveedores():
 
 
 def validar_correo(correo):
-    patron = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    patron = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$' #Funcion auxiliar para validar correo electronico
     return re.match(patron, correo)
 
 # RUTA PARA AÑADIR PROVEEDORES
@@ -170,6 +182,7 @@ def eliminar_proveedor(id_proveedor):
 
 #_______________________________________________________________________________________________________
 
+                                                    #Productos
 #RUTA PARA AÑADIR PRODUCTOS 
 @app.route('/productos', methods=['GET', 'POST'])
 @login_required
@@ -205,23 +218,69 @@ def nuevo_producto():
 
     return render_template('productos.html', proveedores=lista_proveedores, categorias=lista_categorias, productos=lista_productos)
 
-#_______________________________________________________________________________________________________
+#DECORADOR PARA VER SI EXISTE EL PRODUCTO
+def producto_existe(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        producto_id = kwargs.get('id')
+        if not obtener_producto_id(producto_id):
+            return jsonify({'message': 'Producto no encontrado'}), 404
+        return f(*args, **kwargs)
+    return wrap
 
-#PARA ELIMINAR PRODUCTOS
+#RUTA PARA ELIMINAR EL PRODUCTO
 @app.route('/eliminar_productos/<int:id>', methods=['DELETE'])
 @login_required
+@producto_existe
 def eliminar_producto(id):
     try:
+        if not current_user.can_delete_product(): #can_delete_product aun no manejo roles pero se usa cuando el user esta activo
+            return jsonify({'message': 'No tiene permiso para eliminar productos'}), 403
+        
         if eliminar_productos(id):
             return jsonify({'message': 'Producto eliminado exitosamente'}), 200
         else:
-            return jsonify({'message': 'Error al eliminar el producto'}), 500
+            return jsonify({'message': 'No se pudo eliminar el producto'}), 400
     except Exception as e:
-        print("Error al procesar la solicitud DELETE:", e)
+        logger.error(f"Error interno al eliminar producto con id {id}: {e}")
         return jsonify({'message': 'Error al procesar la solicitud'}), 500
 
-#_______________________________________________________________________________________________________
 
+#RUTA PARA EDITAR PRODUCTOS
+@app.route('/editar_producto', methods=['PUT'])
+@login_required
+def editar_producto():
+    if request.method == 'PUT':
+        try:
+            data = request.form
+            identificador_p = data.get('producto_id')
+            nombre = data.get('edit_NameProduct')
+            descripcion = data.get('edit_Description')
+            precio = data.get('edit_Price')
+            stock = data.get('edit_Stock')
+            
+            if not all([nombre, descripcion, precio, stock, identificador_p]):
+                return jsonify(success=False, message="Faltan datos"), 400
+
+            # Validar de los datos correctos
+            try:
+                precio = float(precio)
+                stock = int(stock)
+                if precio < 0 or stock < 0:
+                    return 
+            except ValueError:
+                return 
+            # Intentar actualizar el producto
+            if actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
+                return jsonify(success=True), 200
+            else:
+                return jsonify(success=False, message="Error al actualizar el producto"), 400
+        except Exception as e:
+            print(f"Error al procesar la solicitud {e}")
+            return jsonify({'message': 'Error al procesar la solicitud'}),500
+
+#_______________________________________________________________________________________________________
+                                                #Categorias
 #RUTA PARA OBTENER LISTA DE CATEGORIAS
 @app.route('/categorias')
 @login_required
@@ -229,7 +288,6 @@ def get_categorias():
     lista_categorias = obtener_categorias()
     return render_template('productos.html', lista_categorias=lista_categorias)
 
-#_______________________________________________________________________________________________________
 
 #RUTA PARA AÑADIR UNA CATEGORIA
 @app.route('/addCategorias', methods=['POST'])
@@ -260,7 +318,9 @@ def ventas():
 
 
 
+
 #_______________________________________________________________________________________________________
+                                              #Clientes
 
 # RUTA PARA OBTENER LISTA DE CLIENTES
 @app.route('/clientes')
@@ -273,8 +333,6 @@ def clientes():
         print(f"Error al obtener la lista de clientes: {e}")
         mensaje_error = 'No se ha podido obtener la lista de clientes.'
         return render_template('clientes.html', clientes=lista_clientes, mensaje_error = mensaje_error)
-
-#_______________________________________________________________________________________________________
 
 
 #RUTA PARA AÑADIR CLIENTES 
@@ -304,8 +362,6 @@ def nuevo_cliente():
         return jsonify({'message': 'Error al procesar la solicitud'}),500
     return render_template('clientes.html')
 
-#_______________________________________________________________________________________________________
-
 
 # RUTA PARA EDITAR CLIENTES
 @app.route('/editar_cliente', methods=['PUT'])
@@ -330,16 +386,6 @@ def editar_cliente():
     except Exception as e:
         return jsonify(success=False, message=str(e)), 500
 
-#_______________________________________________________________________________________________________
-
-
-#EN CASO DE METODO INCORRECTO
-@app.errorhandler(405)
-def method_not_allowed(e):
-    return jsonify(success=False, message="Método no permitido"), 405
-
-#_______________________________________________________________________________________________________
-
 
 #RUTA PARA ELIMINAR CLIENTES
 @app.route('/eliminar_cliente/<int:cliente_id>', methods=['DELETE'])
@@ -356,7 +402,10 @@ def eliminar_cliente(cliente_id):
         print("Error al procesar la solicitud DELETE:", e)
         return jsonify({'message': 'Error al procesar la solicitud'}),500
 
+
 #_______________________________________________________________________________________________________
+                                                #Ventas
+
 #RUTA PARA VENDER
 @app.route('/facturar', methods=['POST', 'GET'])
 @login_required
@@ -465,83 +514,18 @@ def obtener_pago(id_venta):
         print("Error al obtener el pago:", str(e))
         return jsonify({"status": "error", "message": "Error al obtener el pago."}), 500
 
-
-    
-#RUTA PARA IMPRIMIR FACTURAS
-"""@app.route('/imprimir_factura/<int:id_factura>', methods=['GET'])
-@login_required
-def imprimir_factura(id_factura):
-    try:
-        conn = mysql.connection
-        cursor = conn.cursor()
-
-        # Obtener datos de la factura
-        datos_factura, error = obtener_datos_factura(cursor, id_factura)
-        if error:
-            return f"Error al obtener datos de la factura: {error}", 404
-
-        # Generar PDF
-        pdf_path, error = generar_pdf_factura(datos_factura)
-        if error:
-            return f"Error al generar el PDF: {error}", 500
-
-        # Enviar el archivo PDF como respuesta
-        return send_file(pdf_path, as_attachment=True, download_name=f"factura_{datos_factura['numero_factura']}.pdf")
-
-    except Exception as e:
-        print("Error al procesar la solicitud:", str(e))
-        return "Error interno del servidor.", 500
-"""
-#_______________________________________________________________________________________________________
-
-#RUTA PARA EDITAR PRODUCTOS
-@app.route('/editar_producto', methods=['PUT'])
-@login_required
-def editar_producto():
-    if request.method == 'PUT':
-        try:
-            data = request.form
-            identificador_p = data.get('producto_id')
-            nombre = data.get('edit_NameProduct')
-            descripcion = data.get('edit_Description')
-            precio = data.get('edit_Price')
-            stock = data.get('edit_Stock')
-            
-            if not all([nombre, descripcion, precio, stock, identificador_p]):
-                return jsonify(success=False, message="Faltan datos"), 400
-
-            # Validar de los datos correctos
-            try:
-                precio = float(precio)
-                stock = int(stock)
-                if precio < 0 or stock < 0:
-                    return 
-            except ValueError:
-                return 
-            # Intentar actualizar el producto
-            if actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
-                return jsonify(success=True), 200
-            else:
-                return jsonify(success=False, message="Error al actualizar el producto"), 400
-        except Exception as e:
-            print(f"Error al procesar la solicitud {e}")
-            return jsonify({'message': 'Error al procesar la solicitud'}),500
-
-#_______________________________________________________________________________________________________
-
-
-#RUTA PARA CERRAR SESION
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('logout'))
-
 #_______________________________________________________________________________________________________
 
 # MANEJO PARA EL 404 ERROR
 def status404(error):
     return render_template('404handler.html'), 404
+
+#_______________________________________________________________________________________________________
+
+#EN CASO DE METODO INCORRECTO
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return jsonify(success=False, message="Método no permitido"), 405
 
 #_______________________________________________________________________________________________________
 

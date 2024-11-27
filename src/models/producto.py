@@ -14,23 +14,46 @@ class Producto:
         self.id_proveedor=id_proveedor
 
     
+def obtener_producto_id(prd_id):
+    try: 
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql = """
+        SELECT nombre, descripcion, precio, stock, id_categoria, id_proveedor 
+        FROM productos 
+        WHERE identificador_p = %s
+        """
+        cursor.execute(sql, (prd_id,))
+        producto = cursor.fetchone()
+    except Exception as e:
+        logging.error("Error al obtener el producto con ID %s: %s", prd_id, str(e))
+        producto = None
+    finally:
+        if cursor:
+            cursor.close()
+    return producto
+
 def obtener_lista_productos():
-    conn = mysql.connection
-    cursor = conn.cursor()
-    sql= "SELECT identificador_p, nombre, descripcion, precio, stock, id_categoria, id_proveedor FROM productos"
-    cursor.execute(sql)
-    Productos=[]
-    for row in cursor.fetchall():
-        identificador_p, nombre, descripcion, precio, stock, id_categoria, id_provedor = row
-        producto= Producto(identificador_p, nombre, descripcion, precio, stock, id_categoria, id_provedor)
-        Productos.append(producto)
-    cursor.close()
-    return Productos
+    try:    
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql= "SELECT identificador_p, nombre, descripcion, precio, stock, id_categoria, id_proveedor FROM productos"
+        cursor.execute(sql)
+        Productos=[]
+        for row in cursor.fetchall():
+            identificador_p, nombre, descripcion, precio, stock, id_categoria, id_provedor = row
+            producto= Producto(identificador_p, nombre, descripcion, precio, stock, id_categoria, id_provedor)
+            Productos.append(producto)
+        cursor.close()
+        return Productos
+    except Exception as e:
+        logging.error("Error al obtener la lista de productos", str(e))
+        
 
 def crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, id_proveedor, id_categoria):
-    conn = mysql.connection
-    cursor = conn.cursor()
     try:
+        conn = mysql.connection
+        cursor = conn.cursor()
         sql = "INSERT INTO productos (nombre, descripcion, precio, stock, fecha_ingreso, id_proveedor, id_categoria) VALUES (%s,%s,%s,%s,%s,%s,%s)"
         cursor.execute(sql,(nombre, descripcion, precio, stock, fecha_ingreso, id_proveedor, id_categoria))
         conn.commit()
@@ -60,6 +83,7 @@ def actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
         cursor.close()
         print("Error al actualizar el producto:", e)
         return False
+
 
 def eliminar_productos(prd_id):
     try:

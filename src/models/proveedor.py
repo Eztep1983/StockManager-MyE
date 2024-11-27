@@ -12,6 +12,7 @@ class Proveedor:
         self.correo_electronico = correo_electronico
         self.id_proveedor = id_proveedor  
 
+
 def obtener_proveedores():
     conn = mysql.connection
     cursor = conn.cursor()
@@ -24,8 +25,6 @@ def obtener_proveedores():
         proveedores.append(proveedor)
     cursor.close()
     return proveedores
-
-
 
 def añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
     conn = mysql.connection

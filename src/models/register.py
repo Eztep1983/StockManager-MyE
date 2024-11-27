@@ -1,6 +1,7 @@
 import bcrypt
 from models.entities.user import User
 
+#Clase para registrar a los usuarios 
 class Register:
     @classmethod
     def register(cls, db, user):
