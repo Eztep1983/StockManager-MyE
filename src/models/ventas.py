@@ -1,6 +1,6 @@
 from flask_mysqldb import MySQL
 from config import config
-
+from flask import logging
 
 mysql = MySQL()
 development_config = config['development']
@@ -60,7 +60,8 @@ def obtener_ventas():
         cursor.close()
         return ventas
     except Exception as e:
-        print(f"Error al mostrar las ventas: {e}")  # Agregar este mensaje de error
+        logging.error("Error al mostrar las ventas", str(e))
+        print(f"Error al mostrar las ventas: {e}")  
         return []
 
 
@@ -68,16 +69,14 @@ def eliminar_venta(id_venta):
     try:
         conn = mysql.connection
         cursor = conn.cursor()
-
-        # Consulta SQL correcta para eliminar una venta
         sql = "DELETE FROM ventas WHERE id = %s"
         cursor.execute(sql, (id_venta,))
-
-        conn.commit()  # Confirmar los cambios en la base de datos
+        conn.commit()  
         cursor.close()
         return True
     except Exception as e:
-        conn.rollback()  # Revertir cambios en caso de error
+        conn.rollback()  
         cursor.close()
+        logging.error("Error al eliminar la venta", str(e))
         print(f"Error al eliminar la venta: {str(e)}")
         return False

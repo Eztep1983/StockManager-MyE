@@ -16,17 +16,21 @@ class Cliente:
         self.identificador_c = identificador_c
             
 def obtener_lista_clientes():
-    conn = mysql.connection
-    cursor = conn.cursor()
-    sql = 'SELECT cedula, nombres, apellidos, direccion, telefono, correo_electronico, identificador_c FROM clientes'
-    cursor.execute(sql)
-    clientes = []
-    for row in cursor.fetchall():
-        cedula, nombres, apellidos, direccion, telefono, correo_electronico, identificador_c = row
-        cliente = Cliente(cedula, nombres, apellidos, direccion, telefono, correo_electronico, identificador_c )
-        clientes.append(cliente)
-    cursor.close()
-    return clientes
+    try: 
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql = 'SELECT cedula, nombres, apellidos, direccion, telefono, correo_electronico, identificador_c FROM clientes'
+        cursor.execute(sql)
+        clientes = []
+        for row in cursor.fetchall():
+            cedula, nombres, apellidos, direccion, telefono, correo_electronico, identificador_c = row
+            cliente = Cliente(cedula, nombres, apellidos, direccion, telefono, correo_electronico, identificador_c )
+            clientes.append(cliente)
+        cursor.close()
+        return clientes
+    except Exception as e:
+        logging.error("Error al añadir cliente:", str(e))
+        return None
 
 
 def añadir_cliente(cedula, nombres, apellidos, direccion, telefono, correo_electronico):
@@ -41,6 +45,7 @@ def añadir_cliente(cedula, nombres, apellidos, direccion, telefono, correo_elec
     except Exception as e:
         conn.rollback()
         cursor.close()
+        logging.error("Error al añadir cliente:", str(e))
         print("Error al añadir cliente:", str(e))
         return False
     
@@ -56,6 +61,7 @@ def actualizar_cliente(identificador_c ,nombres, apellidos, direccion, telefono,
     except Exception as e:
         conn.rollback()
         cursor.close()
+        logging.error("Error al actualizar cliente:", str(e))
         print("Error al actualizar cliente:", str(e))
         return False
 

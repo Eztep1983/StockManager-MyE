@@ -7,7 +7,6 @@ class Register:
     def register(cls, db, user):
         try:
             cursor = db.connection.cursor()
-
             # Verificar si la identificación ya existe
             sql_check = "SELECT id_trabajador FROM users WHERE identification = %s"
             cursor.execute(sql_check, (user.identification,))

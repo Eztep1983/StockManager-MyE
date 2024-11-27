@@ -11,7 +11,7 @@ class User:
         
     @classmethod
     def check_password(cls, hashed_password, password):
-        # Valida usando bcrypt
+        # Validacion usando bcrypt
         return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
     def is_active(self):

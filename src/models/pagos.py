@@ -1,7 +1,6 @@
 from flask_mysqldb import MySQL
 from config import config
-from flask import jsonify
-
+from flask import logging
 
 mysql = MySQL()
 development_config = config['development']
@@ -95,6 +94,7 @@ def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, to
         }
     except Exception as e:
         conn.rollback()  # Revertir la transacción en caso de error
+        logging.error(f"Error al procesar la facturación. Venta: {usuario}, Cliente: {cliente}, Total: {total}")
         print(f"Error al procesar la facturación. Venta: {usuario}, Cliente: {cliente}, Total: {total}")
         print("Error:", str(e))
         return {"status": "error", "message": str(e)}
@@ -134,4 +134,5 @@ def obtener_datos_factura(cursor, id_factura):
         }, None
 
     except Exception as e:
+        logging.error("Error al obtener los datos de la factura", str(e))
         return None, str(e)

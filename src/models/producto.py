@@ -62,7 +62,7 @@ def crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, id_proveed
     except Exception as e:
         conn.rollback() 
         cursor.close()
-        print("Error al añadir el producto", str(e))
+        logging.error("Error al crear el producto", str(e))
         return False 
     
 
@@ -81,7 +81,7 @@ def actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
     except Exception as e:
         conn.rollback()
         cursor.close()
-        print("Error al actualizar el producto:", e)
+        logging.error("Error al actualizar el producto", str(e))
         return False
 
 

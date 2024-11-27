@@ -11,15 +11,6 @@
     <title>Vender</title>
 </head>
 <body id="color-facturar">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-            {% endwith %}
     <div class="mdl-layout mdl-js-layout">
         <!-- Navegación -->
         <nav class="mdl-navigation">
@@ -88,7 +79,8 @@
                         <tbody>
                             <tr class="fila-producto">
                                 <td>
-                                    <select class="producto" name="productos[]">
+                                    <label for="id_product">Cliente:</label>
+                                    <select class="producto" id="id_product" name="productos[]" style="width: 100%">                            
                                         <option value = "">Seleccionar</option>
                                         {% for producto in lista_productos %}
                                         <option value="{{ producto.identificador_p }}">{{ producto.nombre }}</option>
@@ -294,12 +286,35 @@
 });
 
     // Inicializar Select2 en el campo de cliente
-    $(document).ready(function() {
-        $('#id_cliente').select2({
-            placeholder: "Buscar cliente",
-            allowClear: true // Para permitir que el campo se quede vacío
-        });
+$(document).ready(function() {
+    $('#id_product').select2({
+        placeholder: "Buscar cliente",
+        allowClear: true // Para permitir que el campo se quede vacío
     });
+});
+//Por si la lista de clientes es muy larga
+    $('#id_cliente').select2({
+        placeholder: 'Buscar cliente',
+        ajax: {
+            url: '/buscar_clientes',  // URL para obtener los clientes desde el servidor
+            dataType: 'json',
+            processResults: function (data) {
+                return {
+                    results: data.map(function (cliente) {
+                        return { id: cliente.identificador_c, text: cliente.nombres + ' ' + cliente.apellidos };
+                    })
+                };
+            }
+        }
+    });
+    
+    // Inicializar Select2 en el campo de cliente
+$(document).ready(function() {
+    $('#id_cliente').select2({
+         placeholder: "Buscar cliente",
+         allowClear: true // Para permitir que el campo se quede vacío
+     });
+});
 //Por si la lista de clientes es muy larga
     $('#id_cliente').select2({
         placeholder: 'Buscar cliente',

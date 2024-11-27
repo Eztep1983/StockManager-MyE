@@ -108,7 +108,7 @@ def register():
                 flash(str(ve), "warning")
             except Exception as e:
                 flash("Error al registrar usuario", "danger")
-                return('register')
+                return redirect(url_for('register'))
 
         return render_template('auth/register.html')
     except Exception as e:
@@ -285,7 +285,10 @@ def editar_producto():
 @app.route('/categorias')
 @login_required
 def get_categorias():
-    lista_categorias = obtener_categorias()
+    try: 
+        lista_categorias = obtener_categorias()
+    except Exception as e:
+        print("Error al obtener las categoras", str(e))
     return render_template('productos.html', lista_categorias=lista_categorias)
 
 
@@ -313,10 +316,11 @@ def crear_categoria():
 @app.route('/ventas')
 @login_required
 def ventas():
-    lista_ventas = obtener_ventas()
+    try:
+        lista_ventas = obtener_ventas()
+    except Exception as e:
+        print("Error al obtener las ventas", str(e))
     return render_template('ventas.html', ventas=lista_ventas)
-
-
 
 
 #_______________________________________________________________________________________________________
@@ -332,7 +336,7 @@ def clientes():
     except Exception as e:
         print(f"Error al obtener la lista de clientes: {e}")
         mensaje_error = 'No se ha podido obtener la lista de clientes.'
-        return render_template('clientes.html', clientes=lista_clientes, mensaje_error = mensaje_error)
+    return render_template('clientes.html', clientes=lista_clientes, mensaje_error = mensaje_error)
 
 
 #RUTA PARA AÑADIR CLIENTES 

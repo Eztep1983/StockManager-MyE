@@ -1,6 +1,6 @@
 from flask_mysqldb import MySQL
 from config import config
-
+from flask import logging
 mysql = MySQL()
 development_config = config['development']
 
@@ -14,22 +14,26 @@ class Proveedor:
 
 
 def obtener_proveedores():
-    conn = mysql.connection
-    cursor = conn.cursor()
-    sql = "SELECT id_proveedor, nombre_empresa, direccion, telefono, correo_electronico FROM proveedores"
-    cursor.execute(sql)
-    proveedores = []
-    for row in cursor.fetchall():
-        id_proveedor, nombre_empresa, direccion, telefono, correo_electronico = row
-        proveedor = Proveedor(nombre_empresa, direccion, telefono, correo_electronico, id_proveedor)
-        proveedores.append(proveedor)
-    cursor.close()
-    return proveedores
+    try: 
+        conn = mysql.connection
+        cursor = conn.cursor()
+        sql = "SELECT id_proveedor, nombre_empresa, direccion, telefono, correo_electronico FROM proveedores"
+        cursor.execute(sql)
+        proveedores = []
+        for row in cursor.fetchall():
+            id_proveedor, nombre_empresa, direccion, telefono, correo_electronico = row
+            proveedor = Proveedor(nombre_empresa, direccion, telefono, correo_electronico, id_proveedor)
+            proveedores.append(proveedor)
+        cursor.close()
+        return proveedores
+    except Exception as e:
+        logging.error("Error al obtener los proveedores", str(e))
+        return None
 
 def añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
-    conn = mysql.connection
-    cursor = conn.cursor()
     try:
+        conn = mysql.connection
+        cursor = conn.cursor()
         sql = "INSERT INTO proveedores (nombre_empresa, direccion, telefono, correo_electronico) VALUES (%s, %s, %s, %s)"
         cursor.execute(sql, (nombre_empresa, direccion, telefono, correo_electronico))
         conn.commit()
@@ -38,7 +42,7 @@ def añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
     except Exception as e:
         conn.rollback()
         cursor.close()
-        print("Error al añadadir el proveedor:", str(e))
+        logging.error("Error añadir el proveedor", str(e))
         return False
     
 def eliminar_proveedor(id_proveedor):
@@ -46,7 +50,7 @@ def eliminar_proveedor(id_proveedor):
     cursor = conn.cursor()
     try:
         sql = "DELETE FROM proveedores WHERE id_proveedor = %s"
-        print("SQL:", sql)  # Agregar esta línea para imprimir la consulta SQL
+        print("SQL:", sql)
         cursor.execute(sql, (id_proveedor))
         conn.commit()
         cursor.close()
@@ -54,7 +58,7 @@ def eliminar_proveedor(id_proveedor):
     except Exception as e:
         conn.rollback()
         cursor.close()
-        print("Error al eliminar el proveedor:", str(e))
+        logging.error("Error al eliminar el proveedor", str(e))
         return False
  
 def actualizar_proveedore(nombre_empresa, direccion, telefono, correo_electronico, id_proveedor):
@@ -69,5 +73,5 @@ def actualizar_proveedore(nombre_empresa, direccion, telefono, correo_electronic
     except Exception as e:
         conn.rollback()
         cursor.close()
-        print("Error al actualizar cliente:", str(e))
+        logging.error("Error al actualizar el proveedor", str(e))
         return False

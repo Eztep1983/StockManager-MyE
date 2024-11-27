@@ -1,6 +1,6 @@
 from flask_mysqldb import MySQL
 from config import config
-
+from flask import logging
 mysql = MySQL()
 development_config = config['development']
 
@@ -61,6 +61,7 @@ def obtener_ultimas_ventas():
         return ultimas_ventas
 
     except Exception as e:
+        logging.error(f"No se ha podido obtener las últimas ventas: {e}")
         print(f"No se ha podido obtener las últimas ventas: {e}")
         return []
 

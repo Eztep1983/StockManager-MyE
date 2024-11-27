@@ -1,5 +1,4 @@
 from models.entities.user import User
-import bcrypt
 
 class ModelUser:
     @classmethod

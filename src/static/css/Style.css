@@ -660,14 +660,28 @@ button {
   margin: 20px 0; 
 }
 
-.no-ultimas-ventas{
-  background-color: #007bff; 
-  color: #ffffff; 
-  font-size: 18px; 
-  font-weight: bold; 
-  text-align: center; 
-  padding: 20px; 
-  border-radius: 50px; 
-  margin: 20px 0; 
+#ultimos-productos {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }
+.table-responsive {
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th, .table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.table th {
+  background-color: #f2f2f2;
+}
+.text-center {
+  text-align: center;
+}
+
 

@@ -38,6 +38,7 @@ def obtener_categorias():
             cursor.close()
         return categorias
     except Exception as e:
+        logging.error("Error al obtener las categorias", str(e))
         print("Error al obtener la lista de categorias")
 
 
