@@ -7,153 +7,165 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Ventas</title>
-	<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas</title>
+    <style>
         @media only screen and (max-width: 600px) {
             .mdl-cell {
                 width: 100% !important; 
-				margin : 0 auto;
+                margin: 0 auto;
             }
         }
     </style>
 </head>
 <body>
-	<div class="mdl-layout mdl-js-layout">
-		<!-- Navegación -->
+    <div class="mdl-layout mdl-js-layout">
+        <!-- Navegación -->
         <nav class="mdl-navigation">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
                 <span class="gg-menu"></span>
             </button>
-            <a id = "logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
         </nav>
-		<div class="mdl-layout__drawer">
-			<i class="mdi--user-tie"></i>
-			<center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
-			<nav class="mdl-navigation">
-				<a href="/home">Inicio</a><br>
-				<br>
-				<a href="/productos">Productos</a><br>
-				<br>
-				<a href="/ventas">Ventas</a><br>
-				<br>
-				<a href="/proveedores">Proveedores</a><br>
-				<br>
-				<a href="/clientes">Clientes</a><br>
-				<br>
-			</nav>
-		</div>
-		<!-- Contenido principal -->
-<main class="mdl-layout__content">
-		<center><div class="titulo">LISTA DE VENTAS</center>
-			<br>
-			<section class="table-container">
-				{% if ventas is not none and ventas|length > 0 %}
-					<div class="mdl-grid" style="overflow-x:auto;">
-						<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">							
-								<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
-									<thead>
-										<tr>
-											<th class="mdl-data-table__cell--non-numeric">Fecha</th>
-											<th>Vendido por</th>											
-											<th>Cliente</th>
-											<th>Hora</th>
-											<th>Detalles</th>
-										</tr>
-									</thead>
-									<tbody>
-										{% for venta in ventas %}
-										<tr>                                            
-											<td class="mdl-data-table__cell--non-numeric">{{ venta.fecha_venta }}</td>
-											<td>{{ venta.hora }}</td>
-											<td>{{ venta.nombre_usuario }}</td> <!-- Mostrar el nombre del usuario -->
-											<td>{{ venta.id_cliente }} {{ venta.nombre_cliente }}</td> <!-- Mostrar nombre del cliente -->
-											<td>										
-												<button 
-													class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect ver-factura" 
-													data-id-venta="{{ venta.id_venta }}">
-													<i class="zmdi zmdi-receipt"></i>
-												</button>												
-											</td>
-										</tr>
-										{% endfor %}										
-									</tbody>
-								</table>							
-						</div>
-					</div>
-				{% else %}
-					<center> <p class="no-clients-message">Aún no hay ventas, factura para visualizarlas</p> </center>
-				{% endif %}
-				<section><button id="boton_vender" onclick="window.location.href='/facturar'">Facturacion</button></section>		
-		</div>
-	</div>
-		<footer>
-			<script>
-				document.addEventListener("DOMContentLoaded", () => {
-					// Seleccionar todos los botones con la clase "ver-factura"
-					const botonesFactura = document.querySelectorAll(".ver-factura");
-				
-					botonesFactura.forEach((boton) => {
-						boton.addEventListener("click", async () => {
-							// Obtener el id_venta desde el atributo data-id-venta
-							const idVenta = boton.getAttribute("data-id-venta");
-				
-							try {
-								// Solicitar los datos de la factura y pago al servidor
-								const response = await fetch(`/obtener_pago/${idVenta}`);
-								const data = await response.json();
-				
-								if (data.status === "success") {
-									const pago = data.pago;
-				
-									// Construir un Swal con los datos de la factura y el pago
-									Swal.fire({
-										title: `Factura y Pago - Venta #${pago.id_venta}`,
-										html: `
-											<strong>Número de Factura:</strong> ${pago.numero_factura || "No disponible"}<br>
-											<strong>Monto:</strong> $${pago.monto.toFixed(2)}<br>
-											<strong>Fecha de Pago:</strong> ${pago.fecha_pago}<br>
-											<strong>Hora de Pago:</strong> ${pago.hora_pago}<br>
-											<strong>Nota:</strong> ${pago.nota || "Sin nota"}<br>
-											<strong>ID Pago:</strong> ${pago.id_pagos}<br>
-											<strong>ID Factura:</strong> ${pago.id_factura || "No disponible"}<br>
-										`,
-										icon: "info",
-										confirmButtonText: "Cerrar",
-										customClass: {
-											popup: "swal-wide",
-										},
-									});
-								} else {
-									// Mostrar un Swal de error si no se encuentran datos
-									Swal.fire({
-										title: "Error",
-										text: data.message,
-										icon: "error",
-										confirmButtonText: "Cerrar",
-									});
-								}
-							} catch (error) {
-								console.error("Error al obtener los datos:", error);
-				
-								// Mostrar un Swal de error genérico
-								Swal.fire({
-									title: "Error",
-									text: "Ocurrió un error al procesar la solicitud.",
-									icon: "error",
-									confirmButtonText: "Cerrar",
-								});
-							}
-						});
-					});
-				});							
-			</script>
-			<p>&copy; 2024 StockManager JyE</p>
-		</footer>
-	</section>
+        <div class="mdl-layout__drawer">
+            <i class="mdi--user-tie"></i>
+            <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>        
+            <nav class="mdl-navigation">
+                <a href="/home">Inicio</a><br>
+                <br>
+                <a href="/productos">Productos</a><br>
+                <br>
+                <a href="/ventas">Ventas</a><br>
+                <br>
+                <a href="/proveedores">Proveedores</a><br>
+                <br>
+                <a href="/clientes">Clientes</a><br>
+                <br>
+            </nav>
+        </div>
+        <!-- Contenido principal -->
+        <main class="mdl-layout__content">
+            <center><div class="titulo">LISTA DE VENTAS</center>
+            <br>
+            <div class="mb-4">
+                <input type="text" id="searchInput" placeholder="Buscar venta..." class="w-full p-2 border border-gray-300 rounded">
+            </div>
+            <section class="table-container">
+                {% if ventas is not none and ventas|length > 0 %}
+                    <div class="mdl-grid" style="overflow-x:auto;">
+                        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">                            
+                            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive" id="ventasTable">
+                                <thead>
+                                    <tr>
+                                        <th class="mdl-data-table__cell--non-numeric">Fecha</th>
+                                        <th>Vendido por</th>                                            
+                                        <th>Cliente</th>
+                                        <th>Hora</th>
+                                        <th>Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for venta in ventas %}
+                                    <tr>                                            
+                                        <td class="mdl-data-table__cell--non-numeric">{{ venta.fecha_venta }}</td>
+                                        <td>{{ venta.hora }}</td>
+                                        <td>{{ venta.nombre_usuario }}</td> <!-- Mostrar el nombre del usuario -->
+                                        <td>{{ venta.id_cliente }} {{ venta.nombre_cliente }}</td> <!-- Mostrar nombre del cliente -->
+                                        <td>                                        
+                                            <button 
+                                                class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect ver-factura" 
+                                                data-id-venta="{{ venta.id_venta }}">
+                                                <i class="zmdi zmdi-receipt"></i>
+                                            </button>                                                
+                                        </td>
+                                    </tr>
+                                    {% endfor %}                                        
+                                </tbody>
+                            </table>                            
+                        </div>
+                    </div>
+                {% else %}
+                    <center> <p class="no-clients-message">Aún no hay ventas, factura para visualizarlas</p> </center>
+                {% endif %}
+                <section><button id="boton_vender" onclick="window.location.href='/facturar'">Facturacion</button></section>        
+            </div>
+        </div>
+        <footer>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const botonesFactura = document.querySelectorAll(".ver-factura");
+                    botonesFactura.forEach((boton) => {
+                        boton.addEventListener("click", async () => {
+                            const idVenta = boton.getAttribute("data-id-venta");
+                            try {
+                                const response = await fetch(`/obtener_pago/${idVenta}`);
+                                const data = await response.json();
+                                if (data.status === "success") {
+                                    const pago = data.pago;
+                                    Swal.fire({
+                                        title: `Factura y Pago - Venta #${pago.id_venta}`,
+                                        html: `
+                                            <strong>Número de Factura:</strong> ${pago.numero_factura || "No disponible"}<br>
+                                            <strong>Monto:</strong> $${pago.monto.toFixed(2)}<br>
+                                            <strong>Fecha de Pago:</strong> ${pago.fecha_pago}<br>
+                                            <strong>Hora de Pago:</strong> ${pago.hora_pago}<br>
+                                            <strong>Nota:</strong> ${pago.nota || "Sin nota"}<br>
+                                            <strong>ID Pago:</strong> ${pago.id_pagos}<br>
+                                            <strong>ID Factura:</strong> ${pago.id_factura || "No disponible"}<br>
+                                        `,
+                                        icon: "info",
+                                        confirmButtonText: "Cerrar",
+                                        customClass: {
+                                            popup: "swal-wide",
+                                        },
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: data.message,
+                                        icon: "error",
+                                        confirmButtonText: "Cerrar",
+                                    });
+                                }
+                            } catch (error) {
+                                console.error("Error al obtener los datos:", error);
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Ocurrió un error al procesar la solicitud.",
+                                    icon: "error",
+                                    confirmButtonText: "Cerrar",
+                                });
+                            }
+                        });
+                    });
+
+                    // Search functionality
+                    const searchInput = document.getElementById('searchInput');
+                    const ventasTable = document.getElementById('ventasTable');
+                    const rows = ventasTable.getElementsByTagName('tr');
+
+                    searchInput.addEventListener('keyup', function() {
+                        const filter = searchInput.value.toLowerCase();
+                        for (let i = 1; i < rows.length; i++) {
+                            const cells = rows[i].getElementsByTagName('td');
+                            let match = false;
+                            for (let j = 0; j < cells.length; j++) {
+                                if (cells[j].innerText.toLowerCase().includes(filter)) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+                            rows[i].style.display = match ? '' : 'none';
+                        }
+                    });
+                });
+            </script>
+            <p>&copy; 2024 StockManager JyE</p>
+        </footer>
+    </section>
 </main>
 
 {% endblock %}

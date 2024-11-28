@@ -9,6 +9,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vender</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media only screen and (max-width: 600px) {
+            .mdl-cell {
+                width: 100% !important; 
+                margin: 0 auto;
+            }
+        }
+    </style>
 </head>
 <body id="color-facturar">
     <div class="mdl-layout mdl-js-layout">
@@ -40,15 +50,15 @@
                 <br>
             </header>
             <form id="formulario-facturacion" method="POST" action="/facturar">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <!-- Información de la Venta -->
                 <div>
-                <center>
+                    <center>
                         <label for="id_usuario">Usuario:</label>
                         <br>
-                    <span>{{ current_user.fullname }}</span>
-                    <input type="hidden" name="id_usuario" value="{{ current_user.id }}">
-                </center>
+                        <span>{{ current_user.fullname }}</span>
+                        <input type="hidden" name="id_usuario" value="{{ current_user.id }}">
+                    </center>
                 </div>
                 <div>
                     <label for="id_cliente">Cliente:</label>
@@ -75,15 +85,14 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                    <section>
                         <tbody>
                             <tr class="fila-producto">
                                 <td>
-                                    <label for="id_product">Cliente:</label>
+                                    <label for="id_product">Producto:</label>
                                     <select class="producto" id="id_product" name="productos[]" style="width: 100%">                            
-                                        <option value = "">Seleccionar</option>
+                                        <option value="">Seleccionar</option>
                                         {% for producto in lista_productos %}
-                                        <option value="{{ producto.identificador_p }}">{{ producto.nombre }}</option>
+                                            <option value="{{ producto.identificador_p }}">{{ producto.nombre }}</option>
                                         {% endfor %}
                                     </select>
                                     <input type="text" class="servicio" name="servicio[]" placeholder="Describir servicio">
@@ -102,10 +111,8 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </section>
                     </table>
                     <button type="button" id="agregar-producto">Agregar</button>                    
-                
                 </div>
                 <!-- Total -->
                 <div>
@@ -122,7 +129,7 @@
                     <label for="notas">Nota:</label>
                     <textarea id="notas" name="notas"></textarea>
                 </div>
-                <center><button type="submit">Facturar</button></center>
+                <center><button id="facturar-button" type="submit">Facturar</button></center>
             </form>            
         </main>
     </div>
@@ -146,59 +153,68 @@
         fechaInputPago.value = fecha; 
         horaInputPago.value = hora;    
 
-    document.getElementById("formulario-facturacion").addEventListener("submit", function(event) {
-        // Evita el envío del formulario mientras se valida
-        event.preventDefault();
-
-        // Variables para validar
-        const idCliente = document.getElementById("id_cliente").value.trim();
-        const filasProductos = document.querySelectorAll(".fila-producto");
-        const notas = document.getElementById("notas").value.trim();
-        let productosValidos = true;
-
-        // Validar Cliente
-        if (!idCliente) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Por favor, selecciona un cliente.",
-            });
-            return;
-        }
-
-        // Validar Productos/Servicios
-        filasProductos.forEach(fila => {
-            const producto = fila.querySelector(".producto").value.trim();
-            const cantidad = fila.querySelector(".cantidad").value.trim();
-            const precio = fila.querySelector(".precio").value.trim();
-
-            if (!producto || !cantidad || !precio) {
-                productosValidos = false;
+        document.getElementById("formulario-facturacion").addEventListener("submit", function(event) {
+            // Evita el envío del formulario mientras se valida
+            event.preventDefault();
+    
+            // Variables para validar
+            const idCliente = document.getElementById("id_cliente").value.trim();
+            const filasProductos = document.querySelectorAll(".fila-producto");
+            const notas = document.getElementById("notas").value.trim();
+            let productosValidos = true;
+    
+            // Validar Cliente
+            if (!idCliente) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Por favor, selecciona un cliente.",
+                });
+                return;
             }
+    
+            // Validar Productos/Servicios
+            filasProductos.forEach(fila => {
+                const producto = fila.querySelector(".producto").value.trim();
+                const cantidad = fila.querySelector(".cantidad").value.trim();
+                const precio = fila.querySelector(".precio").value.trim();
+    
+                if (!producto || !cantidad || !precio) {
+                    productosValidos = false;
+                }
+            });
+    
+            if (!productosValidos) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Por favor, completa todos los campos de productos/servicios.",
+                });
+                return;
+            }
+            
+            // Validar Nota opcional (puedes omitir si no es obligatorio)
+            if (notas.length > 500) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Nota demasiado larga",
+                    text: "La nota no debe superar los 500 caracteres.",
+                });
+                return;
+            }
+    
+            // Si todo está validado, muestra el SweetAlert de éxito
+            Swal.fire({
+                icon: "success",
+                title: "¡Facturado correctamente!",
+                text: "Tu factura ha sido generada.",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Aquí puedes enviar el formulario si es necesario
+                    this.submit();
+                }
+            });
         });
-
-        if (!productosValidos) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Por favor, completa todos los campos de productos/servicios.",
-            });
-            return;
-        }
-        
-        // Validar Nota opcional (puedes omitir si no es obligatorio)
-        if (notas.length > 500) {
-            Swal.fire({
-                icon: "warning",
-                title: "Nota demasiado larga",
-                text: "La nota no debe superar los 500 caracteres.",
-            });
-            return;
-        }
-
-        // Si todo está validado, envía el formulario
-        this.submit();
-    });
 
     document.addEventListener("DOMContentLoaded", function () {
         const tablaProductos = document.querySelector("#tabla-productos tbody");
