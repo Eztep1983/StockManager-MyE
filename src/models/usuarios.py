@@ -7,6 +7,16 @@ development_config = config['development']
 
 
 def obtener_usuarios():
+    """
+    Obtiene la lista de usuarios de la base de datos.
+
+    Returns:
+        list: Una lista de objetos `User` que representan a los usuarios existentes.
+        bool: Retorna `False` si ocurre un error durante la operación.
+
+    Raises:
+        Exception: Registra y maneja cualquier error que ocurra durante la consulta.
+    """
     try: 
         conn = mysql.connection
         cursor = conn.cursor()

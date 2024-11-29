@@ -19,6 +19,10 @@
 -- Table structure for table `categorias_productos`
 --
 
+CREATE DATABASE StockManagerMyEs;
+USE SETECO;
+
+
 DROP TABLE IF EXISTS `categorias_productos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
