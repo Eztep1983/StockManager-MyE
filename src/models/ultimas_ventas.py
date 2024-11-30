@@ -29,7 +29,7 @@ def obtener_ultimas_ventas():
                 JOIN pagos pa ON v.id_venta = pa.id_venta
                 JOIN productos p ON dv.id_producto = p.identificador_p -- Reemplazar con el nombre correcto
                 ORDER BY pa.fecha_pago DESC, pa.hora_pago DESC
-                LIMIT 10;
+                LIMIT 8 OFFSET 0;
 
         """
         cursor.execute(sql)
@@ -66,4 +66,5 @@ def obtener_ultimas_ventas():
         return []
 
     finally:
-        cursor.close()
+        if cursor:
+            cursor.close()
