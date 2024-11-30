@@ -1,0 +1,1911 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenido a la documentación de StockManagerMyE &mdash; documentación de StockManagerMyE - 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=36c4ab74"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=f85f4cfb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            StockManagerMyE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Bienvenido a la documentación de <strong>StockManagerMyE</strong></a><ul>
+<li><a class="reference internal" href="#tecnologias-usadas">Tecnologías Usadas</a></li>
+<li><a class="reference internal" href="#dependencias">Dependencias</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#instalacion-y-configuracion">Instalación y Configuración</a></li>
+<li><a class="reference internal" href="#ejecucion-del-proyecto">Ejecución del Proyecto</a><ul>
+<li><a class="reference internal" href="#ensayo">Ensayo</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentacion-de-la-api">Documentación de la API</a><ul>
+<li><a class="reference internal" href="#module-app">Cómo funciona la API</a><ul>
+<li><a class="reference internal" href="#app.clientes"><code class="docutils literal notranslate"><span class="pre">clientes()</span></code></a></li>
+<li><a class="reference internal" href="#app.crear_categoria"><code class="docutils literal notranslate"><span class="pre">crear_categoria()</span></code></a></li>
+<li><a class="reference internal" href="#app.editar_cliente"><code class="docutils literal notranslate"><span class="pre">editar_cliente()</span></code></a></li>
+<li><a class="reference internal" href="#app.editar_producto"><code class="docutils literal notranslate"><span class="pre">editar_producto()</span></code></a></li>
+<li><a class="reference internal" href="#app.eliminar_cliente"><code class="docutils literal notranslate"><span class="pre">eliminar_cliente()</span></code></a></li>
+<li><a class="reference internal" href="#app.eliminar_producto"><code class="docutils literal notranslate"><span class="pre">eliminar_producto()</span></code></a></li>
+<li><a class="reference internal" href="#app.eliminar_proveedor"><code class="docutils literal notranslate"><span class="pre">eliminar_proveedor()</span></code></a></li>
+<li><a class="reference internal" href="#app.facturar"><code class="docutils literal notranslate"><span class="pre">facturar()</span></code></a></li>
+<li><a class="reference internal" href="#app.get_categorias"><code class="docutils literal notranslate"><span class="pre">get_categorias()</span></code></a></li>
+<li><a class="reference internal" href="#app.get_proveedores"><code class="docutils literal notranslate"><span class="pre">get_proveedores()</span></code></a></li>
+<li><a class="reference internal" href="#app.home"><code class="docutils literal notranslate"><span class="pre">home()</span></code></a></li>
+<li><a class="reference internal" href="#app.index"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
+<li><a class="reference internal" href="#app.load_user"><code class="docutils literal notranslate"><span class="pre">load_user()</span></code></a></li>
+<li><a class="reference internal" href="#app.login"><code class="docutils literal notranslate"><span class="pre">login()</span></code></a></li>
+<li><a class="reference internal" href="#app.logout"><code class="docutils literal notranslate"><span class="pre">logout()</span></code></a></li>
+<li><a class="reference internal" href="#app.method_not_allowed"><code class="docutils literal notranslate"><span class="pre">method_not_allowed()</span></code></a></li>
+<li><a class="reference internal" href="#app.nuevo_cliente"><code class="docutils literal notranslate"><span class="pre">nuevo_cliente()</span></code></a></li>
+<li><a class="reference internal" href="#app.nuevo_producto"><code class="docutils literal notranslate"><span class="pre">nuevo_producto()</span></code></a></li>
+<li><a class="reference internal" href="#app.obtener_pago"><code class="docutils literal notranslate"><span class="pre">obtener_pago()</span></code></a></li>
+<li><a class="reference internal" href="#app.producto_existe"><code class="docutils literal notranslate"><span class="pre">producto_existe()</span></code></a></li>
+<li><a class="reference internal" href="#app.provedor"><code class="docutils literal notranslate"><span class="pre">provedor()</span></code></a></li>
+<li><a class="reference internal" href="#app.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
+<li><a class="reference internal" href="#app.status401"><code class="docutils literal notranslate"><span class="pre">status401()</span></code></a></li>
+<li><a class="reference internal" href="#app.status404"><code class="docutils literal notranslate"><span class="pre">status404()</span></code></a></li>
+<li><a class="reference internal" href="#app.validar_correo"><code class="docutils literal notranslate"><span class="pre">validar_correo()</span></code></a></li>
+<li><a class="reference internal" href="#app.ventas"><code class="docutils literal notranslate"><span class="pre">ventas()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#clases-y-modelos">Clases y Modelos</a><ul>
+<li><a class="reference internal" href="#models.ModelUser.ModelUser"><code class="docutils literal notranslate"><span class="pre">ModelUser</span></code></a><ul>
+<li><a class="reference internal" href="#models.ModelUser.ModelUser.get_by_id"><code class="docutils literal notranslate"><span class="pre">ModelUser.get_by_id()</span></code></a></li>
+<li><a class="reference internal" href="#models.ModelUser.ModelUser.login"><code class="docutils literal notranslate"><span class="pre">ModelUser.login()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#models.entities.user.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li><a class="reference internal" href="#models.entities.user.User.can_delete_product"><code class="docutils literal notranslate"><span class="pre">User.can_delete_product()</span></code></a></li>
+<li><a class="reference internal" href="#models.entities.user.User.check_password"><code class="docutils literal notranslate"><span class="pre">User.check_password()</span></code></a></li>
+<li><a class="reference internal" href="#models.entities.user.User.get_id"><code class="docutils literal notranslate"><span class="pre">User.get_id()</span></code></a></li>
+<li><a class="reference internal" href="#models.entities.user.User.is_active"><code class="docutils literal notranslate"><span class="pre">User.is_active()</span></code></a></li>
+<li><a class="reference internal" href="#models.entities.user.User.is_authenticated"><code class="docutils literal notranslate"><span class="pre">User.is_authenticated()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#models.register.Register"><code class="docutils literal notranslate"><span class="pre">Register</span></code></a><ul>
+<li><a class="reference internal" href="#models.register.Register.register"><code class="docutils literal notranslate"><span class="pre">Register.register()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#models.categorias.Categoria"><code class="docutils literal notranslate"><span class="pre">Categoria</span></code></a></li>
+<li><a class="reference internal" href="#models.categorias.ingresar_categoria"><code class="docutils literal notranslate"><span class="pre">ingresar_categoria()</span></code></a></li>
+<li><a class="reference internal" href="#models.categorias.obtener_categorias"><code class="docutils literal notranslate"><span class="pre">obtener_categorias()</span></code></a></li>
+<li><a class="reference internal" href="#models.producto.Producto"><code class="docutils literal notranslate"><span class="pre">Producto</span></code></a></li>
+<li><a class="reference internal" href="#models.producto.actualizar_producto"><code class="docutils literal notranslate"><span class="pre">actualizar_producto()</span></code></a></li>
+<li><a class="reference internal" href="#models.producto.crear_producto"><code class="docutils literal notranslate"><span class="pre">crear_producto()</span></code></a></li>
+<li><a class="reference internal" href="#models.producto.eliminar_productos"><code class="docutils literal notranslate"><span class="pre">eliminar_productos()</span></code></a></li>
+<li><a class="reference internal" href="#models.producto.obtener_lista_productos"><code class="docutils literal notranslate"><span class="pre">obtener_lista_productos()</span></code></a></li>
+<li><a class="reference internal" href="#models.producto.obtener_producto_id"><code class="docutils literal notranslate"><span class="pre">obtener_producto_id()</span></code></a></li>
+<li><a class="reference internal" href="#models.proveedor.Proveedor"><code class="docutils literal notranslate"><span class="pre">Proveedor</span></code></a></li>
+<li><a class="reference internal" href="#models.proveedor.actualizar_proveedore"><code class="docutils literal notranslate"><span class="pre">actualizar_proveedore()</span></code></a></li>
+<li><a class="reference internal" href="#models.proveedor.anadir_proveedor"><code class="docutils literal notranslate"><span class="pre">añadir_proveedor()</span></code></a></li>
+<li><a class="reference internal" href="#models.proveedor.eliminar_proveedor"><code class="docutils literal notranslate"><span class="pre">eliminar_proveedor()</span></code></a></li>
+<li><a class="reference internal" href="#models.proveedor.obtener_proveedores"><code class="docutils literal notranslate"><span class="pre">obtener_proveedores()</span></code></a></li>
+<li><a class="reference internal" href="#models.ventas.Venta"><code class="docutils literal notranslate"><span class="pre">Venta</span></code></a><ul>
+<li><a class="reference internal" href="#models.ventas.Venta.id_venta"><code class="docutils literal notranslate"><span class="pre">Venta.id_venta</span></code></a></li>
+<li><a class="reference internal" href="#models.ventas.Venta.id_usuario"><code class="docutils literal notranslate"><span class="pre">Venta.id_usuario</span></code></a></li>
+<li><a class="reference internal" href="#models.ventas.Venta.fecha_venta"><code class="docutils literal notranslate"><span class="pre">Venta.fecha_venta</span></code></a></li>
+<li><a class="reference internal" href="#models.ventas.Venta.id_cliente"><code class="docutils literal notranslate"><span class="pre">Venta.id_cliente</span></code></a></li>
+<li><a class="reference internal" href="#models.ventas.Venta.hora"><code class="docutils literal notranslate"><span class="pre">Venta.hora</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#models.ventas.eliminar_venta"><code class="docutils literal notranslate"><span class="pre">eliminar_venta()</span></code></a></li>
+<li><a class="reference internal" href="#models.ventas.obtener_ventas"><code class="docutils literal notranslate"><span class="pre">obtener_ventas()</span></code></a></li>
+<li><a class="reference internal" href="#models.ultimas_ventas.obtener_ultimas_ventas"><code class="docutils literal notranslate"><span class="pre">obtener_ultimas_ventas()</span></code></a></li>
+<li><a class="reference internal" href="#models.pagos.anadir_facturacion"><code class="docutils literal notranslate"><span class="pre">añadir_facturacion()</span></code></a></li>
+<li><a class="reference internal" href="#models.pagos.obtener_datos_factura"><code class="docutils literal notranslate"><span class="pre">obtener_datos_factura()</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.Cliente"><code class="docutils literal notranslate"><span class="pre">Cliente</span></code></a><ul>
+<li><a class="reference internal" href="#models.cliente.Cliente.cedula"><code class="docutils literal notranslate"><span class="pre">Cliente.cedula</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.Cliente.nombres"><code class="docutils literal notranslate"><span class="pre">Cliente.nombres</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.Cliente.apellidos"><code class="docutils literal notranslate"><span class="pre">Cliente.apellidos</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.Cliente.direccion"><code class="docutils literal notranslate"><span class="pre">Cliente.direccion</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.Cliente.telefono"><code class="docutils literal notranslate"><span class="pre">Cliente.telefono</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.Cliente.correo_electronico"><code class="docutils literal notranslate"><span class="pre">Cliente.correo_electronico</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.Cliente.identificador_c"><code class="docutils literal notranslate"><span class="pre">Cliente.identificador_c</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#models.cliente.actualizar_cliente"><code class="docutils literal notranslate"><span class="pre">actualizar_cliente()</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.anadir_cliente"><code class="docutils literal notranslate"><span class="pre">añadir_cliente()</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.eliminarr_client"><code class="docutils literal notranslate"><span class="pre">eliminarr_client()</span></code></a></li>
+<li><a class="reference internal" href="#models.cliente.obtener_lista_clientes"><code class="docutils literal notranslate"><span class="pre">obtener_lista_clientes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">StockManagerMyE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Bienvenido a la documentación de <strong>StockManagerMyE</strong></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bienvenido-a-la-documentacion-de-stockmanagermye">
+<h1>Bienvenido a la documentación de <strong>StockManagerMyE</strong><a class="headerlink" href="#bienvenido-a-la-documentacion-de-stockmanagermye" title="Link to this heading"></a></h1>
+<p><strong>StockManagerMyE</strong> es un sistema de gestión de inventarios sencillo, pero potente, diseñado para facilitar la administración de productos, proveedores y ventas. Utilizando tecnologías modernas como <strong>Flask</strong> para el backend y <strong>Google Material Design</strong> para la interfaz de usuario, proporciona una experiencia de usuario fluida y eficiente.</p>
+<p>Este sistema es ideal para pequeñas y medianas empresas que necesitan gestionar su inventario de manera eficiente, desde el registro de productos hasta las ventas y pagos.</p>
+<section id="tecnologias-usadas">
+<h2>Tecnologías Usadas<a class="headerlink" href="#tecnologias-usadas" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Flask</strong>: Framework usado para el desarrollo del backend.</p></li>
+<li><p><strong>Jinja2</strong>: Motor de plantillas utilizado para generar el frontend dinámicamente.</p></li>
+<li><p><strong>Google Material Design</strong>: Framework de diseño utilizado para crear una interfaz de usuario atractiva y responsiva.</p></li>
+<li><p><strong>JavaScript</strong>: Para la interacción dinámica en el frontend.</p></li>
+<li><p><strong>MySQL</strong>: Sistema de gestión de bases de datos utilizado para almacenar toda la información relacionada con el inventario.</p></li>
+</ul>
+</section>
+<section id="dependencias">
+<h2>Dependencias<a class="headerlink" href="#dependencias" title="Link to this heading"></a></h2>
+<p>Para la autenticación y gestión de usuarios, se utilizan las siguientes dependencias:</p>
+<ul class="simple">
+<li><p><strong>Flask-Login</strong>: Maneja las sesiones de usuario.</p></li>
+<li><p><strong>Flask-WTF</strong>: Proporciona formularios seguros para la aplicación.</p></li>
+<li><p><strong>Werkzeug</strong>: Proporciona utilidades para la autenticación y manejo de contraseñas.</p></li>
+<li><p><strong>Bcrypt</strong>: Genera hashes de contraseñas para mayor seguridad.</p></li>
+</ul>
+</section>
+</section>
+<section id="instalacion-y-configuracion">
+<h1>Instalación y Configuración<a class="headerlink" href="#instalacion-y-configuracion" title="Link to this heading"></a></h1>
+<p>Para instalar y configurar el proyecto correctamente, sigue estos pasos:</p>
+<p>### Crear el entorno virtual</p>
+<p>Crea un entorno virtual en la carpeta raíz del proyecto con el siguiente comando:</p>
+<p>python3 -m venv nombre_del_entorno</p>
+<p>O si usas Windows:</p>
+<p>python -m venv nombre_del_entorno</p>
+<p>luego tienes que activar los scripts de el entorno virutal creado con el comando:</p>
+<p>nombre_de_entorno Scripts activate</p>
+<p>Una vez activado, instalar las dependencias dentro de la carpeta del proyecto, ejecuta el siguiente comando en la terminal:</p>
+<p>pip install -r requirements.txt</p>
+<p>### Configuración de la base de datos</p>
+<ol class="arabic">
+<li><p><strong>Configura la base de datos</strong>:</p>
+<p>El proyecto utiliza <strong>MySQL</strong> para la gestión de datos. Debes ejecutar el script de la base de datos para crear las tablas necesarias. El nombre predeterminado de la base de datos es <strong>StockManagerMyE</strong>.</p>
+</li>
+<li><p><strong>Configura las variables de entorno</strong>:</p>
+<p>Crea un archivo <cite>.env</cite> en la raíz del proyecto (si no existe) y agrega las siguientes variables, reemplazando con tus valores específicos:</p>
+</li>
+</ol>
+<p>MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PASSWORD=contraseña_db
+MYSQL_DB=nombre_db
+FLASK_ENV=development
+DEBUG = True</p>
+<p>Reemplazas los valores con los valores de la base de datos que creaste para el proyecto.</p>
+<p>Asegúrate de que los valores sean correctos para tu entorno de base de datos.</p>
+</section>
+<section id="ejecucion-del-proyecto">
+<h1>Ejecución del Proyecto<a class="headerlink" href="#ejecucion-del-proyecto" title="Link to this heading"></a></h1>
+<p>Para ejecutar el proyecto, abre la terminal y navega a la carpeta «src» donde se encuentra el archivo <cite>app.py</cite>. Luego, ejecuta el siguiente comando:</p>
+<section id="ensayo">
+<h2>Ensayo<a class="headerlink" href="#ensayo" title="Link to this heading"></a></h2>
+<p>Esto iniciará el servidor Flask. Verás algo similar a lo siguiente en la terminal:</p>
+<blockquote>
+<div><p>-Serving Flask app “app”
+-Running on all addresses (0.0.0.0)
+-Running on <a class="reference external" href="http://127.0.0.1:5000">http://127.0.0.1:5000</a>
+-Running on <a class="reference external" href="http://192.168.20.69:5000">http://192.168.20.69:5000</a></p>
+</div></blockquote>
+<p>El proyecto también estará disponible en una red local para que puedas acceder desde otros dispositivos (por ejemplo, tu teléfono móvil):</p>
+<p>Una vez que el servidor esté en funcionamiento, abre tu navegador, crea una cuenta de usuario y comienza a probar las funcionalidades del sistema.</p>
+</section>
+</section>
+<section id="documentacion-de-la-api">
+<h1>Documentación de la API<a class="headerlink" href="#documentacion-de-la-api" title="Link to this heading"></a></h1>
+<p>La API del sistema está construida sobre Flask y expone varios puntos de entrada para interactuar con los datos. Aquí se documentan las principales funcionalidades.</p>
+<section id="module-app">
+<span id="como-funciona-la-api"></span><h2>Cómo funciona la API<a class="headerlink" href="#module-app" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="app.clientes">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">clientes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.clientes" title="Link to this definition"></a></dt>
+<dd><p>Muestra la lista de clientes registrados en el sistema.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Llama a la función <cite>obtener_lista_clientes</cite> para recuperar los datos de los clientes.</p></li>
+<li><p>Captura cualquier error y lo registra en la consola.</p></li>
+<li><p>Si ocurre un error, incluye un mensaje de error en el contexto del template.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Renderiza el template <cite>clientes.html</cite> con la lista de clientes.</p></li>
+<li><p>Incluye un mensaje de error si no se pudieron obtener los datos.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.crear_categoria">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">crear_categoria</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.crear_categoria" title="Link to this definition"></a></dt>
+<dd><p>Crea una nueva categoría en el sistema.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Recoge el nombre de la categoría desde el formulario.</dt><dd><ul class="simple">
+<li><p>Si el campo está vacío, devuelve un mensaje de error con código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Llama a la función <cite>ingresar_categoria</cite> para guardar la categoría en la base de datos.</dt><dd><ul class="simple">
+<li><p>Si la operación es exitosa, devuelve un mensaje de éxito con el ID de la categoría creada.</p></li>
+<li><p>Si falla, devuelve un mensaje de error con código HTTP 500.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Captura cualquier excepción y devuelve el mensaje del error con código HTTP 500.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>JSON con mensaje de éxito y ID de la categoría creada.</p></li>
+<li><p>400: El nombre de la categoría es obligatorio.</p></li>
+<li><p>500: Error interno al añadir la categoría.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.editar_cliente">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">editar_cliente</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.editar_cliente" title="Link to this definition"></a></dt>
+<dd><p>Actualiza los datos de un cliente existente.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Recoge los datos del cliente desde el formulario de edición:</dt><dd><ul class="simple">
+<li><p><cite>cliente_id</cite>: ID del cliente.</p></li>
+<li><p><cite>edit_NameClient</cite>: Nuevo nombre.</p></li>
+<li><p><cite>edit_LastNameClient</cite>: Nuevo apellido.</p></li>
+<li><p><cite>edit_addressClient</cite>: Nueva dirección.</p></li>
+<li><p><cite>edit_phoneClient</cite>: Nuevo teléfono.</p></li>
+<li><p><cite>edit_emailClient</cite>: Nuevo correo electrónico.</p></li>
+<li><p><cite>edit_cedulaClient</cite>: Nueva cédula.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Verifica que todos los campos requeridos estén completos.</dt><dd><ul class="simple">
+<li><p>Si falta algún dato, devuelve un mensaje de error con código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Llama a la función <cite>actualizar_cliente</cite> para guardar los cambios.</dt><dd><ul class="simple">
+<li><p>Si la operación es exitosa, devuelve un JSON de éxito.</p></li>
+<li><p>Si falla, devuelve un mensaje de error con código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>JSON con el resultado de la operación.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.editar_producto">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">editar_producto</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.editar_producto" title="Link to this definition"></a></dt>
+<dd><p>Edita los datos de un producto existente.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Recoge los datos del formulario:</dt><dd><ul class="simple">
+<li><p><cite>producto_id</cite>: Identificador del producto.</p></li>
+<li><p><cite>edit_NameProduct</cite>: Nombre del producto.</p></li>
+<li><p><cite>edit_Description</cite>: Descripción del producto.</p></li>
+<li><p><cite>edit_Price</cite>: Precio del producto.</p></li>
+<li><p><cite>edit_Stock</cite>: Cantidad en inventario.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Valida que todos los campos estén completos.</dt><dd><ul class="simple">
+<li><p>Si falta algún campo, devuelve un mensaje de error con código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Convierte <cite>edit_Price</cite> a flotante y <cite>edit_Stock</cite> a entero.</dt><dd><ul class="simple">
+<li><p>Si la conversión falla o los valores son negativos, devuelve un mensaje de error con código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Llama a la función <cite>actualizar_producto</cite> para guardar los cambios.</dt><dd><ul class="simple">
+<li><p>Si la operación es exitosa, devuelve un código HTTP 200.</p></li>
+<li><p>Si falla, devuelve un mensaje de error con código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Maneja excepciones generales devolviendo un mensaje de error con código HTTP 500.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Producto actualizado exitosamente.
+- 400: Error en los datos proporcionados o fallo en la operación.
+- 500: Error interno al procesar la solicitud.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.eliminar_cliente">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">eliminar_cliente</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cliente_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.eliminar_cliente" title="Link to this definition"></a></dt>
+<dd><p>Elimina un cliente del sistema.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Recibe el ID del cliente a eliminar como parámetro en la URL.</p></li>
+<li><dl class="simple">
+<dt>Llama a la función <cite>eliminarr_client</cite> para realizar la operación.</dt><dd><ul class="simple">
+<li><p>Si la operación es exitosa, devuelve un mensaje de éxito con código HTTP 200.</p></li>
+<li><p>Si falla, devuelve un mensaje de error con código HTTP 500.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>JSON con el mensaje del resultado de la operación.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.eliminar_producto">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">eliminar_producto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.eliminar_producto" title="Link to this definition"></a></dt>
+<dd><p>Elimina un producto del sistema.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Verifica si el usuario tiene permiso para eliminar productos usando <cite>current_user.can_delete_product</cite>.</dt><dd><ul class="simple">
+<li><p>Si no tiene permisos, devuelve un código HTTP 403.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Llama a la función <cite>eliminar_productos</cite> con el ID proporcionado.</dt><dd><ul class="simple">
+<li><p>Si la eliminación es exitosa, devuelve un mensaje de éxito con código HTTP 200.</p></li>
+<li><p>Si falla, devuelve un mensaje de error con código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Captura y registra cualquier error inesperado, devolviendo un mensaje de error genérico con código HTTP 500.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Producto eliminado exitosamente.
+- 400: No se pudo eliminar el producto.
+- 403: El usuario no tiene permiso para eliminar productos.
+- 500: Error interno al procesar la solicitud.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.eliminar_proveedor">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">eliminar_proveedor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_proveedor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.eliminar_proveedor" title="Link to this definition"></a></dt>
+<dd><p>Elimina un proveedor del sistema.</p>
+<dl class="simple">
+<dt>Método permitido:</dt><dd><ul class="simple">
+<li><p>DELETE: Elimina el proveedor con el ID proporcionado.</p></li>
+</ul>
+</dd>
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Llama a la función <cite>eliminar_proveedor</cite> con el ID proporcionado.</p></li>
+<li><p>Si la operación es exitosa, devuelve un mensaje de confirmación en formato JSON.</p></li>
+<li><p>Si se utiliza un método no permitido, devuelve un código HTTP 405 (Método no permitido).</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>JSON con un mensaje de éxito si la eliminación es exitosa.</p></li>
+<li><p>Código HTTP 405 si se intenta acceder con un método diferente a DELETE.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.facturar">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">facturar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.facturar" title="Link to this definition"></a></dt>
+<dd><p>Procesa la facturación de una venta.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Recoge los datos generales de la venta:</dt><dd><ul class="simple">
+<li><p>ID del usuario y cliente.</p></li>
+<li><p>Fecha y hora de la venta.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Recoge los datos de los pagos:</dt><dd><ul class="simple">
+<li><p>Fecha y hora del pago.</p></li>
+<li><p>Total de la venta y notas adicionales.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Recoge los detalles de los productos:</dt><dd><ul class="simple">
+<li><p>ID, cantidad, precio unitario y descripción.</p></li>
+<li><p>Verifica que todos los datos sean consistentes y válidos.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Llama a la función <cite>añadir_facturacion</cite> para registrar la venta y generar la factura.</dt><dd><ul class="simple">
+<li><p>Si la operación falla, captura y maneja las excepciones.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>En caso de éxito, muestra un mensaje de confirmación con el número de factura.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Redirige a la página de ventas en caso de éxito.</p></li>
+<li><p>Renderiza el template <cite>facturar.html</cite> con los datos necesarios en caso de error.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_categorias">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_categorias</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.get_categorias" title="Link to this definition"></a></dt>
+<dd><p>Obtiene y muestra la lista de categorías disponibles.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Llama a la función <cite>obtener_categorias</cite> para recuperar las categorías desde la base de datos.</p></li>
+<li><p>Captura cualquier error y lo registra en la consola.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Renderiza el template <cite>productos.html</cite> con la lista de categorías.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.get_proveedores">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">get_proveedores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.get_proveedores" title="Link to this definition"></a></dt>
+<dd><p>Muestra la lista de proveedores en el sistema.</p>
+<dl class="simple">
+<dt>Requisitos:</dt><dd><ul class="simple">
+<li><p>El usuario debe estar autenticado (<cite>&#64;login_required</cite>).</p></li>
+</ul>
+</dd>
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Obtiene la lista de proveedores llamando a <cite>obtener_proveedores</cite></dt><dd><p>(ubicada en <cite>models/proveedor.py</cite>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Maneja posibles errores al obtener los proveedores:</dt><dd><ul class="simple">
+<li><p>Si ocurre un error, registra el mensaje en consola y devuelve un código HTTP 500.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Renderiza el template <cite>proveedores.html</cite> con la lista de proveedores.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.home">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.home" title="Link to this definition"></a></dt>
+<dd><p>Renderiza la página principal del sistema.</p>
+<dl class="simple">
+<dt>Requisitos:</dt><dd><ul class="simple">
+<li><p>El usuario debe estar autenticado (<cite>&#64;login_required</cite>).</p></li>
+</ul>
+</dd>
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Obtiene las últimas ventas llamando a <cite>obtener_ultimas_ventas</cite>.</p></li>
+<li><dl class="simple">
+<dt>Maneja posibles errores al obtener las ventas:</dt><dd><ul class="simple">
+<li><p>Si ocurre un error, registra el mensaje en consola y devuelve un código HTTP 500.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Renderiza el template <cite>home.html</cite> con las últimas ventas.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.index">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.index" title="Link to this definition"></a></dt>
+<dd><p>Redirige automáticamente a la ruta de inicio de sesión por defecto.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Llama a la función <cite>login</cite> utilizando <cite>url_for</cite>.</p></li>
+<li><p>Redirige al usuario a la página de inicio de sesión.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Redirección a la vista de inicio de sesión.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.load_user">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">load_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.load_user" title="Link to this definition"></a></dt>
+<dd><p>Carga un usuario específico en base a su ID.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Utiliza el ID proporcionado por Flask-Login.</p></li>
+<li><p>Llama a la función <cite>get_by_id</cite> del modelo <cite>ModelUser</cite> para recuperar los datos del usuario desde la base de datos.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Una instancia del usuario si se encuentra, o <cite>None</cite> si no se encuentra.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.login">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.login" title="Link to this definition"></a></dt>
+<dd><p>Maneja el inicio de sesión de los usuarios.</p>
+<dl class="simple">
+<dt>Métodos permitidos:</dt><dd><ul class="simple">
+<li><p>GET: Renderiza la página de inicio de sesión.</p></li>
+<li><p>POST: Procesa el formulario de inicio de sesión.</p></li>
+</ul>
+</dd>
+<dt>Flujo del método POST:</dt><dd><ol class="arabic simple">
+<li><p>Valida que los campos <cite>identification</cite> y <cite>password</cite> no estén vacíos.</p></li>
+<li><p>Crea una instancia temporal de usuario (<cite>User</cite>) con los datos ingresados.</p></li>
+<li><p>Busca al usuario en la base de datos mediante <cite>ModelUser.login</cite>.</p></li>
+<li><dl class="simple">
+<dt>Si el usuario es encontrado:</dt><dd><ul class="simple">
+<li><p>Verifica si la contraseña proporcionada es correcta usando <cite>User.check_password</cite>.</p></li>
+<li><p>Si la contraseña es válida, inicia sesión y redirige a la página principal.</p></li>
+<li><p>Si la contraseña es inválida, muestra un mensaje de error.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Si el usuario no es encontrado, muestra un mensaje de error.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Renderiza el template <cite>auth/login.html</cite>.
+- POST: Dependiendo de la validación:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Redirige a la página principal si las credenciales son válidas.</p></li>
+<li><p>Renderiza <cite>auth/login.html</cite> con un mensaje de error si hay fallas en la autenticación.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>GET</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.logout">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.logout" title="Link to this definition"></a></dt>
+<dd><p>Cierra la sesión del usuario actual y redirige a la página de cierre de sesión.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Llama a <cite>logout_user</cite> para finalizar la sesión del usuario.</p></li>
+<li><p>Redirige al usuario a la página de cierre de sesión definida por la función <cite>logout</cite>.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Redirección a la vista de cierre de sesión.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.method_not_allowed">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">method_not_allowed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.method_not_allowed" title="Link to this definition"></a></dt>
+<dd><p>Devuelve un mensaje de error para solicitudes con un método HTTP no permitido.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Captura el error 405 y devuelve un mensaje en formato JSON indicando que el método no está permitido.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>JSON con un mensaje de error y código HTTP 405.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.nuevo_cliente">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">nuevo_cliente</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.nuevo_cliente" title="Link to this definition"></a></dt>
+<dd><p>Registra un nuevo cliente en el sistema.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Recoge los datos del cliente desde el formulario:</dt><dd><ul class="simple">
+<li><p><cite>DNIClient</cite>: Cédula del cliente.</p></li>
+<li><p><cite>NameClient</cite>: Nombre del cliente.</p></li>
+<li><p><cite>LastNameClient</cite>: Apellido del cliente.</p></li>
+<li><p><cite>addressClient1</cite>: Dirección del cliente.</p></li>
+<li><p><cite>phoneClient</cite>: Teléfono del cliente.</p></li>
+<li><p><cite>emailClient</cite>: Correo electrónico del cliente.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Verifica que todos los campos requeridos estén completos.</dt><dd><ul class="simple">
+<li><p>Si falta algún dato, devuelve un mensaje de error con código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Llama a la función <cite>añadir_cliente</cite> para registrar al cliente.</dt><dd><ul class="simple">
+<li><p>Si la operación es exitosa, redirige a la página de clientes.</p></li>
+<li><p>Si falla, muestra un mensaje de error.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Renderiza el template <cite>clientes.html</cite> en caso de éxito o error.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.nuevo_producto">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">nuevo_producto</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.nuevo_producto" title="Link to this definition"></a></dt>
+<dd><p>Maneja la creación de nuevos productos y muestra la lista de productos existentes.</p>
+<dl class="simple">
+<dt>Métodos permitidos:</dt><dd><ul class="simple">
+<li><p>GET: Renderiza la página para añadir productos y muestra la lista de productos actuales.</p></li>
+<li><p>POST: Procesa el formulario para crear un nuevo producto.</p></li>
+</ul>
+</dd>
+<dt>Flujo del método POST:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Recoge los datos del formulario:</dt><dd><ul class="simple">
+<li><p><cite>NameProduct</cite>: Nombre del producto.</p></li>
+<li><p><cite>Description</cite>: Descripción del producto.</p></li>
+<li><p><cite>PriceProduct</cite>: Precio del producto.</p></li>
+<li><p><cite>StockProduct</cite>: Cantidad en inventario.</p></li>
+<li><p><cite>CategoryProduct</cite>: Categoría del producto.</p></li>
+<li><p><cite>ProviderProduct</cite>: Proveedor del producto.</p></li>
+<li><p><cite>IngresoProduct</cite>: Fecha de ingreso.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Valida que todos los campos estén completos.</p></li>
+<li><dl class="simple">
+<dt>Intenta convertir <cite>PriceProduct</cite> y <cite>StockProduct</cite> a los tipos de datos apropiados.</dt><dd><ul class="simple">
+<li><p>Si la conversión falla, devuelve un mensaje de error.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Llama a la función <cite>crear_producto</cite> para registrar el producto en el sistema.</dt><dd><ul class="simple">
+<li><p>Si la operación es exitosa, redirige a <cite>/productos</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Maneja excepciones generales devolviendo un mensaje de error en formato JSON.</p></li>
+</ol>
+</dd>
+<dt>Flujo del método GET:</dt><dd><ol class="arabic simple">
+<li><p>Obtiene listas de proveedores, categorías y productos existentes.</p></li>
+<li><p>Renderiza el template <cite>productos.html</cite> con las listas obtenidas.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Redirige a <cite>/productos</cite> si la creación es exitosa o devuelve un mensaje de error en caso de falla.
+- GET: Renderiza el template <cite>productos.html</cite> con los datos necesarios.
+- 400: Si hay datos inválidos o incompletos.
+- 500: Si ocurre un error interno.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>POST</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.obtener_pago">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">obtener_pago</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_venta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.obtener_pago" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.producto_existe">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">producto_existe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.producto_existe" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.provedor">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">provedor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.provedor" title="Link to this definition"></a></dt>
+<dd><p>Maneja la creación de un nuevo proveedor y muestra el formulario de registro.</p>
+<dl class="simple">
+<dt>Métodos permitidos:</dt><dd><ul class="simple">
+<li><p>GET: Renderiza la página de registro de proveedores.</p></li>
+<li><p>POST: Procesa los datos enviados para registrar un nuevo proveedor.</p></li>
+</ul>
+</dd>
+<dt>Flujo del método POST:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Recoge los datos del formulario:</dt><dd><ul class="simple">
+<li><p><cite>NameProvider</cite>: Nombre de la empresa.</p></li>
+<li><p><cite>addressProvider</cite>: Dirección del proveedor.</p></li>
+<li><p><cite>phoneProvider</cite>: Teléfono del proveedor.</p></li>
+<li><p><cite>emailProvider</cite>: Correo electrónico del proveedor.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Valida que todos los campos estén completos:</dt><dd><ul class="simple">
+<li><p>Si falta algún campo, devuelve un mensaje de error con un código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Valida el correo electrónico usando <cite>validar_correo</cite>:</dt><dd><ul class="simple">
+<li><p>Si el correo es inválido, devuelve un mensaje de error con un código HTTP 400.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Intenta añadir el proveedor usando la función <cite>añadir_proveedor</cite>:</dt><dd><ul class="simple">
+<li><p>Si la operación es exitosa, redirige a la lista de proveedores y muestra un mensaje de éxito.</p></li>
+<li><p>Si ocurre un error durante la inserción, devuelve un mensaje de error con un código HTTP 500.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+<dt>Manejo de excepciones:</dt><dd><ul class="simple">
+<li><p>Captura errores inesperados durante el procesamiento y devuelve un mensaje de error genérico en formato JSON.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Renderiza el formulario para el registro de proveedores.
+- POST:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Redirige a <cite>/proveedores</cite> si el registro es exitoso.</p></li>
+<li><p>Devuelve un mensaje de error en formato JSON si hay fallas en la validación o en la operación.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>GET</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>HTTP Responses:</dt><dd><ul class="simple">
+<li><p>200: Proveedor añadido exitosamente.</p></li>
+<li><p>400: Error en los datos proporcionados (campos incompletos o correo inválido).</p></li>
+<li><p>500: Error interno al añadir el proveedor.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.register">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.register" title="Link to this definition"></a></dt>
+<dd><p>Maneja el registro de nuevos usuarios.</p>
+<dl class="simple">
+<dt>Métodos permitidos:</dt><dd><ul class="simple">
+<li><p>GET: Renderiza la página de registro.</p></li>
+<li><p>POST: Procesa el formulario para registrar un nuevo usuario.</p></li>
+</ul>
+</dd>
+<dt>Flujo del método POST:</dt><dd><ol class="arabic simple">
+<li><p>Valida que los campos <cite>identification</cite>, <cite>password</cite> y <cite>fullname</cite> no estén vacíos.</p></li>
+<li><p>Crea un objeto <cite>User</cite> con los datos proporcionados.</p></li>
+<li><p>Intenta registrar al usuario en la base de datos utilizando <cite>Register.register</cite>.</p></li>
+<li><p>Si el registro es exitoso, redirige a la página de inicio de sesión.</p></li>
+<li><dl class="simple">
+<dt>Maneja posibles errores:</dt><dd><ul class="simple">
+<li><p><cite>ValueError</cite>: Mensaje de advertencia específico.</p></li>
+<li><p>Otros errores: Mensaje genérico de error y redirección a la página de registro.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+<dt>Manejo de excepciones:</dt><dd><ul class="simple">
+<li><p>Captura errores inesperados y muestra un mensaje de error en la página de registro.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Renderiza el template <cite>auth/register.html</cite>.
+- POST: Redirige al login si el registro es exitoso o vuelve al formulario con mensajes de error.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>GET</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.status401">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">status401</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.status401" title="Link to this definition"></a></dt>
+<dd><p>Redirige al usuario a la página de inicio de sesión en caso de error 401 (no autorizado).</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Captura el error 401 y redirige al usuario a la función <cite>login</cite>.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Redirección a la vista de inicio de sesión.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.status404">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">status404</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.status404" title="Link to this definition"></a></dt>
+<dd><p>Muestra la página personalizada para manejar errores 404.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Renderiza el template <cite>404handler.html</cite> en caso de que una página solicitada no sea encontrada.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Template HTML con un mensaje de error 404.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.validar_correo">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">validar_correo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.validar_correo" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.ventas">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">ventas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.ventas" title="Link to this definition"></a></dt>
+<dd><p>Muestra la lista de ventas realizadas.</p>
+<dl class="simple">
+<dt>Flujo:</dt><dd><ol class="arabic simple">
+<li><p>Llama a la función <cite>obtener_ventas</cite> para recuperar las ventas desde la base de datos.</p></li>
+<li><p>Captura cualquier error y lo registra en la consola.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Renderiza el template <cite>ventas.html</cite> con la lista de ventas.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="clases-y-modelos">
+<h1>Clases y Modelos<a class="headerlink" href="#clases-y-modelos" title="Link to this heading"></a></h1>
+<p>El proyecto está compuesto por varios modelos que representan las entidades principales del sistema. Aquí se detallan las clases y sus métodos.</p>
+<p>### Usuario</p>
+<dl class="py class" id="module-models.ModelUser">
+<dt class="sig sig-object py" id="models.ModelUser.ModelUser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">models.ModelUser.</span></span><span class="sig-name descname"><span class="pre">ModelUser</span></span><a class="headerlink" href="#models.ModelUser.ModelUser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="models.ModelUser.ModelUser.get_by_id">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_trabajador</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.ModelUser.ModelUser.get_by_id" title="Link to this definition"></a></dt>
+<dd><p>Obtiene un usuario de la base de datos a través de su ID.</p>
+<p>Este método consulta la base de datos utilizando el ID del trabajador para recuperar los datos del usuario. Si el
+usuario existe, se devuelve una instancia de la clase <cite>User</cite> con la información disponible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> – Instancia de la base de datos para realizar la consulta.</p></li>
+<li><p><strong>id_trabajador</strong> – El ID del trabajador cuyo usuario se desea obtener.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Un objeto <cite>User</cite> con la información del usuario si el ID es válido.
+None: Si no se encuentra un usuario con el ID proporcionado.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#models.entities.user.User" title="models.entities.user.User">User</a></p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Si ocurre un error al realizar la consulta a la base de datos.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.ModelUser.ModelUser.login">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.ModelUser.ModelUser.login" title="Link to this definition"></a></dt>
+<dd><p>Inicia sesión de un usuario verificando su identificación y contraseña.</p>
+<p>Este método realiza una consulta a la base de datos para verificar las credenciales del usuario. Si se encuentra un
+usuario con la identificación proporcionada, devuelve una instancia de la clase <cite>User</cite> con la información del usuario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> – Instancia de la base de datos para realizar la consulta.</p></li>
+<li><p><strong>user</strong> – Un objeto que contiene la información del usuario (identificación, etc.).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Un objeto <cite>User</cite> con la información del usuario si las credenciales son correctas.
+None: Si no se encuentra un usuario con la identificación proporcionada.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#models.entities.user.User" title="models.entities.user.User">User</a></p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Si ocurre un error al realizar la consulta a la base de datos.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>### Entidad de Usuario</p>
+<dl class="py class" id="module-models.entities.user">
+<dt class="sig sig-object py" id="models.entities.user.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">models.entities.user.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identification</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.entities.user.User" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representa un usuario del sistema.</p>
+<dl class="simple">
+<dt>Atributos:</dt><dd><p>id (int): Identificador único del usuario.
+identification (str): Identificación del usuario.
+password (str): Contraseña hasheada del usuario.
+fullname (str): Nombre completo del usuario. Por defecto, una cadena vacía.
+active (bool): Estado del usuario. Indica si está activo. Por defecto, True.</p>
+</dd>
+<dt>Métodos:</dt><dd><dl class="simple">
+<dt>check_password(hashed_password, password):</dt><dd><p>Verifica si una contraseña en texto plano coincide con su versión hasheada.</p>
+</dd>
+<dt>is_active():</dt><dd><p>Determina si el usuario está activo.</p>
+</dd>
+<dt>is_authenticated():</dt><dd><p>Retorna True, indicando que el usuario está autenticado.</p>
+</dd>
+<dt>get_id():</dt><dd><p>Retorna el identificador único del usuario como cadena.</p>
+</dd>
+<dt>can_delete_product():</dt><dd><p>Verifica si el usuario puede eliminar productos. Todos los usuarios activos tienen este permiso.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="models.entities.user.User.can_delete_product">
+<span class="sig-name descname"><span class="pre">can_delete_product</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.entities.user.User.can_delete_product" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.entities.user.User.check_password">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hashed_password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.entities.user.User.check_password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.entities.user.User.get_id">
+<span class="sig-name descname"><span class="pre">get_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.entities.user.User.get_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.entities.user.User.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.entities.user.User.is_active" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.entities.user.User.is_authenticated">
+<span class="sig-name descname"><span class="pre">is_authenticated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.entities.user.User.is_authenticated" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p>### Registro de Usuario</p>
+<dl class="py class" id="module-models.register">
+<dt class="sig sig-object py" id="models.register.Register">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">models.register.</span></span><span class="sig-name descname"><span class="pre">Register</span></span><a class="headerlink" href="#models.register.Register" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Registra un nuevo usuario en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> – La conexión activa a la base de datos.</p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="#models.entities.user.User" title="models.entities.user.User"><em>User</em></a>) – Un objeto <cite>User</cite> que contiene los datos del usuario a registrar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Un objeto <cite>User</cite> que representa al usuario registrado.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#models.entities.user.User" title="models.entities.user.User">User</a></p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – Si la identificación ya está registrada.</p></li>
+<li><p><strong>Exception</strong> – Si ocurre un error durante el proceso de registro.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notas</p>
+<ul class="simple">
+<li><p>La contraseña proporcionada por el usuario se hashea antes de almacenarse en la base de datos.</p></li>
+<li><p>Se realiza una verificación previa para evitar registros duplicados basados en la identificación.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="models.register.Register.register">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.register.Register.register" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p>### Categorías</p>
+<dl class="py class" id="module-models.categorias">
+<dt class="sig sig-object py" id="models.categorias.Categoria">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">models.categorias.</span></span><span class="sig-name descname"><span class="pre">Categoria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nombre</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.categorias.Categoria" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representa una categoría de producto.</p>
+<dl class="simple">
+<dt>Atributos:</dt><dd><p>id (int): Identificador único de la categoría.
+nombre (str): Nombre de la categoría.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.categorias.ingresar_categoria">
+<span class="sig-prename descclassname"><span class="pre">models.categorias.</span></span><span class="sig-name descname"><span class="pre">ingresar_categoria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.categorias.ingresar_categoria" title="Link to this definition"></a></dt>
+<dd><p>Inserta una nueva categoría en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>category</strong> (<em>str</em>) – Nombre de la categoría a insertar.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>ID de la categoría recién creada si la operación fue exitosa.
+None: Si ocurre un error durante la inserción.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Si ocurre un error inesperado durante la operación.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.categorias.obtener_categorias">
+<span class="sig-prename descclassname"><span class="pre">models.categorias.</span></span><span class="sig-name descname"><span class="pre">obtener_categorias</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.categorias.obtener_categorias" title="Link to this definition"></a></dt>
+<dd><p>Obtiene la lista de categorías de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una lista de objetos <cite>Categoria</cite> que representan las categorías existentes.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">Muestra<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – Si ocurre un error durante la consulta de la base de datos.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>### Productos</p>
+<dl class="py class" id="module-models.producto">
+<dt class="sig sig-object py" id="models.producto.Producto">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">models.producto.</span></span><span class="sig-name descname"><span class="pre">Producto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identificador_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nombre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descripcion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_proveedor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_categoria</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.producto.Producto" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representa un producto en el sistema de inventario.</p>
+<dl class="simple">
+<dt>Atributos:</dt><dd><p>identificador_p (int): Identificador único del producto.
+nombre (str): Nombre del producto.
+descripcion (str): Descripción del producto.
+precio (float): Precio unitario del producto.
+stock (int): Cantidad de unidades disponibles en inventario.
+id_categoria (int): Identificador de la categoría a la que pertenece el producto.
+id_proveedor (int): Identificador del proveedor del producto.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.producto.actualizar_producto">
+<span class="sig-prename descclassname"><span class="pre">models.producto.</span></span><span class="sig-name descname"><span class="pre">actualizar_producto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identificador_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nombre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descripcion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stock</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.producto.actualizar_producto" title="Link to this definition"></a></dt>
+<dd><p>Actualiza los detalles de un producto existente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>identificador_p</strong> (<em>int</em>) – Identificador único del producto a actualizar.</p></li>
+<li><p><strong>nombre</strong> (<em>str</em>) – Nuevo nombre del producto.</p></li>
+<li><p><strong>descripcion</strong> (<em>str</em>) – Nueva descripción del producto.</p></li>
+<li><p><strong>precio</strong> (<em>float</em>) – Nuevo precio unitario del producto.</p></li>
+<li><p><strong>stock</strong> (<em>int</em>) – Nuevo stock del producto.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si el producto fue actualizado con éxito, False si ocurrió un error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.producto.crear_producto">
+<span class="sig-prename descclassname"><span class="pre">models.producto.</span></span><span class="sig-name descname"><span class="pre">crear_producto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nombre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descripcion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fecha_ingreso</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_proveedor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_categoria</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.producto.crear_producto" title="Link to this definition"></a></dt>
+<dd><p>Crea un nuevo producto en el inventario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nombre</strong> (<em>str</em>) – Nombre del producto.</p></li>
+<li><p><strong>descripcion</strong> (<em>str</em>) – Descripción del producto.</p></li>
+<li><p><strong>precio</strong> (<em>float</em>) – Precio unitario del producto.</p></li>
+<li><p><strong>stock</strong> (<em>int</em>) – Cantidad inicial del producto en inventario.</p></li>
+<li><p><strong>fecha_ingreso</strong> (<em>str</em>) – Fecha en la que el producto fue ingresado al inventario.</p></li>
+<li><p><strong>id_proveedor</strong> (<em>int</em>) – Identificador del proveedor del producto.</p></li>
+<li><p><strong>id_categoria</strong> (<em>int</em>) – Identificador de la categoría del producto.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si el producto fue creado con éxito, False si ocurrió un error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.producto.eliminar_productos">
+<span class="sig-prename descclassname"><span class="pre">models.producto.</span></span><span class="sig-name descname"><span class="pre">eliminar_productos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prd_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.producto.eliminar_productos" title="Link to this definition"></a></dt>
+<dd><p>Elimina un producto del inventario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prd_id</strong> (<em>int</em>) – Identificador único del producto a eliminar.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si el producto fue eliminado con éxito, False si ocurrió un error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.producto.obtener_lista_productos">
+<span class="sig-prename descclassname"><span class="pre">models.producto.</span></span><span class="sig-name descname"><span class="pre">obtener_lista_productos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.producto.obtener_lista_productos" title="Link to this definition"></a></dt>
+<dd><p>Obtiene la lista de todos los productos en el inventario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Lista de objetos Producto con los detalles de cada uno.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#models.producto.Producto" title="models.producto.Producto">Producto</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.producto.obtener_producto_id">
+<span class="sig-prename descclassname"><span class="pre">models.producto.</span></span><span class="sig-name descname"><span class="pre">obtener_producto_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prd_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.producto.obtener_producto_id" title="Link to this definition"></a></dt>
+<dd><p>Obtiene los detalles de un producto por su identificador.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prd_id</strong> (<em>int</em>) – Identificador único del producto a consultar.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Detalles del producto si se encuentra, o None si no se encuentra.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>### Proveedores</p>
+<dl class="py class" id="module-models.proveedor">
+<dt class="sig sig-object py" id="models.proveedor.Proveedor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">models.proveedor.</span></span><span class="sig-name descname"><span class="pre">Proveedor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nombre_empresa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direccion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">telefono</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correo_electronico</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_proveedor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.proveedor.Proveedor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representa un proveedor en el sistema de inventario.</p>
+<dl class="simple">
+<dt>Atributos:</dt><dd><p>nombre_empresa (str): Nombre de la empresa proveedora.
+direccion (str): Dirección del proveedor.
+telefono (str): Número de teléfono del proveedor.
+correo_electronico (str): Correo electrónico del proveedor.
+id_proveedor (int): Identificador único del proveedor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.proveedor.actualizar_proveedore">
+<span class="sig-prename descclassname"><span class="pre">models.proveedor.</span></span><span class="sig-name descname"><span class="pre">actualizar_proveedore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nombre_empresa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direccion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">telefono</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correo_electronico</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_proveedor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.proveedor.actualizar_proveedore" title="Link to this definition"></a></dt>
+<dd><p>Actualiza los datos de un proveedor existente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nombre_empresa</strong> (<em>str</em>) – Nuevo nombre de la empresa proveedora.</p></li>
+<li><p><strong>direccion</strong> (<em>str</em>) – Nueva dirección del proveedor.</p></li>
+<li><p><strong>telefono</strong> (<em>str</em>) – Nuevo número de teléfono del proveedor.</p></li>
+<li><p><strong>correo_electronico</strong> (<em>str</em>) – Nuevo correo electrónico del proveedor.</p></li>
+<li><p><strong>id_proveedor</strong> (<em>int</em>) – Identificador único del proveedor a actualizar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si el proveedor fue actualizado con éxito, False si ocurrió un error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.proveedor.anadir_proveedor">
+<span class="sig-prename descclassname"><span class="pre">models.proveedor.</span></span><span class="sig-name descname"><span class="pre">añadir_proveedor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nombre_empresa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direccion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">telefono</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correo_electronico</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.proveedor.anadir_proveedor" title="Link to this definition"></a></dt>
+<dd><p>Añade un nuevo proveedor al sistema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nombre_empresa</strong> (<em>str</em>) – Nombre de la empresa proveedora.</p></li>
+<li><p><strong>direccion</strong> (<em>str</em>) – Dirección del proveedor.</p></li>
+<li><p><strong>telefono</strong> (<em>str</em>) – Número de teléfono del proveedor.</p></li>
+<li><p><strong>correo_electronico</strong> (<em>str</em>) – Correo electrónico del proveedor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si el proveedor fue añadido con éxito, False si ocurrió un error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.proveedor.eliminar_proveedor">
+<span class="sig-prename descclassname"><span class="pre">models.proveedor.</span></span><span class="sig-name descname"><span class="pre">eliminar_proveedor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_proveedor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.proveedor.eliminar_proveedor" title="Link to this definition"></a></dt>
+<dd><p>Elimina un proveedor del sistema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id_proveedor</strong> (<em>int</em>) – Identificador único del proveedor a eliminar.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si el proveedor fue eliminado con éxito, False si ocurrió un error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.proveedor.obtener_proveedores">
+<span class="sig-prename descclassname"><span class="pre">models.proveedor.</span></span><span class="sig-name descname"><span class="pre">obtener_proveedores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.proveedor.obtener_proveedores" title="Link to this definition"></a></dt>
+<dd><p>Obtiene la lista de todos los proveedores registrados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Lista de objetos Proveedor con los detalles de cada uno.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#models.proveedor.Proveedor" title="models.proveedor.Proveedor">Proveedor</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>### Ventas</p>
+<dl class="py class" id="module-models.ventas">
+<dt class="sig sig-object py" id="models.ventas.Venta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">models.ventas.</span></span><span class="sig-name descname"><span class="pre">Venta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_venta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_usuario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fecha_venta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_cliente</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hora_venta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.ventas.Venta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representa una venta realizada en el sistema.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.ventas.Venta.id_venta">
+<span class="sig-name descname"><span class="pre">id_venta</span></span><a class="headerlink" href="#models.ventas.Venta.id_venta" title="Link to this definition"></a></dt>
+<dd><p>Identificador único de la venta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.ventas.Venta.id_usuario">
+<span class="sig-name descname"><span class="pre">id_usuario</span></span><a class="headerlink" href="#models.ventas.Venta.id_usuario" title="Link to this definition"></a></dt>
+<dd><p>Identificador del usuario que realizó la venta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.ventas.Venta.fecha_venta">
+<span class="sig-name descname"><span class="pre">fecha_venta</span></span><a class="headerlink" href="#models.ventas.Venta.fecha_venta" title="Link to this definition"></a></dt>
+<dd><p>Fecha en la que se realizó la venta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.ventas.Venta.id_cliente">
+<span class="sig-name descname"><span class="pre">id_cliente</span></span><a class="headerlink" href="#models.ventas.Venta.id_cliente" title="Link to this definition"></a></dt>
+<dd><p>Identificador del cliente asociado a la venta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.ventas.Venta.hora">
+<span class="sig-name descname"><span class="pre">hora</span></span><a class="headerlink" href="#models.ventas.Venta.hora" title="Link to this definition"></a></dt>
+<dd><p>Hora en la que se realizó la venta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.ventas.eliminar_venta">
+<span class="sig-prename descclassname"><span class="pre">models.ventas.</span></span><span class="sig-name descname"><span class="pre">eliminar_venta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_venta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.ventas.eliminar_venta" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.ventas.obtener_ventas">
+<span class="sig-prename descclassname"><span class="pre">models.ventas.</span></span><span class="sig-name descname"><span class="pre">obtener_ventas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.ventas.obtener_ventas" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todas las ventas registradas en el sistema, incluyendo información
+adicional sobre los clientes y usuarios asociados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Una lista de diccionarios que representan las ventas.
+Cada diccionario contiene:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>id_venta: ID de la venta.</p></li>
+<li><p>id_usuario: ID del usuario que realizó la venta.</p></li>
+<li><p>fecha_venta: Fecha de la venta.</p></li>
+<li><p>id_cliente: ID del cliente asociado.</p></li>
+<li><p>nombre_cliente: Nombre del cliente asociado.</p></li>
+<li><p>nombre_usuario: Nombre del usuario que realizó la venta.</p></li>
+<li><p>hora: Hora de la venta.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[dict]</p>
+</dd>
+<dt class="field-odd">Muestra<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – Si ocurre algún error durante la consulta.</p>
+</dd>
+</dl>
+<p class="rubric">Notas</p>
+<ul class="simple">
+<li><p>Se realiza un JOIN para obtener los nombres de clientes y usuarios
+relacionados con cada venta.</p></li>
+</ul>
+</dd></dl>
+
+<p>### Últimas Ventas</p>
+<dl class="py function" id="module-models.ultimas_ventas">
+<dt class="sig sig-object py" id="models.ultimas_ventas.obtener_ultimas_ventas">
+<span class="sig-prename descclassname"><span class="pre">models.ultimas_ventas.</span></span><span class="sig-name descname"><span class="pre">obtener_ultimas_ventas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.ultimas_ventas.obtener_ultimas_ventas" title="Link to this definition"></a></dt>
+<dd><p>Obtiene las últimas 10 ventas realizadas desde la base de datos, incluyendo los detalles de cada venta,
+como el nombre del producto, cantidad, precio unitario, monto total de la venta y la fecha/hora de pago.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Lista de diccionarios con los detalles de las últimas 10 ventas.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>### Pagos</p>
+<dl class="py function" id="module-models.pagos">
+<dt class="sig sig-object py" id="models.pagos.anadir_facturacion">
+<span class="sig-prename descclassname"><span class="pre">models.pagos.</span></span><span class="sig-name descname"><span class="pre">añadir_facturacion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usuario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cliente</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fecha_venta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hora_venta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">productos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fecha_pago</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hora_pago</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nota</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.pagos.anadir_facturacion" title="Link to this definition"></a></dt>
+<dd><p>Procesa y registra una nueva facturación, incluyendo la venta, los detalles de la venta, el pago y la factura asociada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>usuario</strong> (<em>int</em>) – ID del usuario que realiza la venta.</p></li>
+<li><p><strong>cliente</strong> (<em>int</em>) – ID del cliente asociado a la venta.</p></li>
+<li><p><strong>fecha_venta</strong> (<em>str</em>) – Fecha en la que se realiza la venta (YYYY-MM-DD).</p></li>
+<li><p><strong>hora_venta</strong> (<em>str</em>) – Hora en la que se realiza la venta (HH:MM:SS).</p></li>
+<li><p><strong>productos</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Lista de productos vendidos, cada uno con las claves:
+- “id_producto”: ID del producto.
+- “cantidad”: Cantidad vendida.
+- “precio_unitario”: Precio unitario del producto.
+- “descripcion” (opcional): Descripción del producto.</p></li>
+<li><p><strong>total</strong> (<em>float</em>) – Monto total de la venta.</p></li>
+<li><p><strong>fecha_pago</strong> (<em>str</em>) – Fecha en la que se realiza el pago (YYYY-MM-DD).</p></li>
+<li><p><strong>hora_pago</strong> (<em>str</em>) – Hora en la que se realiza el pago (HH:MM:SS).</p></li>
+<li><p><strong>nota</strong> (<em>str</em>) – Nota asociada al pago.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Resultado del proceso, con las claves:</dt><dd><ul class="simple">
+<li><p>”status”: «success» si se procesó correctamente, «error» en caso contrario.</p></li>
+<li><p>”message”: Mensaje descriptivo del resultado.</p></li>
+<li><p>”id_factura” (opcional): ID de la factura generada.</p></li>
+<li><p>”numero_factura” (opcional): Número de la factura generada.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Si ocurre un error durante el procesamiento, se revierte la transacción.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.pagos.obtener_datos_factura">
+<span class="sig-prename descclassname"><span class="pre">models.pagos.</span></span><span class="sig-name descname"><span class="pre">obtener_datos_factura</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cursor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_factura</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.pagos.obtener_datos_factura" title="Link to this definition"></a></dt>
+<dd><p>Recupera los datos de una factura específica.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cursor</strong> (<em>MySQLCursor</em>) – Cursor de la conexión a la base de datos.</p></li>
+<li><p><strong>id_factura</strong> (<em>int</em>) – ID de la factura a consultar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><dl class="simple">
+<dt>dict: Datos de la factura, incluyendo:</dt><dd><ul>
+<li><p>”numero_factura”: Número de la factura.</p></li>
+<li><p>”fecha_emision”: Fecha de emisión de la factura.</p></li>
+<li><p>”cliente”: Nombre del cliente asociado.</p></li>
+<li><p>”total”: Monto total de la factura.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>str: Mensaje de error si ocurre un problema o si la factura no se encuentra.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Si ocurre un error durante la consulta.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>### Clientes</p>
+<dl class="py class" id="module-models.cliente">
+<dt class="sig sig-object py" id="models.cliente.Cliente">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">models.cliente.</span></span><span class="sig-name descname"><span class="pre">Cliente</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cedula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nombres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apellidos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direccion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">telefono</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correo_electronico</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identificador_c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.cliente.Cliente" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representa un cliente en el sistema.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.cliente.Cliente.cedula">
+<span class="sig-name descname"><span class="pre">cedula</span></span><a class="headerlink" href="#models.cliente.Cliente.cedula" title="Link to this definition"></a></dt>
+<dd><p>Cédula del cliente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.cliente.Cliente.nombres">
+<span class="sig-name descname"><span class="pre">nombres</span></span><a class="headerlink" href="#models.cliente.Cliente.nombres" title="Link to this definition"></a></dt>
+<dd><p>Nombres del cliente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.cliente.Cliente.apellidos">
+<span class="sig-name descname"><span class="pre">apellidos</span></span><a class="headerlink" href="#models.cliente.Cliente.apellidos" title="Link to this definition"></a></dt>
+<dd><p>Apellidos del cliente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.cliente.Cliente.direccion">
+<span class="sig-name descname"><span class="pre">direccion</span></span><a class="headerlink" href="#models.cliente.Cliente.direccion" title="Link to this definition"></a></dt>
+<dd><p>Dirección del cliente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.cliente.Cliente.telefono">
+<span class="sig-name descname"><span class="pre">telefono</span></span><a class="headerlink" href="#models.cliente.Cliente.telefono" title="Link to this definition"></a></dt>
+<dd><p>Teléfono del cliente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.cliente.Cliente.correo_electronico">
+<span class="sig-name descname"><span class="pre">correo_electronico</span></span><a class="headerlink" href="#models.cliente.Cliente.correo_electronico" title="Link to this definition"></a></dt>
+<dd><p>Correo electrónico del cliente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.cliente.Cliente.identificador_c">
+<span class="sig-name descname"><span class="pre">identificador_c</span></span><a class="headerlink" href="#models.cliente.Cliente.identificador_c" title="Link to this definition"></a></dt>
+<dd><p>Identificador único del cliente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.cliente.actualizar_cliente">
+<span class="sig-prename descclassname"><span class="pre">models.cliente.</span></span><span class="sig-name descname"><span class="pre">actualizar_cliente</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identificador_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nombres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apellidos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direccion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">telefono</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correo_electronico</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cedula</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.cliente.actualizar_cliente" title="Link to this definition"></a></dt>
+<dd><p>Actualiza los datos de un cliente en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>identificador_c</strong> (<em>int</em>) – Identificador único del cliente a actualizar.</p></li>
+<li><p><strong>nombres</strong> (<em>str</em>) – Nuevos nombres del cliente.</p></li>
+<li><p><strong>apellidos</strong> (<em>str</em>) – Nuevos apellidos del cliente.</p></li>
+<li><p><strong>direccion</strong> (<em>str</em>) – Nueva dirección del cliente.</p></li>
+<li><p><strong>telefono</strong> (<em>str</em>) – Nuevo teléfono del cliente.</p></li>
+<li><p><strong>correo_electronico</strong> (<em>str</em>) – Nuevo correo electrónico del cliente.</p></li>
+<li><p><strong>cedula</strong> (<em>str</em>) – Nueva cédula del cliente.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> si el cliente fue actualizado exitosamente, <cite>False</cite> en caso de error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Si ocurre un error durante la actualización del cliente.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.cliente.anadir_cliente">
+<span class="sig-prename descclassname"><span class="pre">models.cliente.</span></span><span class="sig-name descname"><span class="pre">añadir_cliente</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cedula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nombres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apellidos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direccion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">telefono</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correo_electronico</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.cliente.anadir_cliente" title="Link to this definition"></a></dt>
+<dd><p>Añade un nuevo cliente a la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cedula</strong> (<em>str</em>) – Cédula del cliente.</p></li>
+<li><p><strong>nombres</strong> (<em>str</em>) – Nombres del cliente.</p></li>
+<li><p><strong>apellidos</strong> (<em>str</em>) – Apellidos del cliente.</p></li>
+<li><p><strong>direccion</strong> (<em>str</em>) – Dirección del cliente.</p></li>
+<li><p><strong>telefono</strong> (<em>str</em>) – Teléfono del cliente.</p></li>
+<li><p><strong>correo_electronico</strong> (<em>str</em>) – Correo electrónico del cliente.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> si el cliente fue añadido exitosamente, <cite>False</cite> en caso de error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Si ocurre un error durante la inserción del cliente.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.cliente.eliminarr_client">
+<span class="sig-prename descclassname"><span class="pre">models.cliente.</span></span><span class="sig-name descname"><span class="pre">eliminarr_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cliente_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#models.cliente.eliminarr_client" title="Link to this definition"></a></dt>
+<dd><p>Elimina un cliente de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cliente_id</strong> (<em>int</em>) – Identificador único del cliente a eliminar.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> si el cliente fue eliminado exitosamente, <cite>False</cite> en caso de error.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Si ocurre un error durante la eliminación del cliente.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="models.cliente.obtener_lista_clientes">
+<span class="sig-prename descclassname"><span class="pre">models.cliente.</span></span><span class="sig-name descname"><span class="pre">obtener_lista_clientes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#models.cliente.obtener_lista_clientes" title="Link to this definition"></a></dt>
+<dd><p>Obtiene la lista de todos los clientes registrados en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una lista de instancias de la clase <cite>Cliente</cite> con los datos de cada cliente.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#models.cliente.Cliente" title="models.cliente.Cliente">Cliente</a>]</p>
+</dd>
+<dt class="field-odd">Muestra<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – Si ocurre un error al intentar obtener la lista de clientes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2024, Esteban Alexander Zambrano.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

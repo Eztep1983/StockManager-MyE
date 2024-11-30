@@ -8,6 +8,16 @@ development_config = config['development']
 #CLASE PARA VENTAS DE LA EMPRESA 
 
 class Venta:
+    """
+    Representa una venta realizada en el sistema.
+
+    Attributes:
+        id_venta (int): Identificador único de la venta.
+        id_usuario (int): Identificador del usuario que realizó la venta.
+        fecha_venta (str): Fecha en la que se realizó la venta.
+        id_cliente (int): Identificador del cliente asociado a la venta.
+        hora (str): Hora en la que se realizó la venta.
+    """
     def __init__(self, id_venta, id_usuario, fecha_venta, id_cliente, hora_venta):
         self.id_venta = id_venta
         self.id_usuario = id_usuario
@@ -16,6 +26,28 @@ class Venta:
         self.hora = hora_venta
 # METODO PARA OBTENER VENTAS
 def obtener_ventas():
+    """
+    Obtiene todas las ventas registradas en el sistema, incluyendo información
+    adicional sobre los clientes y usuarios asociados.
+
+    Returns:
+        list[dict]: Una lista de diccionarios que representan las ventas. 
+        Cada diccionario contiene:
+            - id_venta: ID de la venta.
+            - id_usuario: ID del usuario que realizó la venta.
+            - fecha_venta: Fecha de la venta.
+            - id_cliente: ID del cliente asociado.
+            - nombre_cliente: Nombre del cliente asociado.
+            - nombre_usuario: Nombre del usuario que realizó la venta.
+            - hora: Hora de la venta.
+
+    Raises:
+        Exception: Si ocurre algún error durante la consulta.
+
+    Notes:
+        - Se realiza un JOIN para obtener los nombres de clientes y usuarios 
+          relacionados con cada venta.
+    """
     try:
         conn = mysql.connection
         cursor = conn.cursor()

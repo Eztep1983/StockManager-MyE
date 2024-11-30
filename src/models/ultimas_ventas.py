@@ -5,6 +5,13 @@ mysql = MySQL()
 development_config = config['development']
 
 def obtener_ultimas_ventas():
+    """
+    Obtiene las últimas 10 ventas realizadas desde la base de datos, incluyendo los detalles de cada venta, 
+    como el nombre del producto, cantidad, precio unitario, monto total de la venta y la fecha/hora de pago.
+
+    Returns:
+        list[dict]: Lista de diccionarios con los detalles de las últimas 10 ventas.
+    """
     try:
         conn = mysql.connection
         cursor = conn.cursor()

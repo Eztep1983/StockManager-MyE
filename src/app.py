@@ -40,16 +40,46 @@ logger = logging.getLogger(__name__)
 #RUTA LOGIN
 @app.route('/')
 def index():
+    """
+    Redirige automáticamente a la ruta de inicio de sesión por defecto.
+
+    Flujo:
+        1. Llama a la función `login` utilizando `url_for`.
+        2. Redirige al usuario a la página de inicio de sesión.
+
+    Returns:
+        - Redirección a la vista de inicio de sesión.
+    """
     return redirect(url_for('login')) #Redireccion directa a login
 
 @login_manager_app.user_loader
 def load_user(id):
+    """
+    Carga un usuario específico en base a su ID.
+
+    Flujo:
+        1. Utiliza el ID proporcionado por Flask-Login.
+        2. Llama a la función `get_by_id` del modelo `ModelUser` para recuperar los datos del usuario desde la base de datos.
+
+    Returns:
+        - Una instancia del usuario si se encuentra, o `None` si no se encuentra.
+    """
     return ModelUser.get_by_id(db, id)
 
 #RUTA PARA CERRAR SESION
 @app.route('/logout')
 @login_required
 def logout():
+    """
+    Cierra la sesión del usuario actual y redirige a la página de cierre de sesión.
+
+    Flujo:
+        1. Llama a `logout_user` para finalizar la sesión del usuario.
+        2. Redirige al usuario a la página de cierre de sesión definida por la función `logout`.
+
+    Returns:
+        - Redirección a la vista de cierre de sesión.
+    """
     logout_user()
     return redirect(url_for('logout'))
 
@@ -57,6 +87,29 @@ def logout():
                                                 #Login
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    """
+    Maneja el inicio de sesión de los usuarios.
+
+    Métodos permitidos:
+        - GET: Renderiza la página de inicio de sesión.
+        - POST: Procesa el formulario de inicio de sesión.
+
+    Flujo del método POST:
+        1. Valida que los campos `identification` y `password` no estén vacíos.
+        2. Crea una instancia temporal de usuario (`User`) con los datos ingresados.
+        3. Busca al usuario en la base de datos mediante `ModelUser.login`.
+        4. Si el usuario es encontrado:
+            - Verifica si la contraseña proporcionada es correcta usando `User.check_password`.
+            - Si la contraseña es válida, inicia sesión y redirige a la página principal.
+            - Si la contraseña es inválida, muestra un mensaje de error.
+        5. Si el usuario no es encontrado, muestra un mensaje de error.
+
+    Returns:
+        - GET: Renderiza el template `auth/login.html`.
+        - POST: Dependiendo de la validación:
+            - Redirige a la página principal si las credenciales son válidas.
+            - Renderiza `auth/login.html` con un mensaje de error si hay fallas en la autenticación.
+    """
     if request.method == 'POST':
         identification = request.form.get('identification')
         password = request.form.get('password')
@@ -88,6 +141,29 @@ def login():
 #RUTA PARA EL REGISTRO DE USUARIOS
 @app.route('/register', methods=["GET", "POST"])
 def register():
+    """
+    Maneja el registro de nuevos usuarios.
+
+    Métodos permitidos:
+        - GET: Renderiza la página de registro.
+        - POST: Procesa el formulario para registrar un nuevo usuario.
+
+    Flujo del método POST:
+        1. Valida que los campos `identification`, `password` y `fullname` no estén vacíos.
+        2. Crea un objeto `User` con los datos proporcionados.
+        3. Intenta registrar al usuario en la base de datos utilizando `Register.register`.
+        4. Si el registro es exitoso, redirige a la página de inicio de sesión.
+        5. Maneja posibles errores:
+            - `ValueError`: Mensaje de advertencia específico.
+            - Otros errores: Mensaje genérico de error y redirección a la página de registro.
+
+    Manejo de excepciones:
+        - Captura errores inesperados y muestra un mensaje de error en la página de registro.
+
+    Returns:
+        - GET: Renderiza el template `auth/register.html`.
+        - POST: Redirige al login si el registro es exitoso o vuelve al formulario con mensajes de error.
+    """
     try:
         if request.method == 'POST':
             identification = request.form.get('identification')
@@ -121,6 +197,20 @@ def register():
 @app.route('/home')
 @login_required 
 def home():
+    """
+    Renderiza la página principal del sistema.
+
+    Requisitos:
+        - El usuario debe estar autenticado (`@login_required`).
+
+    Flujo:
+        1. Obtiene las últimas ventas llamando a `obtener_ultimas_ventas`.
+        2. Maneja posibles errores al obtener las ventas:
+            - Si ocurre un error, registra el mensaje en consola y devuelve un código HTTP 500.
+
+    Returns:
+        - Renderiza el template `home.html` con las últimas ventas.
+    """
     try:
         ultimas_ventas = obtener_ultimas_ventas()
     except Exception as e:
@@ -134,6 +224,21 @@ def home():
 @app.route('/proveedores')
 @login_required
 def get_proveedores():
+    """
+    Muestra la lista de proveedores en el sistema.
+
+    Requisitos:
+        - El usuario debe estar autenticado (`@login_required`).
+
+    Flujo:
+        1. Obtiene la lista de proveedores llamando a `obtener_proveedores` 
+            (ubicada en `models/proveedor.py`).
+        2. Maneja posibles errores al obtener los proveedores:
+            - Si ocurre un error, registra el mensaje en consola y devuelve un código HTTP 500.
+
+    Returns:
+        - Renderiza el template `proveedores.html` con la lista de proveedores.
+    """
     try:
         lista_proveedores = obtener_proveedores() #Esta funcion esta en models/proveedor.py
     except Exception as e:
@@ -150,6 +255,41 @@ def validar_correo(correo):
 @app.route('/proveedor', methods=['POST', 'GET'])
 @login_required
 def provedor():
+    """
+    Maneja la creación de un nuevo proveedor y muestra el formulario de registro.
+
+    Métodos permitidos:
+        - GET: Renderiza la página de registro de proveedores.
+        - POST: Procesa los datos enviados para registrar un nuevo proveedor.
+
+    Flujo del método POST:
+        1. Recoge los datos del formulario:
+            - `NameProvider`: Nombre de la empresa.
+            - `addressProvider`: Dirección del proveedor.
+            - `phoneProvider`: Teléfono del proveedor.
+            - `emailProvider`: Correo electrónico del proveedor.
+        2. Valida que todos los campos estén completos:
+            - Si falta algún campo, devuelve un mensaje de error con un código HTTP 400.
+        3. Valida el correo electrónico usando `validar_correo`:
+            - Si el correo es inválido, devuelve un mensaje de error con un código HTTP 400.
+        4. Intenta añadir el proveedor usando la función `añadir_proveedor`:
+            - Si la operación es exitosa, redirige a la lista de proveedores y muestra un mensaje de éxito.
+            - Si ocurre un error durante la inserción, devuelve un mensaje de error con un código HTTP 500.
+
+    Manejo de excepciones:
+        - Captura errores inesperados durante el procesamiento y devuelve un mensaje de error genérico en formato JSON.
+
+    Returns:
+        - GET: Renderiza el formulario para el registro de proveedores.
+        - POST:
+            - Redirige a `/proveedores` si el registro es exitoso.
+            - Devuelve un mensaje de error en formato JSON si hay fallas en la validación o en la operación.
+
+    HTTP Responses:
+        - 200: Proveedor añadido exitosamente.
+        - 400: Error en los datos proporcionados (campos incompletos o correo inválido).
+        - 500: Error interno al añadir el proveedor.
+    """
     try:
         if request.method == 'POST':
             nombre_empresa = request.form.get("NameProvider")
@@ -174,6 +314,21 @@ def provedor():
 @app.route('/proveedores/<int:id_proveedor>', methods=['DELETE'])
 @login_required
 def eliminar_proveedor(id_proveedor):
+    """
+    Elimina un proveedor del sistema.
+
+    Método permitido:
+        - DELETE: Elimina el proveedor con el ID proporcionado.
+
+    Flujo:
+        1. Llama a la función `eliminar_proveedor` con el ID proporcionado.
+        2. Si la operación es exitosa, devuelve un mensaje de confirmación en formato JSON.
+        3. Si se utiliza un método no permitido, devuelve un código HTTP 405 (Método no permitido).
+
+    Returns:
+        - JSON con un mensaje de éxito si la eliminación es exitosa.
+        - Código HTTP 405 si se intenta acceder con un método diferente a DELETE.
+    """
     if request.method == 'DELETE':
         eliminar_proveedor(id_proveedor)
         return jsonify({'message': 'Proveedor eliminado correctamente'})
@@ -187,6 +342,39 @@ def eliminar_proveedor(id_proveedor):
 @app.route('/productos', methods=['GET', 'POST'])
 @login_required
 def nuevo_producto():
+    """
+    Maneja la creación de nuevos productos y muestra la lista de productos existentes.
+
+    Métodos permitidos:
+        - GET: Renderiza la página para añadir productos y muestra la lista de productos actuales.
+        - POST: Procesa el formulario para crear un nuevo producto.
+
+    Flujo del método POST:
+        1. Recoge los datos del formulario:
+            - `NameProduct`: Nombre del producto.
+            - `Description`: Descripción del producto.
+            - `PriceProduct`: Precio del producto.
+            - `StockProduct`: Cantidad en inventario.
+            - `CategoryProduct`: Categoría del producto.
+            - `ProviderProduct`: Proveedor del producto.
+            - `IngresoProduct`: Fecha de ingreso.
+        2. Valida que todos los campos estén completos.
+        3. Intenta convertir `PriceProduct` y `StockProduct` a los tipos de datos apropiados.
+            - Si la conversión falla, devuelve un mensaje de error.
+        4. Llama a la función `crear_producto` para registrar el producto en el sistema.
+            - Si la operación es exitosa, redirige a `/productos`.
+        5. Maneja excepciones generales devolviendo un mensaje de error en formato JSON.
+
+    Flujo del método GET:
+        1. Obtiene listas de proveedores, categorías y productos existentes.
+        2. Renderiza el template `productos.html` con las listas obtenidas.
+
+    Returns:
+        - POST: Redirige a `/productos` si la creación es exitosa o devuelve un mensaje de error en caso de falla.
+        - GET: Renderiza el template `productos.html` con los datos necesarios.
+        - 400: Si hay datos inválidos o incompletos.
+        - 500: Si ocurre un error interno.
+    """
     try:
         if request.method == 'POST':
             nombre = request.form.get('NameProduct')
@@ -233,6 +421,23 @@ def producto_existe(f):
 @login_required
 @producto_existe
 def eliminar_producto(id):
+    """
+    Elimina un producto del sistema.
+
+    Flujo:
+        1. Verifica si el usuario tiene permiso para eliminar productos usando `current_user.can_delete_product`.
+            - Si no tiene permisos, devuelve un código HTTP 403.
+        2. Llama a la función `eliminar_productos` con el ID proporcionado.
+            - Si la eliminación es exitosa, devuelve un mensaje de éxito con código HTTP 200.
+            - Si falla, devuelve un mensaje de error con código HTTP 400.
+        3. Captura y registra cualquier error inesperado, devolviendo un mensaje de error genérico con código HTTP 500.
+
+    Returns:
+        - 200: Producto eliminado exitosamente.
+        - 400: No se pudo eliminar el producto.
+        - 403: El usuario no tiene permiso para eliminar productos.
+        - 500: Error interno al procesar la solicitud.
+    """
     try:
         if not current_user.can_delete_product(): #can_delete_product aun no manejo roles pero se usa cuando el user esta activo
             return jsonify({'message': 'No tiene permiso para eliminar productos'}), 403
@@ -250,6 +455,30 @@ def eliminar_producto(id):
 @app.route('/editar_producto', methods=['PUT'])
 @login_required
 def editar_producto():
+    """
+    Edita los datos de un producto existente.
+
+    Flujo:
+        1. Recoge los datos del formulario:
+            - `producto_id`: Identificador del producto.
+            - `edit_NameProduct`: Nombre del producto.
+            - `edit_Description`: Descripción del producto.
+            - `edit_Price`: Precio del producto.
+            - `edit_Stock`: Cantidad en inventario.
+        2. Valida que todos los campos estén completos.
+            - Si falta algún campo, devuelve un mensaje de error con código HTTP 400.
+        3. Convierte `edit_Price` a flotante y `edit_Stock` a entero.
+            - Si la conversión falla o los valores son negativos, devuelve un mensaje de error con código HTTP 400.
+        4. Llama a la función `actualizar_producto` para guardar los cambios.
+            - Si la operación es exitosa, devuelve un código HTTP 200.
+            - Si falla, devuelve un mensaje de error con código HTTP 400.
+        5. Maneja excepciones generales devolviendo un mensaje de error con código HTTP 500.
+
+    Returns:
+        - 200: Producto actualizado exitosamente.
+        - 400: Error en los datos proporcionados o fallo en la operación.
+        - 500: Error interno al procesar la solicitud.
+    """
     if request.method == 'PUT':
         try:
             data = request.form
@@ -285,6 +514,16 @@ def editar_producto():
 @app.route('/categorias')
 @login_required
 def get_categorias():
+    """
+    Obtiene y muestra la lista de categorías disponibles.
+
+    Flujo:
+        1. Llama a la función `obtener_categorias` para recuperar las categorías desde la base de datos.
+        2. Captura cualquier error y lo registra en la consola.
+
+    Returns:
+        - Renderiza el template `productos.html` con la lista de categorías.
+    """
     try: 
         lista_categorias = obtener_categorias()
     except Exception as e:
@@ -296,6 +535,22 @@ def get_categorias():
 @app.route('/addCategorias', methods=['POST'])
 @login_required
 def crear_categoria():
+    """
+    Crea una nueva categoría en el sistema.
+
+    Flujo:
+        1. Recoge el nombre de la categoría desde el formulario.
+            - Si el campo está vacío, devuelve un mensaje de error con código HTTP 400.
+        2. Llama a la función `ingresar_categoria` para guardar la categoría en la base de datos.
+            - Si la operación es exitosa, devuelve un mensaje de éxito con el ID de la categoría creada.
+            - Si falla, devuelve un mensaje de error con código HTTP 500.
+        3. Captura cualquier excepción y devuelve el mensaje del error con código HTTP 500.
+
+    Returns:
+        - JSON con mensaje de éxito y ID de la categoría creada.
+        - 400: El nombre de la categoría es obligatorio.
+        - 500: Error interno al añadir la categoría.
+    """
     try:
         nombre_categoria = request.form.get('CategoryName')  
         if not nombre_categoria: 
@@ -316,6 +571,16 @@ def crear_categoria():
 @app.route('/ventas')
 @login_required
 def ventas():
+    """
+    Muestra la lista de ventas realizadas.
+
+    Flujo:
+        1. Llama a la función `obtener_ventas` para recuperar las ventas desde la base de datos.
+        2. Captura cualquier error y lo registra en la consola.
+
+    Returns:
+        - Renderiza el template `ventas.html` con la lista de ventas.
+    """
     try:
         lista_ventas = obtener_ventas()
     except Exception as e:
@@ -330,6 +595,18 @@ def ventas():
 @app.route('/clientes')
 @login_required
 def clientes():
+    """
+    Muestra la lista de clientes registrados en el sistema.
+
+    Flujo:
+        1. Llama a la función `obtener_lista_clientes` para recuperar los datos de los clientes.
+        2. Captura cualquier error y lo registra en la consola.
+        3. Si ocurre un error, incluye un mensaje de error en el contexto del template.
+
+    Returns:
+        - Renderiza el template `clientes.html` con la lista de clientes.
+        - Incluye un mensaje de error si no se pudieron obtener los datos.
+    """
     try:
         lista_clientes = obtener_lista_clientes()
         return render_template('clientes.html', clientes=lista_clientes)
@@ -343,6 +620,26 @@ def clientes():
 @app.route('/cliente', methods=['POST'])
 @login_required
 def nuevo_cliente():
+    """
+    Registra un nuevo cliente en el sistema.
+
+    Flujo:
+        1. Recoge los datos del cliente desde el formulario:
+            - `DNIClient`: Cédula del cliente.
+            - `NameClient`: Nombre del cliente.
+            - `LastNameClient`: Apellido del cliente.
+            - `addressClient1`: Dirección del cliente.
+            - `phoneClient`: Teléfono del cliente.
+            - `emailClient`: Correo electrónico del cliente.
+        2. Verifica que todos los campos requeridos estén completos.
+            - Si falta algún dato, devuelve un mensaje de error con código HTTP 400.
+        3. Llama a la función `añadir_cliente` para registrar al cliente.
+            - Si la operación es exitosa, redirige a la página de clientes.
+            - Si falla, muestra un mensaje de error.
+
+    Returns:
+        - Renderiza el template `clientes.html` en caso de éxito o error.
+    """
     try: 
         if request.method == 'POST':
             cedula = request.form.get('DNIClient')
@@ -371,6 +668,27 @@ def nuevo_cliente():
 @app.route('/editar_cliente', methods=['PUT'])
 @login_required
 def editar_cliente():
+    """
+    Actualiza los datos de un cliente existente.
+
+    Flujo:
+        1. Recoge los datos del cliente desde el formulario de edición:
+            - `cliente_id`: ID del cliente.
+            - `edit_NameClient`: Nuevo nombre.
+            - `edit_LastNameClient`: Nuevo apellido.
+            - `edit_addressClient`: Nueva dirección.
+            - `edit_phoneClient`: Nuevo teléfono.
+            - `edit_emailClient`: Nuevo correo electrónico.
+            - `edit_cedulaClient`: Nueva cédula.
+        2. Verifica que todos los campos requeridos estén completos.
+            - Si falta algún dato, devuelve un mensaje de error con código HTTP 400.
+        3. Llama a la función `actualizar_cliente` para guardar los cambios.
+            - Si la operación es exitosa, devuelve un JSON de éxito.
+            - Si falla, devuelve un mensaje de error con código HTTP 400.
+
+    Returns:
+        - JSON con el resultado de la operación.
+    """
     try:
         # Obtener los datos del formulario de edicion (esta en un swal alert de js "EditClientModal")
         identificador_c = request.form.get('cliente_id')
@@ -395,6 +713,19 @@ def editar_cliente():
 @app.route('/eliminar_cliente/<int:cliente_id>', methods=['DELETE'])
 @login_required
 def eliminar_cliente(cliente_id):
+    """
+    Elimina un cliente del sistema.
+
+    Flujo:
+        1. Recibe el ID del cliente a eliminar como parámetro en la URL.
+        2. Llama a la función `eliminarr_client` para realizar la operación.
+            - Si la operación es exitosa, devuelve un mensaje de éxito con código HTTP 200.
+            - Si falla, devuelve un mensaje de error con código HTTP 500.
+
+    Returns:
+        - JSON con el mensaje del resultado de la operación.
+    """
+
     try:
         if request.method=='DELETE':
             eliminarr_client(cliente_id)
@@ -414,6 +745,27 @@ def eliminar_cliente(cliente_id):
 @app.route('/facturar', methods=['POST', 'GET'])
 @login_required
 def facturar():
+    """
+    Procesa la facturación de una venta.
+
+    Flujo:
+        1. Recoge los datos generales de la venta:
+            - ID del usuario y cliente.
+            - Fecha y hora de la venta.
+        2. Recoge los datos de los pagos:
+            - Fecha y hora del pago.
+            - Total de la venta y notas adicionales.
+        3. Recoge los detalles de los productos:
+            - ID, cantidad, precio unitario y descripción.
+            - Verifica que todos los datos sean consistentes y válidos.
+        4. Llama a la función `añadir_facturacion` para registrar la venta y generar la factura.
+            - Si la operación falla, captura y maneja las excepciones.
+        5. En caso de éxito, muestra un mensaje de confirmación con el número de factura.
+
+    Returns:
+        - Redirige a la página de ventas en caso de éxito.
+        - Renderiza el template `facturar.html` con los datos necesarios en caso de error.
+    """
     try:
         if request.method == 'POST':
             # Datos de la venta
@@ -482,6 +834,27 @@ def facturar():
 @login_required
 def obtener_pago(id_venta):
     try:
+        """
+        Obtiene la información del pago asociado a una venta específica.
+
+        Flujo:
+            1. Recibe el ID de la venta como parámetro en la URL.
+            2. Consulta la base de datos para obtener los detalles del pago relacionado, incluyendo:
+                - `id_pagos`: ID del pago.
+                - `id_venta`: ID de la venta.
+                - `monto`: Monto del pago.
+                - `fecha_pago`: Fecha en que se realizó el pago.
+                - `hora_pago`: Hora en que se realizó el pago.
+                - `nota`: Nota adicional del pago.
+                - `id_factura`: ID de la factura asociada.
+                - `numero_factura`: Número de la factura asociada.
+            3. Si no se encuentra información del pago, devuelve un error con código HTTP 404.
+            4. Si ocurre un error en la consulta, devuelve un mensaje de error con código HTTP 500.
+
+        Returns:
+            - JSON con los datos del pago en caso de éxito.
+            - Mensaje de error con los códigos HTTP correspondientes en caso de fallo.
+        """
         conn = mysql.connection
         cursor = conn.cursor()
         sql_pago = """
@@ -522,6 +895,15 @@ def obtener_pago(id_venta):
 
 # MANEJO PARA EL 404 ERROR
 def status404(error):
+    """
+    Muestra la página personalizada para manejar errores 404.
+
+    Flujo:
+        1. Renderiza el template `404handler.html` en caso de que una página solicitada no sea encontrada.
+
+    Returns:
+        - Template HTML con un mensaje de error 404.
+    """
     return render_template('404handler.html'), 404
 
 #_______________________________________________________________________________________________________
@@ -529,11 +911,30 @@ def status404(error):
 #EN CASO DE METODO INCORRECTO
 @app.errorhandler(405)
 def method_not_allowed(e):
+    """
+    Devuelve un mensaje de error para solicitudes con un método HTTP no permitido.
+
+    Flujo:
+        1. Captura el error 405 y devuelve un mensaje en formato JSON indicando que el método no está permitido.
+
+    Returns:
+        - JSON con un mensaje de error y código HTTP 405.
+    """
+
     return jsonify(success=False, message="Método no permitido"), 405
 
 #_______________________________________________________________________________________________________
 
 def status401(error):
+    """
+    Redirige al usuario a la página de inicio de sesión en caso de error 401 (no autorizado).
+
+    Flujo:
+        1. Captura el error 401 y redirige al usuario a la función `login`.
+
+    Returns:
+        - Redirección a la vista de inicio de sesión.
+    """
     return redirect(url_for('login'))
 
 #_______________________________________________________________________________________________________

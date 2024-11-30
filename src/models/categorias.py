@@ -5,11 +5,31 @@ mysql = MySQL()
 development_config = config['development']
 
 class Categoria:
+    """
+    Representa una categoría de producto.
+
+    Atributos:
+        id (int): Identificador único de la categoría.
+        nombre (str): Nombre de la categoría.
+    """
     def __init__(self, id, nombre):
         self.id= id
         self.nombre=nombre
 
 def ingresar_categoria(category):
+    """
+    Inserta una nueva categoría en la base de datos.
+
+    Args:
+        category (str): Nombre de la categoría a insertar.
+
+    Returns:
+        int: ID de la categoría recién creada si la operación fue exitosa.
+        None: Si ocurre un error durante la inserción.
+
+    Raises:
+        Exception: Si ocurre un error inesperado durante la operación.
+    """
     try:
         conn = mysql.connection
         with conn.cursor() as cursor:
@@ -25,6 +45,15 @@ def ingresar_categoria(category):
 
 
 def obtener_categorias():
+    """
+    Obtiene la lista de categorías de la base de datos.
+
+    Returns:
+        list: Una lista de objetos `Categoria` que representan las categorías existentes.
+
+    Raises:
+        Exception: Si ocurre un error durante la consulta de la base de datos.
+    """
     conn=mysql.connection
     cursor=conn.cursor()
     try:

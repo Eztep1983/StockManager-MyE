@@ -8,6 +8,34 @@ development_config = config['development']
 import datetime
 
 def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago, nota):
+    """
+    Procesa y registra una nueva facturación, incluyendo la venta, los detalles de la venta, el pago y la factura asociada.
+
+    Args:
+        usuario (int): ID del usuario que realiza la venta.
+        cliente (int): ID del cliente asociado a la venta.
+        fecha_venta (str): Fecha en la que se realiza la venta (YYYY-MM-DD).
+        hora_venta (str): Hora en la que se realiza la venta (HH:MM:SS).
+        productos (list[dict]): Lista de productos vendidos, cada uno con las claves:
+            - 'id_producto': ID del producto.
+            - 'cantidad': Cantidad vendida.
+            - 'precio_unitario': Precio unitario del producto.
+            - 'descripcion' (opcional): Descripción del producto.
+        total (float): Monto total de la venta.
+        fecha_pago (str): Fecha en la que se realiza el pago (YYYY-MM-DD).
+        hora_pago (str): Hora en la que se realiza el pago (HH:MM:SS).
+        nota (str): Nota asociada al pago.
+
+    Returns:
+        dict: Resultado del proceso, con las claves:
+            - 'status': "success" si se procesó correctamente, "error" en caso contrario.
+            - 'message': Mensaje descriptivo del resultado.
+            - 'id_factura' (opcional): ID de la factura generada.
+            - 'numero_factura' (opcional): Número de la factura generada.
+
+    Raises:
+        Exception: Si ocurre un error durante el procesamiento, se revierte la transacción.
+    """
     try:
         conn = mysql.connection
         cursor = conn.cursor()
@@ -103,6 +131,25 @@ def añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, to
    
         
 def obtener_datos_factura(cursor, id_factura):
+    """
+    Recupera los datos de una factura específica.
+
+    Args:
+        cursor (MySQLCursor): Cursor de la conexión a la base de datos.
+        id_factura (int): ID de la factura a consultar.
+
+    Returns:
+        tuple: 
+            - dict: Datos de la factura, incluyendo:
+                - 'numero_factura': Número de la factura.
+                - 'fecha_emision': Fecha de emisión de la factura.
+                - 'cliente': Nombre del cliente asociado.
+                - 'total': Monto total de la factura.
+            - str: Mensaje de error si ocurre un problema o si la factura no se encuentra.
+
+    Raises:
+        Exception: Si ocurre un error durante la consulta.
+    """
     try:
         # Consulta los datos de la factura
         sql_factura = """

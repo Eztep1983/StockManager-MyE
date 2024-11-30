@@ -5,7 +5,18 @@ mysql = MySQL()
 development_config = config['development']
 
 class Proveedor:
+    """
+    Representa un proveedor en el sistema de inventario.
+
+    Atributos:
+        nombre_empresa (str): Nombre de la empresa proveedora.
+        direccion (str): Dirección del proveedor.
+        telefono (str): Número de teléfono del proveedor.
+        correo_electronico (str): Correo electrónico del proveedor.
+        id_proveedor (int): Identificador único del proveedor.
+    """
     def __init__(self, nombre_empresa, direccion, telefono, correo_electronico, id_proveedor):
+        
         self.nombre_empresa = nombre_empresa
         self.direccion = direccion
         self.telefono = telefono
@@ -14,6 +25,12 @@ class Proveedor:
 
 
 def obtener_proveedores():
+    """
+    Obtiene la lista de todos los proveedores registrados.
+
+    Returns:
+        list[Proveedor]: Lista de objetos Proveedor con los detalles de cada uno.
+    """
     try: 
         conn = mysql.connection
         cursor = conn.cursor()
@@ -31,6 +48,18 @@ def obtener_proveedores():
         return None
 
 def añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
+    """
+    Añade un nuevo proveedor al sistema.
+
+    Args:
+        nombre_empresa (str): Nombre de la empresa proveedora.
+        direccion (str): Dirección del proveedor.
+        telefono (str): Número de teléfono del proveedor.
+        correo_electronico (str): Correo electrónico del proveedor.
+
+    Returns:
+        bool: True si el proveedor fue añadido con éxito, False si ocurrió un error.
+    """
     try:
         conn = mysql.connection
         cursor = conn.cursor()
@@ -46,6 +75,15 @@ def añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
         return False
     
 def eliminar_proveedor(id_proveedor):
+    """
+    Elimina un proveedor del sistema.
+
+    Args:
+        id_proveedor (int): Identificador único del proveedor a eliminar.
+
+    Returns:
+        bool: True si el proveedor fue eliminado con éxito, False si ocurrió un error.
+    """
     conn = mysql.connection
     cursor = conn.cursor()
     try:
@@ -62,6 +100,19 @@ def eliminar_proveedor(id_proveedor):
         return False
  
 def actualizar_proveedore(nombre_empresa, direccion, telefono, correo_electronico, id_proveedor):
+    """
+    Actualiza los datos de un proveedor existente.
+
+    Args:
+        nombre_empresa (str): Nuevo nombre de la empresa proveedora.
+        direccion (str): Nueva dirección del proveedor.
+        telefono (str): Nuevo número de teléfono del proveedor.
+        correo_electronico (str): Nuevo correo electrónico del proveedor.
+        id_proveedor (int): Identificador único del proveedor a actualizar.
+
+    Returns:
+        bool: True si el proveedor fue actualizado con éxito, False si ocurrió un error.
+    """
     try:
         conn=mysql.connection
         cursor=conn.cursor()

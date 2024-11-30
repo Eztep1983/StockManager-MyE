@@ -10,3 +10,4 @@ itsdangerous
 colorama
 wtforms
 python-dotenv
+sphinx

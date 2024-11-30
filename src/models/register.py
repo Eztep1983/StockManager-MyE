@@ -3,6 +3,24 @@ from models.entities.user import User
 
 #Clase para registrar a los usuarios 
 class Register:
+    """
+    Registra un nuevo usuario en la base de datos.
+
+    Args:
+        db: La conexión activa a la base de datos.
+        user (User): Un objeto `User` que contiene los datos del usuario a registrar.
+
+    Returns:
+        User: Un objeto `User` que representa al usuario registrado.
+
+    Raises:
+        ValueError: Si la identificación ya está registrada.
+        Exception: Si ocurre un error durante el proceso de registro.
+
+    Notes:
+        - La contraseña proporcionada por el usuario se hashea antes de almacenarse en la base de datos.
+        - Se realiza una verificación previa para evitar registros duplicados basados en la identificación.
+    """
     @classmethod
     def register(cls, db, user):
         try:

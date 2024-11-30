@@ -4,6 +4,19 @@ import logging
 mysql=MySQL()
 
 class Producto:
+    """
+    Representa un producto en el sistema de inventario.
+
+    Atributos:
+        identificador_p (int): Identificador único del producto.
+        nombre (str): Nombre del producto.
+        descripcion (str): Descripción del producto.
+        precio (float): Precio unitario del producto.
+        stock (int): Cantidad de unidades disponibles en inventario.
+        id_categoria (int): Identificador de la categoría a la que pertenece el producto.
+        id_proveedor (int): Identificador del proveedor del producto.
+    """
+
     def __init__(self, identificador_p, nombre, descripcion, precio, stock, id_proveedor, id_categoria):
         self.identificador_p = identificador_p
         self.nombre=nombre
@@ -15,6 +28,15 @@ class Producto:
 
     
 def obtener_producto_id(prd_id):
+    """
+    Obtiene los detalles de un producto por su identificador.
+
+    Args:
+        prd_id (int): Identificador único del producto a consultar.
+
+    Returns:
+        dict: Detalles del producto si se encuentra, o None si no se encuentra.
+    """
     try: 
         conn = mysql.connection
         cursor = conn.cursor()
@@ -34,6 +56,12 @@ def obtener_producto_id(prd_id):
     return producto
 
 def obtener_lista_productos():
+    """
+    Obtiene la lista de todos los productos en el inventario.
+
+    Returns:
+        list[Producto]: Lista de objetos Producto con los detalles de cada uno.
+    """
     try:    
         conn = mysql.connection
         cursor = conn.cursor()
@@ -51,6 +79,21 @@ def obtener_lista_productos():
         
 
 def crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, id_proveedor, id_categoria):
+    """
+    Crea un nuevo producto en el inventario.
+
+    Args:
+        nombre (str): Nombre del producto.
+        descripcion (str): Descripción del producto.
+        precio (float): Precio unitario del producto.
+        stock (int): Cantidad inicial del producto en inventario.
+        fecha_ingreso (str): Fecha en la que el producto fue ingresado al inventario.
+        id_proveedor (int): Identificador del proveedor del producto.
+        id_categoria (int): Identificador de la categoría del producto.
+
+    Returns:
+        bool: True si el producto fue creado con éxito, False si ocurrió un error.
+    """
     try:
         conn = mysql.connection
         cursor = conn.cursor()
@@ -67,6 +110,19 @@ def crear_producto(nombre, descripcion, precio, stock, fecha_ingreso, id_proveed
     
 
 def actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
+    """
+    Actualiza los detalles de un producto existente.
+
+    Args:
+        identificador_p (int): Identificador único del producto a actualizar.
+        nombre (str): Nuevo nombre del producto.
+        descripcion (str): Nueva descripción del producto.
+        precio (float): Nuevo precio unitario del producto.
+        stock (int): Nuevo stock del producto.
+
+    Returns:
+        bool: True si el producto fue actualizado con éxito, False si ocurrió un error.
+    """
     try:
         conn = mysql.connection
         cursor = conn.cursor()
@@ -86,6 +142,15 @@ def actualizar_producto(identificador_p, nombre, descripcion, precio, stock):
 
 
 def eliminar_productos(prd_id):
+    """
+    Elimina un producto del inventario.
+
+    Args:
+        prd_id (int): Identificador único del producto a eliminar.
+
+    Returns:
+        bool: True si el producto fue eliminado con éxito, False si ocurrió un error.
+    """
     try:
         conn = mysql.connection
         with conn.cursor() as cursor:

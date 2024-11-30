@@ -6,6 +6,18 @@ mysql = MySQL()
 development_config = config['development']
 
 class Cliente:
+    """
+    Representa un cliente en el sistema.
+
+    Attributes:
+        cedula (str): Cédula del cliente.
+        nombres (str): Nombres del cliente.
+        apellidos (str): Apellidos del cliente.
+        direccion (str): Dirección del cliente.
+        telefono (str): Teléfono del cliente.
+        correo_electronico (str): Correo electrónico del cliente.
+        identificador_c (int): Identificador único del cliente.
+    """
     def __init__(self, cedula, nombres, apellidos, direccion, telefono, correo_electronico, identificador_c):
         self.cedula = cedula
         self.nombres = nombres
@@ -16,6 +28,15 @@ class Cliente:
         self.identificador_c = identificador_c
             
 def obtener_lista_clientes():
+    """
+    Obtiene la lista de todos los clientes registrados en la base de datos.
+
+    Returns:
+        list[Cliente]: Una lista de instancias de la clase `Cliente` con los datos de cada cliente.
+
+    Raises:
+        Exception: Si ocurre un error al intentar obtener la lista de clientes.
+    """
     try: 
         conn = mysql.connection
         cursor = conn.cursor()
@@ -34,6 +55,23 @@ def obtener_lista_clientes():
 
 
 def añadir_cliente(cedula, nombres, apellidos, direccion, telefono, correo_electronico):
+    """
+    Añade un nuevo cliente a la base de datos.
+
+    Args:
+        cedula (str): Cédula del cliente.
+        nombres (str): Nombres del cliente.
+        apellidos (str): Apellidos del cliente.
+        direccion (str): Dirección del cliente.
+        telefono (str): Teléfono del cliente.
+        correo_electronico (str): Correo electrónico del cliente.
+
+    Returns:
+        bool: `True` si el cliente fue añadido exitosamente, `False` en caso de error.
+
+    Raises:
+        Exception: Si ocurre un error durante la inserción del cliente.
+    """
     conn = mysql.connection
     cursor = conn.cursor()
     try:
@@ -50,6 +88,24 @@ def añadir_cliente(cedula, nombres, apellidos, direccion, telefono, correo_elec
         return False
     
 def actualizar_cliente(identificador_c ,nombres, apellidos, direccion, telefono, correo_electronico, cedula):
+    """
+    Actualiza los datos de un cliente en la base de datos.
+
+    Args:
+        identificador_c (int): Identificador único del cliente a actualizar.
+        nombres (str): Nuevos nombres del cliente.
+        apellidos (str): Nuevos apellidos del cliente.
+        direccion (str): Nueva dirección del cliente.
+        telefono (str): Nuevo teléfono del cliente.
+        correo_electronico (str): Nuevo correo electrónico del cliente.
+        cedula (str): Nueva cédula del cliente.
+
+    Returns:
+        bool: `True` si el cliente fue actualizado exitosamente, `False` en caso de error.
+
+    Raises:
+        Exception: Si ocurre un error durante la actualización del cliente.
+    """
     try:
         conn = mysql.connection
         cursor = conn.cursor()
@@ -67,6 +123,18 @@ def actualizar_cliente(identificador_c ,nombres, apellidos, direccion, telefono,
 
 
 def eliminarr_client(cliente_id):
+    """
+    Elimina un cliente de la base de datos.
+
+    Args:
+        cliente_id (int): Identificador único del cliente a eliminar.
+
+    Returns:
+        bool: `True` si el cliente fue eliminado exitosamente, `False` en caso de error.
+
+    Raises:
+        Exception: Si ocurre un error durante la eliminación del cliente.
+    """
     try:
         conn = mysql.connection
         with conn.cursor() as cursor:
