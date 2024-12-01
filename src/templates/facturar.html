@@ -159,19 +159,19 @@
         // Fecha en formato 'YYYY-MM-DD'
         const fecha = ahora.toISOString().split('T')[0];
         const hora = ahora.toTimeString().split(' ')[0].substring(0, 5); 
-        
+    
         fechaInputVenta.value = fecha;
         horaInputVenta.value = hora;
         fechaInputPago.value = fecha; 
         horaInputPago.value = hora;    
-
+    
         document.getElementById("formulario-facturacion").addEventListener("submit", function(event) {
             // Evita el envío del formulario mientras se valida
             event.preventDefault();
     
             // Variables para validar
             const idCliente = document.getElementById("id_cliente").value.trim();
-            const filasProductos = document.querySelectorAll(".fila-producto");
+            const filasProductos = document.querySelectorAll(".fila-facturacion");
             const notas = document.getElementById("notas").value.trim();
             let productosValidos = true;
     
@@ -187,11 +187,11 @@
     
             // Validar Productos/Servicios
             filasProductos.forEach(fila => {
-                const producto = fila.querySelector(".producto").value.trim();
-                const cantidad = fila.querySelector(".cantidad").value.trim();
-                const precio = fila.querySelector(".precio").value.trim();
+                const producto = fila.querySelector(".producto-facturacion").value.trim();
+                const cantidad = fila.querySelector(".cantidad-facturacion").value.trim();
+                const precio = fila.querySelector(".precio-facturacion").value.trim();
     
-                if (!producto || !cantidad || !precio) {
+                if (!producto || !cantidad || !precio || parseFloat(cantidad) <= 0 || parseFloat(precio) <= 0) {
                     productosValidos = false;
                 }
             });
@@ -200,7 +200,7 @@
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: "Por favor, completa todos los campos de productos/servicios.",
+                    text: "Por favor, completa todos los campos de productos/servicios con valores válidos.",
                 });
                 return;
             }
@@ -227,128 +227,120 @@
                 }
             });
         });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const tablaProductos = document.querySelector("#tabla-productos tbody");
-        const agregarProductoBtn = document.querySelector("#agregar-producto");
-        const totalInput = document.querySelector("input[name='total']");
-
-        // Función para actualizar el subtotal de una fila
-        function actualizarSubtotal(fila) {
-            const cantidadInput = fila.querySelector(".cantidad");
-            const precioInput = fila.querySelector(".precio");
-            const subtotalInput = fila.querySelector(".subtotal");
-
-            const cantidad = parseFloat(cantidadInput.value) || 0;
-            const precio = parseFloat(precioInput.value) || 0;
-            const subtotal = cantidad * precio;
-
-            subtotalInput.value = subtotal.toFixed(2);
-            actualizarTotal();
-        }
-
-        // Función para actualizar el total general
-        function actualizarTotal() {
-            let total = 0;
-            tablaProductos.querySelectorAll(".subtotal").forEach((subtotalInput) => {
-                total += parseFloat(subtotalInput.value) || 0;
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            const tablaProductos = document.querySelector(".tabla-facturacion tbody");
+            const agregarProductoBtn = document.querySelector("#agregar-producto");
+            const totalInput = document.querySelector("input[name='total']");
+    
+            // Validar valores no negativos
+            function validarValor(input) {
+                if (parseFloat(input.value) <= 0) {
+                    input.value = "";
+                    Swal.fire({
+                        icon: "error",
+                        title: "Valor no válido",
+                        text: "Los valores deben ser mayores a cero.",
+                    });
+                }
+            }
+    
+            // Función para actualizar el subtotal de una fila
+            function actualizarSubtotal(fila) {
+                const cantidadInput = fila.querySelector(".cantidad-facturacion");
+                const precioInput = fila.querySelector(".precio-facturacion");
+                const subtotalInput = fila.querySelector(".subtotal-facturacion");
+    
+                const cantidad = parseFloat(cantidadInput.value) || 0;
+                const precio = parseFloat(precioInput.value) || 0;
+                const subtotal = cantidad * precio;
+    
+                subtotalInput.value = subtotal.toFixed(2);
+                actualizarTotal();
+            }
+    
+            // Función para actualizar el total general
+            function actualizarTotal() {
+                let total = 0;
+                tablaProductos.querySelectorAll(".subtotal-facturacion").forEach((subtotalInput) => {
+                    total += parseFloat(subtotalInput.value) || 0;
+                });
+                totalInput.value = total.toFixed(2);
+            }
+    
+            // Función para agregar una nueva fila de producto
+            function agregarFilaProducto() {
+                const filaBase = tablaProductos.querySelector(".fila-facturacion");
+                const nuevaFila = filaBase.cloneNode(true);
+    
+                // Limpiar los campos de la nueva fila
+                nuevaFila.querySelectorAll("input, select").forEach((input) => {
+                    if (input.type === "number" || input.type === "text") {
+                        input.value = "";
+                    }
+                });
+    
+                // Agregar eventos a los nuevos campos
+                nuevaFila.querySelector(".cantidad-facturacion").addEventListener("input", function () {
+                    validarValor(this);
+                    actualizarSubtotal(nuevaFila);
+                });
+    
+                nuevaFila.querySelector(".precio-facturacion").addEventListener("input", function () {
+                    validarValor(this);
+                    actualizarSubtotal(nuevaFila);
+                });
+    
+                nuevaFila.querySelector(".quitar-producto-facturacion").addEventListener("click", function () {
+                    quitarFilaProducto(nuevaFila);
+                });
+    
+                tablaProductos.appendChild(nuevaFila);
+            }
+    
+            // Función para quitar una fila de producto
+            function quitarFilaProducto(fila) {
+                if (tablaProductos.children.length > 1) {
+                    fila.remove();
+                    actualizarTotal();
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Acción no permitida",
+                        text: "No puedes eliminar el único producto.",
+                    });
+                }
+            }
+    
+            // Evento para agregar una fila de producto
+            agregarProductoBtn.addEventListener("click", agregarFilaProducto);
+    
+            // Eventos iniciales para la primera fila
+            document.querySelectorAll(".cantidad-facturacion, .precio-facturacion").forEach((input) => {
+                input.addEventListener("input", function () {
+                    validarValor(this);
+                    const fila = input.closest("tr");
+                    actualizarSubtotal(fila);
+                });
             });
-            totalInput.value = total.toFixed(2);
-        }
     
-    // Función para agregar una nueva fila de producto
-    function agregarFilaProducto() {
-        const filaBase = document.querySelector(".fila-producto");
-        const nuevaFila = filaBase.cloneNode(true);
-
-        // Limpiar los campos de la nueva fila
-        nuevaFila.querySelectorAll("input, select").forEach((input) => {
-            if (input.type === "number" || input.type === "text") {
-                input.value = "";
-            }
+            document.querySelectorAll(".quitar-producto-facturacion").forEach((button) => {
+                button.addEventListener("click", function () {
+                    const fila = button.closest("tr");
+                    quitarFilaProducto(fila);
+                });
+            });
         });
-
-        // Agregar eventos a los nuevos campos
-        nuevaFila.querySelector(".cantidad").addEventListener("input", function () {
-            actualizarSubtotal(nuevaFila);
-        });
-
-        nuevaFila.querySelector(".precio").addEventListener("input", function () {
-            actualizarSubtotal(nuevaFila);
-        });
-
-        nuevaFila.querySelector(".quitar-producto").addEventListener("click", function () {
-            quitarFilaProducto(nuevaFila);
-        });
-
-        tablaProductos.appendChild(nuevaFila);
-    }
-
-    // Función para quitar una fila de producto
-    function quitarFilaProducto(fila) {
-        if (tablaProductos.children.length > 1) {
-            fila.remove();
-            actualizarTotal();
-        } else {
-            alert("No puedes eliminar el único producto.");
-        }
-    }
-
-    // Evento para agregar una fila de producto
-    agregarProductoBtn.addEventListener("click", agregarFilaProducto);
-
-    // Eventos iniciales para la primera fila
-    document.querySelectorAll(".cantidad, .precio").forEach((input) => {
-        input.addEventListener("input", function () {
-            const fila = input.closest("tr");
-            actualizarSubtotal(fila);
-        });
-    });
-
-    document.querySelectorAll(".quitar-producto").forEach((button) => {
-        button.addEventListener("click", function () {
-            const fila = button.closest("tr");
-            quitarFilaProducto(fila);
-        });
-    });
-});
-
-    // Inicializar Select2 en el campo de cliente
-$(document).ready(function() {
-    $('#id_product').select2({
-        placeholder: "Buscar Producto",
-        allowClear: true // Para permitir que el campo se quede vacío
-    });
-});
-//Por si la lista de clientes es muy larga
-    $('#id_cliente').select2({
-        placeholder: 'Buscar producto',
-    });
     
-    // Inicializar Select2 en el campo de cliente
-$(document).ready(function() {
-    $('#id_cliente').select2({
-         placeholder: "Buscar cliente",
-         allowClear: true // Para permitir que el campo se quede vacío
-     });
-});
-//Por si la lista de clientes es muy larga
-    $('#id_cliente').select2({
-        placeholder: 'Buscar cliente',
-        ajax: {
-            url: '/buscar_clientes',  // URL para obtener los clientes desde el servidor
-            dataType: 'json',
-            processResults: function (data) {
-                return {
-                    results: data.map(function (cliente) {
-                        return { id: cliente.identificador_c, text: cliente.nombres + ' ' + cliente.apellidos };
-                    })
-                };
-            }
-        }
-    });
-    
+        // Inicializar Select2 para los campos de cliente y producto
+        $(document).ready(function () {
+            $('#id_cliente, #id_product').select2({
+                placeholder: "Seleccionar",
+                allowClear: true
+            });
+        });
     </script>
+    
 </body>
 </html>
 {% endblock %}

@@ -934,3 +934,8 @@ button {
 }
 
 
+.tabla-facturacion-container {
+  width: 100%;
+  overflow-x: auto; /* Permite desplazamiento horizontal */
+  margin: 20px 0; /* Separación de otros elementos */
+}
