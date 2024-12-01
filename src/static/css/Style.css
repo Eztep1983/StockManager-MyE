@@ -600,7 +600,6 @@ button {
 .gg-menu::before {
   margin-left: auto; /* Cambiado para centrar horizontalmente */
   margin-right: auto; /* Cambiado para centrar horizontalmente */
-  margin-bottom: 40%;
   box-sizing: border-box;
   display: block;
   width: 30px;
@@ -660,28 +659,278 @@ button {
   margin: 20px 0; 
 }
 
-#ultimos-productos {
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+/* Estilo de la tabla */
+#ultimos-productos h3 {
+  font-size: 36px;
+  color: #1E2A47;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
-.table-responsive {
-  overflow-x: auto;
-}
+
+/* Estilo general de la tabla */
 .table {
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: 20px;
 }
-.table th, .table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-.table th {
-  background-color: #f2f2f2;
-}
-.text-center {
+
+/* Estilo de las celdas */
+.table th,
+.table td {
+  padding: 15px 20px;
   text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Estilo para las cabeceras de la tabla */
+.table th {
+  background: linear-gradient(145deg, #0e4a7e, #103638);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para las filas de la tabla */
+.table tbody tr {
+  background: #f9f9f9;
+  border-bottom: 2px solid #e0e0e0;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+/* Efecto al pasar el mouse sobre las filas */
+.table tbody tr:hover {
+  background: #e0f7fa;
+  transform: scale(1.02);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de las celdas de la tabla al pasar el mouse */
+.table td:hover {
+  background: rgba(0, 242, 254, 0.1);
+  color: #205c5f;
+  cursor: pointer;
+}
+
+/* Bordes de la tabla */
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #ddd;
+}
+
+/* Estilo de las filas impares (alternar color de fondo) */
+.table-striped tbody tr:nth-child(odd) {
+  background-color: #f3f3f3;
+}
+
+/* Responsive table */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+/* Agregar animación a las celdas */
+@keyframes fadeInTable {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+.table td,
+.table th {
+  animation: fadeInTable 1s ease-out;
+}
+
+/* Estilos para los botones */
+.btn-enlace {
+  display: inline-block;
+  margin: 5px 10px;
+  padding: 10px 15px;
+  background-color: #007bff; /* Color azul */
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-enlace:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el cursor */
+}
+
+/* Estilo base para la imagen */
+.logo-animado {
+  margin-left: 35px;
+  max-width: 150px; /* Reduce el tamaño de la imagen */
+  height: auto; /* Mantiene las proporciones */
+  transition: transform 0.5s ease, box-shadow 0.5s ease; /* Suaviza las transiciones */
+}
+
+/* Título */
+.titulo-bienvenida {
+  font-family: 'Arial', sans-serif;
+  font-size: 36px;
+  color: #1E2A47;
+  margin-bottom: 20px;
+  animation: slideIn 1s ease-out;
+}
+
+/* Animación del título */
+@keyframes slideIn {
+  0% {
+      transform: translateY(-20px);
+      opacity: 0;
+  }
+  100% {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+/* Estilo de los enlaces (botones) */
+.btn-enlace {
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(145deg, #4facfe, #0066ff); 
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+/* Efecto al pasar el mouse sobre el enlace */
+.btn-enlace:hover {
+  transform: scale(1.1) rotate(5deg); /* Escala y rota el botón */
+  background: linear-gradient(145deg, #00f2fe, #4facfe); /* Inversión de colores */
+  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+/* Efecto de pulsación al hacer click */
+.btn-enlace:active {
+  transform: scale(0.95); /* Hace que el botón se reduzca al hacer click */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Animación en los enlaces (solo una vez al cargar) */
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.05);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+/* Solo ejecuta la animación una vez */
+#logo-enlaces-container a {
+  animation: pulse 1.5s ease-in-out 1 forwards; /* Se ejecuta una vez */
+}
+
+/* Ajustes en el contenedor de los enlaces */
+#logo-enlaces-container {
+  padding: 20px;
+}
+
+
+/* Estilo de la cabecera de la tabla */
+.mdl-data-table thead th {
+  background: linear-gradient(145deg, #4facfe, #0066ff); 
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de las filas */
+.mdl-data-table tbody tr {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+/* Efecto hover en las filas */
+.mdl-data-table tbody tr:hover {
+  background: #f0f8ff;
+  transform: scale(1.02);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de las celdas */
+.mdl-data-table td, .mdl-data-table th {
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Efecto hover en las celdas */
+.mdl-data-table td:hover {
+  background: rgba(0, 176, 255, 0.1);
+  color: #00b894;
+  cursor: pointer;
+}
+
+/* Estilo para los botones dentro de la tabla */
+.mdl-button.ver-factura {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Efecto hover en el botón */
+.mdl-button.ver-factura:hover {
+  background-color: #00b894;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Efecto de animación para la aparición de las celdas */
+@keyframes fadeInTable {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+.mdl-data-table td, .mdl-data-table th {
+  animation: fadeInTable 1s ease-out;
+}
+
+/* Estilo responsivo para la tabla */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+/* Estilo para la tabla con fondo sutil y bordes redondeados */
+.mdl-data-table {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 

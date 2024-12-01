@@ -302,7 +302,6 @@ def provedor():
             return jsonify({'message': 'Correo electrónico inválido'}), 400
 
         if añadir_proveedor(nombre_empresa, direccion, telefono, correo_electronico):
-            flash('Proveedor añadido exitosamente', 'success')
             return redirect('/proveedores')
         else: 
             return jsonify({'message': 'Error al añadir el proveedor'}), 500
@@ -663,7 +662,82 @@ def nuevo_cliente():
         return jsonify({'message': 'Error al procesar la solicitud'}),500
     return render_template('clientes.html')
 
+#RUTA PARA VER LAS COMPRAS HECHAS POR EL CLIENTE
+@app.route('/mostrar_compras_cliente/<int:cliente_id>', methods=['GET'])
+@login_required
+def ruta_mostrar_compras_cliente(cliente_id):
+    """
+    Maneja la solicitud para obtener las compras realizadas por un cliente específico.
 
+    Esta función utiliza el identificador del cliente (`cliente_id`) para consultar 
+    las compras asociadas a dicho cliente en la base de datos. Devuelve los datos 
+    en formato JSON.
+
+    Args:
+        cliente_id (int): El identificador único del cliente para el que se 
+        desean consultar las compras.
+
+    Returns:
+        flask.Response: Respuesta HTTP con el siguiente contenido:
+            - Si se encuentran compras:
+                - Código de estado 200.
+                - JSON con las compras del cliente en el formato:
+                  {
+                      "success": True,
+                      "compras": [lista de compras]
+                  }
+            - Si no se encuentran compras:
+                - Código de estado 200.
+                - JSON con una lista vacía:
+                  {
+                      "success": True,
+                      "compras": []
+                  }
+            - En caso de error de validación:
+                - Código de estado 400.
+                - JSON con el mensaje de error:
+                  {
+                      "success": False,
+                      "message": "Error de validación: [detalle del error]"
+                  }
+            - En caso de error inesperado:
+                - Código de estado 500.
+                - JSON con un mensaje genérico de error:
+                  {
+                      "success": False,
+                      "message": "Ocurrió un error al procesar la solicitud."
+                  }
+
+    Exceptions:
+        ValueError: Manejado específicamente para errores de validación.
+        Exception: Cualquier otro error no previsto se captura y se registra.
+
+    Notes:
+        - La función requiere que el usuario esté autenticado para acceder
+          (decorador @login_required).
+        - Los errores inesperados se registran en los logs del servidor para
+          facilitar la depuración.
+    """
+    try:
+        # Obtener las compras del cliente
+        compras = mostrar_compas_cliente(cliente_id)
+        
+        # Si no hay compras, devolver una lista vacía
+        if not compras:
+            return jsonify(success=True, compras=[]), 200
+
+        # Retornar las compras
+        return jsonify(success=True, compras=compras), 200
+
+    except ValueError as ve:
+        # Manejar errores específicos
+        return jsonify(success=False, message=f"Error de validación: {str(ve)}"), 400
+    except Exception as e:
+        # Manejar errores generales
+        app.logger.error(f"Error al obtener las compras del cliente {cliente_id}: {str(e)}")
+        return jsonify(success=False, message="Ocurrió un error al procesar la solicitud."), 500
+
+    
 # RUTA PARA EDITAR CLIENTES
 @app.route('/editar_cliente', methods=['PUT'])
 @login_required
@@ -890,6 +964,14 @@ def obtener_pago(id_venta):
     except Exception as e:
         print("Error al obtener el pago:", str(e))
         return jsonify({"status": "error", "message": "Error al obtener el pago."}), 500
+
+
+#_______________________________________________________________________________________________________
+@app.route('/reportes', methods=['GET', 'POST'])
+@login_required
+def reportes():
+    
+    return render_template('reportes.html'), 200
 
 #_______________________________________________________________________________________________________
 

@@ -42,9 +42,6 @@ def obtener_ultimas_ventas():
         cursor.execute(sql)
         rows = cursor.fetchall()
 
-        # Depuración: verifica la cantidad de filas obtenidas
-        print(f"Filas obtenidas: {len(rows)}")
-
         # Procesar los resultados
         ultimas_ventas = []
         for row in rows:

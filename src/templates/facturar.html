@@ -27,22 +27,29 @@
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
                 <span class="gg-menu"></span>
             </button>
-            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;">
+            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;" title="Cerrar sesion"> 
                 <i class="fas fa-sign-out-alt"></i> Salir
             </a>
         </nav>
         <div class="mdl-layout__drawer">
-            <center>
-                <span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span>
-            </center>
-            <nav class="mdl-navigation">
-                <a href="/home">Inicio</a><br><br>
-                <a href="/productos">Productos</a><br><br>
-                <a href="/ventas">Ventas</a><br><br>
-                <a href="/proveedores">Proveedores</a><br><br>
-                <a href="/clientes">Clientes</a><br><br>
-            </nav>
-        </div>
+            <img 
+                src="{{ url_for('static', filename='images/SetecoManager.webp') }}" 
+                alt="SetecoManager Logo" 
+                class="logo-animado" style=" text-align: center;">
+        <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+        <nav class="mdl-navigation">
+            <a href="/home">Inicio</a><br>
+            <br>
+            <a href="/productos">Productos</a><br>
+            <br>
+            <a href="/ventas">Ventas</a><br>
+            <br>
+            <a href="/proveedores">Proveedores</a><br>
+            <br>
+            <a href="/clientes">Clientes</a><br>
+            <br>
+        </nav>
+    </div>
         <!-- Contenido principal -->
         <main class="mdl-layout__content">
             <header>

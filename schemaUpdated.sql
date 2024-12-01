@@ -18,10 +18,8 @@
 --
 -- Table structure for table `categorias_productos`
 --
-
-CREATE DATABASE StockManagerMyEs;
-USE SETECO;
-
+CREATE DATABASE StockManager;
+USE StockManager;
 
 DROP TABLE IF EXISTS `categorias_productos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

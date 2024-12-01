@@ -52,6 +52,7 @@ html, body{
 /*====== paneles*/
 .panel{ height: auto; }
 .panel-tittle{
+	border-radius: 30px;
 	height: 45px;
 	display: block;
 	line-height: 45px;

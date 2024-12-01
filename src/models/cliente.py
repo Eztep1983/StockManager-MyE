@@ -146,3 +146,46 @@ def eliminarr_client(cliente_id):
         conn.rollback()
         logging.error("Error al eliminar el Cliente: %s", str(e))
         return False
+    
+    
+def mostrar_compas_cliente(cliente_id):
+    try:
+        conn = mysql.connection
+        with conn.cursor() as cursor:
+            sql = """ 
+                SELECT 
+                    v.id_venta AS id_venta,
+                    v.fecha_venta AS fecha_venta,
+                    dv.id_producto AS id_producto,
+                    p.nombre AS producto,
+                    dv.cantidad AS cantidad_comprada,
+                    dv.precio_unitario AS precio_unitario,
+                    (dv.cantidad * dv.precio_unitario) AS total_por_producto
+                FROM ventas v
+                INNER JOIN detalles_ventas dv ON v.id_venta = dv.id_venta
+                INNER JOIN productos p ON dv.id_producto = p.identificador_p
+                WHERE v.id_cliente = %s
+                ORDER BY v.fecha_venta ASC;
+            """
+
+            cursor.execute(sql, (cliente_id,))
+            compras = cursor.fetchall()
+            if not compras:
+                return []
+
+            # Formatear las compras para que tenga un formato más legible y útil
+            compras_formateadas = []
+            for compra in compras:
+                compras_formateadas.append({
+                    'id_venta': compra[0],
+                    'fecha_venta': compra[1],
+                    'producto': compra[3],
+                    'cantidad_comprada': compra[4],
+                    'precio_unitario': compra[5],
+                    'total_por_producto': compra[6]
+                })
+
+            return compras_formateadas
+    except Exception as e:
+        logging.error("Error al obtener las compras del cliente: %s", str(e))
+        return None
