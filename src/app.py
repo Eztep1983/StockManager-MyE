@@ -864,6 +864,7 @@ def facturar():
             precios = request.form.getlist("precio[]")
             descripciones = request.form.getlist("servicio[]")
 
+            
             if not (len(productos_ids) == len(cantidades) == len(precios) == len(descripciones)):
                 raise ValueError("Datos incompletos en la lista de productos.")
 
@@ -884,7 +885,8 @@ def facturar():
             resultado_facturacion = añadir_facturacion(usuario, cliente, fecha_venta, hora_venta, productos, total, fecha_pago, hora_pago, nota)
             
             if resultado_facturacion["status"] != "success":
-                raise Exception(resultado_facturacion["message"])
+                return jsonify({"status": "error", "message": resultado_facturacion["message"]}), 400
+            
             
             # Extraer datos de la factura generada
             numero_factura = resultado_facturacion["numero_factura"]
@@ -892,7 +894,11 @@ def facturar():
             
             # Confirmar éxito
             flash(f"Venta registrada exitosamente. Número de factura: {numero_factura}", "success")
-            return redirect(url_for('ventas'))
+            return jsonify({
+            "status": "success",
+            "message": "Venta registrada exitosamente.",
+            "numero_factura": resultado_facturacion["numero_factura"]
+            }), 200
 
     except Exception as e:
         flash(f"Error inesperado: {str(e)}", "danger")

@@ -19,6 +19,11 @@
             }
         }
     </style>
+        {% for message in messages %}
+            <div class="alert-primary alert-dismissible" role="alert">
+                <strong>{{ message }}</strong>
+            </div>
+        {% endfor %}
 </head>
 <body id="color-facturar">
     <div class="mdl-layout mdl-js-layout">
@@ -146,6 +151,7 @@
         </main>
     </div>
     <script>
+        
         const formulario = document.getElementById('formulario-facturacion');
         // Fecha y hora de venta
         const fechaInputVenta = document.getElementById('fecha_venta');
@@ -165,16 +171,16 @@
         fechaInputPago.value = fecha; 
         horaInputPago.value = hora;    
     
-        document.getElementById("formulario-facturacion").addEventListener("submit", function(event) {
+        document.getElementById("formulario-facturacion").addEventListener("submit", async function (event) {
             // Evita el envío del formulario mientras se valida
             event.preventDefault();
-    
+        
             // Variables para validar
             const idCliente = document.getElementById("id_cliente").value.trim();
             const filasProductos = document.querySelectorAll(".fila-facturacion");
             const notas = document.getElementById("notas").value.trim();
             let productosValidos = true;
-    
+        
             // Validar Cliente
             if (!idCliente) {
                 Swal.fire({
@@ -184,18 +190,18 @@
                 });
                 return;
             }
-    
+        
             // Validar Productos/Servicios
             filasProductos.forEach(fila => {
                 const producto = fila.querySelector(".producto-facturacion").value.trim();
                 const cantidad = fila.querySelector(".cantidad-facturacion").value.trim();
                 const precio = fila.querySelector(".precio-facturacion").value.trim();
-    
+        
                 if (!producto || !cantidad || !precio || parseFloat(cantidad) <= 0 || parseFloat(precio) <= 0) {
                     productosValidos = false;
                 }
             });
-    
+        
             if (!productosValidos) {
                 Swal.fire({
                     icon: "error",
@@ -204,8 +210,8 @@
                 });
                 return;
             }
-            
-            // Validar Nota opcional (puedes omitir si no es obligatorio)
+        
+            // Validar Nota opcional
             if (notas.length > 500) {
                 Swal.fire({
                     icon: "warning",
@@ -214,20 +220,48 @@
                 });
                 return;
             }
-    
-            // Si todo está validado, muestra el SweetAlert de éxito
-            Swal.fire({
-                icon: "success",
-                title: "¡Facturado correctamente!",
-                text: "Tu factura ha sido generada.",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Aquí puedes enviar el formulario si es necesario
-                    this.submit();
+        
+            // Si todas las validaciones pasan, envía los datos al servidor
+            const formData = new FormData(this);
+        
+            try {
+                // Enviar datos al backend usando Fetch
+                const response = await fetch(this.action, {
+                    method: "POST",
+                    body: formData,
+                });
+        
+                // Analizar respuesta JSON del backend
+                const result = await response.json();
+        
+                if (response.ok && result.status === "success") {
+                    // Mostrar mensaje de éxito
+                    Swal.fire({
+                        icon: "success",
+                        title: "¡Facturado correctamente!",
+                        text: `Factura generada con éxito. Número: ${result.numero_factura}`,
+                    }).then(() => {
+                        // Redirigir o limpiar el formulario
+                        window.location.href = "/ventas"; // Cambiar a la ruta deseada
+                    });
+                } else {
+                    // Manejar errores específicos del servidor
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error en la facturación",
+                        text: result.message || "Ocurrió un error inesperado. Revisa los datos ingresados.",
+                    });
                 }
-            });
+            } catch (error) {
+                // Manejar errores generales (problemas de conexión, etc.)
+                Swal.fire({
+                    icon: "error",
+                    title: "Error de conexión",
+                    text: "No se pudo conectar con el servidor. Intenta nuevamente más tarde.",
+                });
+            }
         });
-    
+        
         document.addEventListener("DOMContentLoaded", function () {
             const tablaProductos = document.querySelector(".tabla-facturacion tbody");
             const agregarProductoBtn = document.querySelector("#agregar-producto");

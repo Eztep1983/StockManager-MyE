@@ -77,9 +77,9 @@
                                     <td>${{ venta.precio_producto }}</td>
                                     <td>{{ venta.cantidad }}</td>
                                     <td>${{ venta.monto }}</td>
-                                    <td>{{ venta.descripcion }}</td>
+                                    <td>{{ venta.descripcion if venta.descripcion else "Sin descripción" }}</td>
                                     <td>{{ venta.fecha_venta }} / {{ venta.hora_venta }}</td>
-                                </tr>
+                                </tr>                                
                                 {% endfor %}
                             </tbody>
                         </table>
