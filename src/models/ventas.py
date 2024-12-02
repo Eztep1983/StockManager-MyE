@@ -73,8 +73,6 @@ def obtener_ventas():
         rows = cursor.fetchall()
 
         # Depuración: imprime cuántas filas se obtuvieron
-        print(f"Filas obtenidas: {len(rows)}")  # Depurar cantidad de ventas obtenidas
-
         ventas = []
         for row in rows:
             id_venta, id_usuario, fecha_venta, id_cliente, nombre_cliente, nombre_usuario, hora = row
