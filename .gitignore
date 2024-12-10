@@ -2,6 +2,3 @@
 env/
 src/config.py
 src/__pycache__/
-orig_600x600
-StockManagerMyE
-.gitignore
