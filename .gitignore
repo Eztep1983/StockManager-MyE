@@ -1,4 +1,4 @@
 .env
 env/
-src/config.py
+src/config.py/
 src/__pycache__/
