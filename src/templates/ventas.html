@@ -28,9 +28,9 @@
                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
                     <span class="gg-menu"></span>
                 </button>
-                <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;"> 
+                <a id="logoutLink" href="/logout" style="margin-left: auto;" title="Cerrar sesion">  
                     <i class="fas fa-sign-out-alt"></i> Salir
-                </a>
+                </a>                
             </nav>
             <div class="mdl-layout__drawer">
                     <img 
@@ -72,7 +72,7 @@
                                         <th>Detalles</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="ventas-body">
                                     {% for venta in ventas %}
                                     <tr>                                            
                                         <td class="mdl-data-table__cell--non-numeric">{{ venta.fecha_venta }}</td>
@@ -92,6 +92,7 @@
                             </table>                            
                         </div>
                     </div>
+                    <div id="pagination-controls" style="margin-top: 20px; text-align: center;"></div>
                 {% else %}
                     <center> <p class="no-clients-message">Aún no hay ventas, factura para visualizarlas</p> </center>
                 {% endif %}
@@ -99,76 +100,7 @@
             </div>
         </div>
         <footer>
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const botonesFactura = document.querySelectorAll(".ver-factura");
-                    botonesFactura.forEach((boton) => {
-                        boton.addEventListener("click", async () => {
-                            const idVenta = boton.getAttribute("data-id-venta");
-                            try {
-                                const response = await fetch(`/obtener_pago/${idVenta}`);
-                                const data = await response.json();
-                                if (data.status === "success") {
-                                    const pago = data.pago;
-                                    Swal.fire({
-                                        title: `Factura y Pago - Venta #${pago.id_venta}`,
-                                        html: `
-                                            <strong>Número de Factura:</strong> ${pago.numero_factura || "No disponible"}<br>
-                                            <strong>Monto:</strong> $${pago.monto.toFixed(2)}<br>
-                                            <strong>Fecha de Pago:</strong> ${pago.fecha_pago}<br>
-                                            <strong>Hora de Pago:</strong> ${pago.hora_pago}<br>
-                                            <strong>Nota:</strong> ${pago.nota || "Sin nota"}<br>
-                                            <strong>ID Pago:</strong> ${pago.id_pagos}<br>
-                                            <strong>ID Factura:</strong> ${pago.id_factura || "No disponible"}<br>
-                                        `,
-                                        icon: "info",
-                                        confirmButtonText: "Cerrar",
-                                        customClass: {
-                                            popup: "swal-wide",
-                                        },
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: "Error",
-                                        text: data.message,
-                                        icon: "error",
-                                        confirmButtonText: "Cerrar",
-                                    });
-                                }
-                            } catch (error) {
-                                console.error("Error al obtener los datos:", error);
-                                Swal.fire({
-                                    title: "Error",
-                                    text: "Ocurrió un error al procesar la solicitud.",
-                                    icon: "error",
-                                    confirmButtonText: "Cerrar",
-                                });
-                            }
-                        });
-                    });
-
-                    // Search functionality
-                    const searchInput = document.getElementById('searchInput');
-                    const ventasTable = document.getElementById('ventasTable');
-                    const rows = ventasTable.getElementsByTagName('tr');
-
-                    searchInput.addEventListener('keyup', function() {
-                        const filter = searchInput.value.toLowerCase();
-                        for (let i = 1; i < rows.length; i++) {
-                            const cells = rows[i].getElementsByTagName('td');
-                            let match = false;
-                            for (let j = 0; j < cells.length; j++) {
-                                if (cells[j].innerText.toLowerCase().includes(filter)) {
-                                    match = true;
-                                    break;
-                                }
-                            }
-                            rows[i].style.display = match ? '' : 'none';
-                        }
-                    });
-                });
-            </script>
-            <p>&copy; 2024 StockManager JyE</p>
+            <p>&copy; 2024 StockManager MyE</p>
         </footer>
     </section>
 </main>

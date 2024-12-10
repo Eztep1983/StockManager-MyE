@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %} Clientes {% endblock %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <form method="POST">
+        <label for="user_input">Tu mensaje:</label>
+        <input type="text" name="user_input" id="user_input" required>
+        <button type="submit">Enviar</button>
+    </form>
+
+    {% if reply %}
+        <h2>Respuesta del chatbot:</h2>
+        <p><strong>Usuario:</strong> {{ user_input }}</p>
+        <p><strong>Chatbot:</strong> {{ reply }}</p>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

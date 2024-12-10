@@ -18,6 +18,7 @@ from models.pagos import *
 from models.ultimas_ventas import *
 import re
 import logging
+import openai
 
 #Ejecutar la API
 app = Flask(__name__)
@@ -35,6 +36,16 @@ csrf.init_app(app)
 #Logs para los errores
 logger = logging.getLogger(__name__)
 
+
+#_______________________________________________________________________________________________________
+#PARA ELIMINAR EL CACHE
+
+@app.after_request
+def no_cache(response):
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
 
 #_______________________________________________________________________________________________________
 #RUTA LOGIN
@@ -81,7 +92,7 @@ def logout():
         - Redirección a la vista de cierre de sesión.
     """
     logout_user()
-    return redirect(url_for('logout'))
+    return redirect(url_for('login'))
 
 #_______________________________________________________________________________________________________
                                                 #Login
@@ -190,6 +201,22 @@ def register():
     except Exception as e:
         flash(f"Error inesperado: {str(e)}", "danger")
         return render_template('auth/register.html')
+#_______________________________________________________________________________________________________
+                                                 #CHAT BOT PARA INVENTARIO
+@app.route("/chatbot", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        user_input = request.form["user_input"]
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Usuario: {user_input}\nChatbot:",
+            max_tokens=150,
+            temperature=0.7
+        )
+        reply = response["choices"][0]["text"].strip()
+        return render_template("chatbot.html", user_input=user_input, reply=reply)
+    return render_template("chatbot.html")
+
 
 #_______________________________________________________________________________________________________
                                                  #Inicio
@@ -893,7 +920,6 @@ def facturar():
             id_factura = resultado_facturacion["id_factura"]
             
             # Confirmar éxito
-            flash(f"Venta registrada exitosamente. Número de factura: {numero_factura}", "success")
             return jsonify({
             "status": "success",
             "message": "Venta registrada exitosamente.",

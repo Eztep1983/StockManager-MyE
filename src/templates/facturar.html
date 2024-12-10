@@ -32,9 +32,9 @@
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button">
                 <span class="gg-menu"></span>
             </button>
-            <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;" title="Cerrar sesion"> 
+            <a id="logoutLink" href="/logout" style="margin-left: auto;" title="Cerrar sesion">  
                 <i class="fas fa-sign-out-alt"></i> Salir
-            </a>
+            </a>            
         </nav>
         <div class="mdl-layout__drawer">
             <img 
@@ -102,7 +102,7 @@
                                 <tr class="fila-facturacion">
                                     <td>
                                         <label for="id_product" class="label-facturacion">Producto:</label>
-                                        <select class="producto-facturacion" id="id_product" name="productos[]">
+                                        <select class="producto-facturacion" name="productos[]">
                                             <option value="">Seleccionar</option>
                                             {% for producto in lista_productos %}
                                                 <option value="{{ producto.identificador_p }}">{{ producto.nombre }}</option>
@@ -306,31 +306,41 @@
             function agregarFilaProducto() {
                 const filaBase = tablaProductos.querySelector(".fila-facturacion");
                 const nuevaFila = filaBase.cloneNode(true);
-    
+            
                 // Limpiar los campos de la nueva fila
                 nuevaFila.querySelectorAll("input, select").forEach((input) => {
                     if (input.type === "number" || input.type === "text") {
                         input.value = "";
                     }
+                    if (input.tagName === "SELECT") {
+                        input.selectedIndex = 0;
+                    }
                 });
-    
-                // Agregar eventos a los nuevos campos
+            
+                // Asignar eventos a los nuevos campos
                 nuevaFila.querySelector(".cantidad-facturacion").addEventListener("input", function () {
                     validarValor(this);
                     actualizarSubtotal(nuevaFila);
                 });
-    
+            
                 nuevaFila.querySelector(".precio-facturacion").addEventListener("input", function () {
                     validarValor(this);
                     actualizarSubtotal(nuevaFila);
                 });
-    
+            
                 nuevaFila.querySelector(".quitar-producto-facturacion").addEventListener("click", function () {
                     quitarFilaProducto(nuevaFila);
                 });
-    
+            
                 tablaProductos.appendChild(nuevaFila);
+            
+                // Reinicializar select2 para los nuevos selectores
+                $(nuevaFila).find('.producto-facturacion').select2({
+                    placeholder: "Seleccionar",
+                    allowClear: true
+                });
             }
+            
     
             // Función para quitar una fila de producto
             function quitarFilaProducto(fila) {

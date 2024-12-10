@@ -16,9 +16,9 @@
                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
                     <span class="gg-menu"></span>
                 </button>
-                <a id="logoutLink" href="{{ url_for('logout') }}" style="margin-left: auto;" title="Cerrar sesion"> 
+                <a id="logoutLink" href="/logout" style="margin-left: auto;" title="Cerrar sesion">  
                     <i class="fas fa-sign-out-alt"></i> Salir
-                </a>
+                </a>                
             </nav>
             <div class="mdl-layout__drawer">
                     <img 
@@ -63,33 +63,35 @@
                             <thead>
                                 <tr>
                                     <th>Producto</th>
-                                    <th>Precio Producto</th>
+                                    <th>Cliente</th>
                                     <th>Cantidad</th>
-                                    <th>Monto</th>
+                                    <th>Precio Unitario</th>
                                     <th>Descripción</th>
                                     <th>Fecha / Hora</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="ventas-body">
                                 {% for venta in ultimas_ventas %}
                                 <tr>
                                     <td>{{ venta.nombre_producto }}</td>
-                                    <td>${{ venta.precio_producto }}</td>
+                                    <td>{{ venta.nombre_cliente }}</td>
                                     <td>{{ venta.cantidad }}</td>
-                                    <td>${{ venta.monto }}</td>
+                                    <td>${{ venta.precio_unitario }}</td>
                                     <td>{{ venta.descripcion if venta.descripcion else "Sin descripción" }}</td>
                                     <td>{{ venta.fecha_venta }} / {{ venta.hora_venta }}</td>
-                                </tr>                                
+                                </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                </section>                
+                    <!-- Controles de paginación -->
+                    <div id="pagination-controls" style="margin-top: 20px; text-align: center;"></div>
+                </section>                               
                 {%else%}
                      <center> <p class="no-clients-message">Aun no hay productos vendidos.</p> </center>
                 {% endif %}                                                       
                 <footer>
-                    <p>&copy; 2024 StockManager JyE</p>
+                    <p>&copy; 2024 StockManager MyE</p>
                 </footer>
             </main>        
     </body>

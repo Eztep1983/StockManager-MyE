@@ -7,7 +7,7 @@ development_config = config['development']
 def obtener_ultimas_ventas():
     """
     Obtiene las últimas 10 ventas realizadas desde la base de datos, incluyendo los detalles de cada venta, 
-    como el nombre del producto, cantidad, precio unitario, monto total de la venta y la fecha/hora de pago.
+    como el nombre del producto, cantidad, monto total de la venta, el cliente y la fecha/hora de pago.
 
     Returns:
         list[dict]: Lista de diccionarios con los detalles de las últimas 10 ventas.
@@ -23,21 +23,21 @@ def obtener_ultimas_ventas():
                     p.nombre AS nombre_producto,
                     dv.cantidad,
                     dv.precio_unitario,
-                    p.precio AS precio_producto, -- Precio del producto desde la tabla productos
                     dv.descripcion,
                     pa.fecha_pago,
                     pa.hora_pago,
                     pa.monto,
                     v.id_cliente,
+                    c.nombres AS nombre_cliente, -- Agregamos el nombre del cliente
                     v.fecha_venta,
                     v.hora_venta
                 FROM detalles_ventas dv
                 JOIN ventas v ON dv.id_venta = v.id_venta
                 JOIN pagos pa ON v.id_venta = pa.id_venta
                 JOIN productos p ON dv.id_producto = p.identificador_p -- Reemplazar con el nombre correcto
+                JOIN clientes c ON v.id_cliente = c.identificador_c -- Relacionar con la tabla de clientes
                 ORDER BY pa.fecha_pago DESC, pa.hora_pago DESC
-                LIMIT 8 OFFSET 0;
-
+                LIMIT 10; -- Limitar a las últimas 10 ventas
         """
         cursor.execute(sql)
         rows = cursor.fetchall()
@@ -52,12 +52,12 @@ def obtener_ultimas_ventas():
                 "nombre_producto": row[3],
                 "cantidad": row[4],
                 "precio_unitario": row[5],
-                "precio_producto": row[6],  # Agregar el precio del producto
-                "descripcion": row[7],
-                "fecha_pago": row[8],
-                "hora_pago": row[9],
-                "monto": row[10],
-                "id_cliente": row[11],
+                "descripcion": row[6],
+                "fecha_pago": row[7],
+                "hora_pago": row[8],
+                "monto": row[9],
+                "id_cliente": row[10],
+                "nombre_cliente": row[11],
                 "fecha_venta": row[12],
                 "hora_venta": row[13],
             })
@@ -65,7 +65,6 @@ def obtener_ultimas_ventas():
         return ultimas_ventas
 
     except Exception as e:
-        logging.error(f"No se ha podido obtener las últimas ventas: {e}")
         print(f"No se ha podido obtener las últimas ventas: {e}")
         return []
 

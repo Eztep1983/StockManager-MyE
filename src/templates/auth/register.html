@@ -9,11 +9,13 @@
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 <br />
-{% for message in messages %}
-<div class="alert-primary alert-dismissible" role="alert">
-    <strong>{{ message }}</strong>
-</div>
-{% endfor %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-primary alert-dismissible" role="alert">
+            <strong>{{ messages[0] }}</strong>
+        </div>
+    {% endif %}
+{% endwith %}
 {% endif %}
 {% endwith %}
 <!DOCTYPE html>
