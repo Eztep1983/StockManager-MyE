@@ -23,31 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
-
-// 
-document.addEventListener("DOMContentLoaded", function() {
-    // Obtener el icono de búsqueda
-    var searchIcon = document.getElementById("searchIcon");
-
-    // Agregar evento click al icono de búsqueda
-    searchIcon.addEventListener("click", function() {
-        // Obtener la barra de navegación
-        var navigationBar = document.querySelector(".mdl-navigation");
-
-        // Mostrar u ocultar la barra de navegación cambiando la clase CSS
-        if (navigationBar.classList.contains("show-navigation")) {
-            // Si la barra de navegación está visible, ocultarla
-            navigationBar.classList.remove("show-navigation");
-        } else {
-            // Si la barra de navegación está oculta, mostrarla
-            navigationBar.classList.add("show-navigation");
-        }
-    });
-});
-
-
-
 // Agregar evento submit al formulario de edición
 document.addEventListener("DOMContentLoaded", function() {
     var editForms = document.querySelectorAll('[id^="editForm"]');

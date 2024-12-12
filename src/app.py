@@ -18,7 +18,7 @@ from models.pagos import *
 from models.ultimas_ventas import *
 import re
 import logging
-import openai
+
 #Ejecutar la API
 app = Flask(__name__)
 
@@ -200,24 +200,6 @@ def register():
     except Exception as e:
         flash(f"Error inesperado: {str(e)}", "danger")
         return render_template('auth/register.html')
-
-@app.route("/chatbot", methods=["GET", "POST"])
-def chatbot_view():
-    if request.method == "POST":
-        user_input = request.form["user_input"]
-        
-        response = openai.Completion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "Eres un asistente útil."},
-                {"role": "user", "content": user_input}
-            ]
-        )
-
-        reply = response["choices"][0]["message"]["content"].strip()
-        return render_template("chatbot.html", user_input=user_input, reply=reply)
-    return render_template("chatbot.html")
-
 #_______________________________________________________________________________________________________
                                                  #Inicio
 #RUTA PARA EL HOME

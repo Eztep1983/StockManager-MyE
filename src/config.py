@@ -1,13 +1,13 @@
 import os
 from dotenv import load_dotenv
-import openai
+
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
 
 class Config:
     # Si SECRET_KEY está en .env, úsala; si no, genera una clave aleatoria.
     SECRET_KEY = os.getenv("SECRET_KEY", os.urandom(24))
-    openai.api_key = os.getenv("OPENAI_API_KEY") 
+
 class DevelopmentConfig(Config):
     DEBUG = os.getenv("FLASK_ENV") == "development"
     MYSQL_HOST = os.getenv("MYSQL_HOST")
