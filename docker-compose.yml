@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_APP: src/app.py  
+      FLASK_ENV: production
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: productionpassword
+      MYSQL_DB: StockManager
+    volumes:
+      - ./src:/app 
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: productionpassword
+      MYSQL_DATABASE: StockManager
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

@@ -18,22 +18,24 @@ from models.pagos import *
 from models.ultimas_ventas import *
 import re
 import logging
-
+import os
 #Ejecutar la API
 app = Flask(__name__)
 
-# Configuración de la base de datos y del login manager
-app.config.from_object(config['development'])
+# Cargar configuración según el entorno
+env = os.getenv("FLASK_ENV", "development")
+app.config.from_object(config[env])
+
+# Inicializar extensiones
 db = MySQL(app)
 csrf = CSRFProtect(app)
 login_manager_app = LoginManager(app)
 login_manager_app.login_view = 'login'
-
-# Inicialización de la protección CSRF
 csrf.init_app(app)
 
-#Logs para los errores
+# Configuración de logs
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO if env == "development" else logging.ERROR)
 
 
 #_______________________________________________________________________________________________________
@@ -1036,7 +1038,7 @@ def status401(error):
 #_______________________________________________________________________________________________________
 
 if __name__ == '__main__':
-    app.config.from_object(config['development'])
+    app.config.from_object(config['production'])
     csrf.init_app(app)
     app.register_error_handler(404, status404)
     app.register_error_handler(401, status401)
