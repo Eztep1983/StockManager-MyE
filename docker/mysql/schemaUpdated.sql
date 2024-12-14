@@ -1,24 +1,5 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
---
--- Host: localhost    Database: seteco
--- ------------------------------------------------------
--- Server version	8.0.36
+USE StockManager;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `categorias_productos`
---
--- Table structure for table `users`
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id_trabajador` int NOT NULL AUTO_INCREMENT,
@@ -28,7 +9,6 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id_trabajador`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `proveedores`
 DROP TABLE IF EXISTS `proveedores`;
 CREATE TABLE `proveedores` (
   `nombre_empresa` varchar(100) DEFAULT NULL,
@@ -39,7 +19,6 @@ CREATE TABLE `proveedores` (
   PRIMARY KEY (`id_proveedor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `categorias_productos`
 DROP TABLE IF EXISTS `categorias_productos`;
 CREATE TABLE `categorias_productos` (
   `id_categoria` int NOT NULL AUTO_INCREMENT,
@@ -48,7 +27,6 @@ CREATE TABLE `categorias_productos` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `clientes`
 DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `cedula` bigint DEFAULT NULL,
@@ -61,7 +39,6 @@ CREATE TABLE `clientes` (
   PRIMARY KEY (`identificador_c`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `productos`
 DROP TABLE IF EXISTS `productos`;
 CREATE TABLE `productos` (
   `identificador_p` int NOT NULL AUTO_INCREMENT,
@@ -79,7 +56,6 @@ CREATE TABLE `productos` (
   CONSTRAINT `fk_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedores` (`id_proveedor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `ventas`
 DROP TABLE IF EXISTS `ventas`;
 CREATE TABLE `ventas` (
   `id_venta` int NOT NULL AUTO_INCREMENT,
@@ -94,7 +70,6 @@ CREATE TABLE `ventas` (
   CONSTRAINT `ventas_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id_trabajador`)
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `compras`
 DROP TABLE IF EXISTS `compras`;
 CREATE TABLE `compras` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -110,7 +85,6 @@ CREATE TABLE `compras` (
   CONSTRAINT `fk_compras_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedores` (`id_proveedor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `detalles_ventas`
 DROP TABLE IF EXISTS `detalles_ventas`;
 CREATE TABLE `detalles_ventas` (
   `id_detalles` int NOT NULL AUTO_INCREMENT,
@@ -126,7 +100,6 @@ CREATE TABLE `detalles_ventas` (
   CONSTRAINT `detalles_ventas_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`identificador_p`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `facturas`
 DROP TABLE IF EXISTS `facturas`;
 CREATE TABLE `facturas` (
   `id_factura` int NOT NULL AUTO_INCREMENT,
@@ -139,7 +112,6 @@ CREATE TABLE `facturas` (
   CONSTRAINT `fk_factura_venta` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id_venta`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Table structure for table `pagos`
 DROP TABLE IF EXISTS `pagos`;
 CREATE TABLE `pagos` (
   `id_pagos` int NOT NULL AUTO_INCREMENT,
@@ -158,16 +130,3 @@ CREATE TABLE `pagos` (
   CONSTRAINT `fk_pagos_factura` FOREIGN KEY (`id_factura`) REFERENCES `facturas` (`id_factura`) ON DELETE CASCADE,
   CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id_venta`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2024-11-25 14:18:53
