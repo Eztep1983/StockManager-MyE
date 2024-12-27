@@ -48,6 +48,7 @@ def no_cache(response):
     response.headers['Expires'] = '-1'
     return response
 
+
 #_______________________________________________________________________________________________________
 #RUTA LOGIN
 @app.route('/')
@@ -65,7 +66,7 @@ def index():
     return redirect(url_for('login')) #Redireccion directa a login
 
 @login_manager_app.user_loader
-def load_user(id):
+def load_user(user_id):
     """
     Carga un usuario específico en base a su ID.
 
@@ -76,7 +77,21 @@ def load_user(id):
     Returns:
         - Una instancia del usuario si se encuentra, o `None` si no se encuentra.
     """
-    return ModelUser.get_by_id(db, id)
+        # Busca el usuario en la base de datos
+    db_user = ModelUser.get_by_id(db, user_id)
+    if db_user:
+        return db_user  # Devuelve una instancia de User
+    return None
+
+def role_required(role_name):
+    def decorator(f):
+        @wraps(f)
+        def wrapped_function(*args, **kwargs):
+            if not current_user.is_authenticated or not current_user.is_active() or not current_user.has_role(role_name):
+                return jsonify(success=False, message="No tiene permiso para realizar esta acción"), 403
+            return f(*args, **kwargs)
+        return wrapped_function
+    return decorator
 
 #RUTA PARA CERRAR SESION
 @app.route('/logout')
@@ -202,6 +217,26 @@ def register():
     except Exception as e:
         flash(f"Error inesperado: {str(e)}", "danger")
         return render_template('auth/register.html')
+    
+    
+#_______________________________________________________________________________________________________
+                                                 #Admin panel
+#RUTA PARA EL PANEL DE ADMINISTRADOR
+@app.route('/admin')
+@login_required
+@role_required('admin')
+def admin_panel():
+    """
+    Renderiza la página de administrador.
+
+    Requisitos:
+        - El usuario debe estar autenticado (`@login_required`).
+        - El usuario debe tener el rol de administrador (`@role_required('admin')`).
+
+    Returns:
+        - Renderiza el template `admin.html`.
+    """
+    return render_template('admin.html')
 #_______________________________________________________________________________________________________
                                                  #Inicio
 #RUTA PARA EL HOME
@@ -222,18 +257,23 @@ def home():
     Returns:
         - Renderiza el template `home.html` con las últimas ventas.
     """
+    print(f"Usuario autenticado: {current_user}")
     try:
-        ultimas_ventas = obtener_ultimas_ventas()
+        if current_user.is_authenticated():
+            ultimos_productos = obtener_ultimas_ventas()
+        else:
+            return jsonify(success=False, message="El usuario no esta autenticado."), 403
     except Exception as e:
         print(f"Error obteniendo las últimas ventas: {e}")
         abort(500) 
-    return render_template('home.html', ultimas_ventas=ultimas_ventas)
+    return render_template('home.html', ultimas_ventas=ultimos_productos)
 
 #_______________________________________________________________________________________________________
                                                 #Proveedores
 #RUTA PARA OBTENER LISTA DE PROVEEDORES
 @app.route('/proveedores')
 @login_required
+@role_required('admin')
 def get_proveedores():
     """
     Muestra la lista de proveedores en el sistema.
@@ -250,13 +290,15 @@ def get_proveedores():
     Returns:
         - Renderiza el template `proveedores.html` con la lista de proveedores.
     """
-    try:
-        lista_proveedores = obtener_proveedores() #Esta funcion esta en models/proveedor.py
-    except Exception as e:
-        print(f"Error obteniendo al proveedor: {e}")
-        abort(500) 
+    if not current_user.is_authenticated():
+        return jsonify(success=False, message="No tiene permiso para realizar esta acción"), 403
+    else:
+        try:
+            lista_proveedores = obtener_proveedores()
+        except Exception as e:
+            logging.error(f"Error retrieving providers: {e}")
+            return jsonify(success=False, message="Error interno del servidor"), 500
     return render_template('proveedores.html', proveedores=lista_proveedores)
-
 
 def validar_correo(correo):
     patron = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$' #Funcion auxiliar para validar correo electronico
@@ -264,6 +306,7 @@ def validar_correo(correo):
 
 # RUTA PARA AÑADIR PROVEEDORES
 @app.route('/proveedor', methods=['POST', 'GET'])
+@role_required('admin')
 @login_required
 def provedor():
     """
@@ -323,6 +366,7 @@ def provedor():
 #RUTA PARA ELIMINAR PROVEEDORES
 @app.route('/proveedores/<int:id_proveedor>', methods=['DELETE'])
 @login_required
+@role_required('admin')
 def eliminar_proveedor(id_proveedor):
     """
     Elimina un proveedor del sistema.
@@ -430,6 +474,7 @@ def producto_existe(f):
 @app.route('/eliminar_productos/<int:id>', methods=['DELETE'])
 @login_required
 @producto_existe
+@role_required('admin')
 def eliminar_producto(id):
     """
     Elimina un producto del sistema.
@@ -464,6 +509,7 @@ def eliminar_producto(id):
 #RUTA PARA EDITAR PRODUCTOS
 @app.route('/editar_producto', methods=['PUT'])
 @login_required
+@role_required('admin')
 def editar_producto():
     """
     Edita los datos de un producto existente.
@@ -497,7 +543,7 @@ def editar_producto():
             descripcion = data.get('edit_Description')
             precio = data.get('edit_Price')
             stock = data.get('edit_Stock')
-            
+        
             if not all([nombre, descripcion, precio, stock, identificador_p]):
                 return jsonify(success=False, message="Faltan datos"), 400
 
@@ -514,6 +560,7 @@ def editar_producto():
                 return jsonify(success=True), 200
             else:
                 return jsonify(success=False, message="Error al actualizar el producto"), 400
+        
         except Exception as e:
             print(f"Error al procesar la solicitud {e}")
             return jsonify({'message': 'Error al procesar la solicitud'}),500
@@ -784,12 +831,14 @@ def editar_cliente():
         email = request.form.get('edit_emailClient')
         cedul = request.form.get('edit_cedulaClient')
 
+
         if not all([identificador_c, nombre, apellido, direccion, telefono, email, cedul]):
             return jsonify(success=False, message="Faltan datos"), 400
         if actualizar_cliente(identificador_c, nombre, apellido, direccion, telefono, email, cedul):
             return jsonify(success=True)
         else:
             return jsonify(success=False, message="Error al actualizar el cliente"), 400
+
     except Exception as e:
         return jsonify(success=False, message=str(e)), 500
 
@@ -812,11 +861,14 @@ def eliminar_cliente(cliente_id):
     """
 
     try:
-        if request.method=='DELETE':
-            eliminarr_client(cliente_id)
-            return jsonify({'message': 'Cliente eliminado exitosamente'}),200
+        if role_required('admin'):
+            if request.method=='DELETE':
+                eliminarr_client(cliente_id)
+                return jsonify({'message': 'Cliente eliminado exitosamente'}),200
+            else:
+                return jsonify({'message': '>Error al elimina al cliente'}),500
         else:
-            return jsonify({'message': '>Error al elimina al cliente'}),500
+            return jsonify({'message': 'No tiene permiso para eliminar clientes'}),403
 
     except Exception as e:
         print("Error al procesar la solicitud DELETE:", e)
@@ -918,7 +970,7 @@ def facturar():
     lista_clientes = obtener_lista_clientes()
     lista_productos = obtener_lista_productos()
     return render_template('facturar.html', lista_clientes=lista_clientes, lista_productos=lista_productos), 200
-
+ 
 #RUTA PARA OBTENER FACTURAS
 @app.route('/obtener_pago/<int:id_venta>', methods=['GET'])
 @login_required

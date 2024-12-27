@@ -1,6 +1,34 @@
 // logout.js
+document.addEventListener("DOMContentLoaded", () => {
+    const userRole = window.userRole || null; // Obtiene el rol del usuario actual
+
+    // Función para manejar el clic en "Proveedores"
+    function handleProveedoresClick(event) {
+        if (userRole !== 'admin') {
+            event.preventDefault(); // Evita que el enlace redirija
+            Swal.fire({
+                title: 'Acceso denegado',
+                text: 'No tienes permisos para acceder a la sección de Proveedores.',
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
+        }
+    }
+
+    // Asignar el evento al enlace
+    const proveedoresLink = document.getElementById("proveedoresLink");
+    const btnProveedores = document.getElementById("btnProveedores");
+
+    if (proveedoresLink) {
+        proveedoresLink.addEventListener("click", handleProveedoresClick);
+    }
+    if (btnProveedores) {
+        btnProveedores.addEventListener("click", handleProveedoresClick);
+    }
+});    
+
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Esperar a que el DOM esté completamente cargado
     var logoutLink = document.getElementById('logoutLink');
     if (logoutLink) {
         logoutLink.addEventListener('click', function(event) {

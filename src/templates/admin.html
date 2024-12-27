@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block body %}
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inicio</title>
+    </head>
+    <body style="background-color: white;">
+        <div class="mdl-layout mdl-js-layout">
+            <!-- Navegación -->
+            <nav class="mdl-navigation">
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
+                    <span class="gg-menu"></span>
+                </button>
+                <a id="logoutLink" href="/logout" style="margin-left: auto;" title="Cerrar sesion">  
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </a>                
+            </nav>
+            <div class="mdl-layout__drawer">
+                    <img 
+                        src="{{ url_for('static', filename='images/SetecoManager.webp') }}" 
+                        alt="SetecoManager Logo" 
+                        class="logo-animado" style=" text-align: center;">
+                <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
+                <nav class="mdl-navigation">
+                    <a href="/home">Inicio</a><br>
+                    <br>
+                    <a href="/productos">Productos</a><br>
+                    <br>
+                    <a href="/ventas">Ventas</a><br>
+                    <br>
+                    <a href="/proveedores">Proveedores</a><br>
+                    <br>
+                    <a href="/clientes">Clientes</a><br>
+                    <br>
+                </nav>
+            </div>
+            <!-- Contenido principal -->
+            <main class="mdl-layout__content">
+                <section id="funciones-clave" style="text-align: center; margin: 20px 0;">
+                    <center>
+                        <h2 class="titulo-bienvenida">Bienvenido, {{ current_user.fullname }}!</h2>
+                    </center>
+                    <div id="logo-enlaces-container" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px; margin: 20px 0;">
+                        <div style="flex-basis: 100%; text-align: center;">
+                            <a href="/productos" class="btn-enlace">Gestión de Productos</a>
+                            <a href="/clientes" class="btn-enlace">Gestión de Clientes</a>
+                            <a href="/ventas" class="btn-enlace">Registro de Ventas</a>
+                            <a href="/proveedores" class="btn-enlace">Proveedores</a>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div>
+                        <h4>Asignar Permisos de Administracion</h4>
+                        <div>
+                            Seleccione el usuario al que desea asignar permisos de administrador:
+                            <br>
+                            <br>
+                            <form action="">
+                                <select>
+                                    <option value="1">Seleccionar Usuario</option>
+                                    <option value="2">Esteban Zambrano</option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <footer>
+                    <p>&copy; 2025 StockManager MyE</p>
+                </footer>
+            </main>        
+    </body>
+</html>
+{% endblock %}

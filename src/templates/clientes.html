@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %} Clientes {% endblock %}
-
+  
 {% block body %}
 <!DOCTYPE html>
 <html lang="es">
@@ -29,15 +29,15 @@
                 class="logo-animado" style=" text-align: center;">
         <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
         <nav class="mdl-navigation">
-            <a href="/home">Inicio</a><br>
+            <a href="/home" class="btn-enlace">Inicio</a><br>
             <br>
-            <a href="/productos">Productos</a><br>
+            <a href="/productos" class="btn-enlace">Productos</a><br>
             <br>
-            <a href="/ventas">Ventas</a><br>
+            <a href="/ventas" class="btn-enlace">Ventas</a><br>
             <br>
-            <a href="/proveedores">Proveedores</a><br>
+            <a id="btnProveedores" href="/proveedores" class="btn-enlace">Proveedores</a><br>
             <br>
-            <a href="/clientes">Clientes</a><br>
+            <a href="/clientes" class="btn-enlace">Clientes</a><br>
             <br>
         </nav>
     </div>
@@ -173,12 +173,20 @@
     </section>
     <footer>
         <script>
+            const userRole = '{{ current_user.role }}';
             function getCSRFToken(){
                 return document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }  
-            
             function deleteClient(clienteId) {
-                        console.log('Cliente ID:', clienteId);  //pa ver si esta cogiendo el id
+                    if (userRole !== 'admin') {
+                        swal.fire({
+                            title: 'Error',
+                            text: 'No tienes permiso para eliminar clientes',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
                         swal.fire({
                             title: '¿Estás seguro?',
                             text: 'Esta acción eliminará el cliente permanentemente. ¿Estás seguro de que deseas continuar?',
@@ -219,108 +227,88 @@
                             }
                         });
                     }
-            function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo, cedula) {
-            Swal.fire({
-                title: 'Editar Cliente',
-                html: `                 
-                    <input id="edit_NameClient" class="swal2-input" placeholder="Nombres" value="${nombres}">
-                    <input id="edit_LastNameClient" class="swal2-input" placeholder="Apellidos" value="${apellidos}">
-                    <input id="edit_addressClient" class="swal2-input" placeholder="Dirección" value="${direccion}">
-                    <input id="edit_phoneClient" type="tel" class="swal2-input" placeholder="Teléfono" value="${telefono}">
-                    <input id="edit_emailClient" class="swal2-input" placeholder="Correo Electrónico" value="${correo}">
-                    <input id="edit_cedulaClient" class="swal2-input" placeholder="Cédula" value="${cedula}">
-                    `,
-                focusConfirm: false,
-                preConfirm: () => {
-                    const nombres = document.getElementById('edit_NameClient').value;
-                    const apellidos = document.getElementById('edit_LastNameClient').value;
-                    const direccion = document.getElementById('edit_addressClient').value;
-                    const telefono = document.getElementById('edit_phoneClient').value;
-                    const correo = document.getElementById('edit_emailClient').value;
-                    const cedula = document.getElementById('edit_cedulaClient').value;
-            
-                    // Expresiones regulares para validar teléfono y correo electrónico
-                    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-                    const phonePattern = /^[0-9]{7,15}$/;
-            
-                    // Verificación para campos vacíos
-                    if (!nombres || !apellidos || !direccion || !telefono || !correo || !cedula) {
-                        Swal.showValidationMessage('Por favor, completa todos los campos');
-                        return false;
-                    }
-                    if (telefono < 0 || cedula < 0){
-                        Swal.showValidationMessage("Solo puedes agregar numeros positivos")
-                        return false
-                    }
-            
-                    // Validación del formato de correo electrónico
-                    if (!emailPattern.test(correo)) {
-                        Swal.showValidationMessage('Por favor, ingresa un correo electrónico válido');
-                        return false;
-                    }
-            
-                    // Validación del formato de teléfono (solo números de 7 a 15 dígitos)
-                    if (!phonePattern.test(telefono)) {
-                        Swal.showValidationMessage('Por favor, ingresa un número de teléfono válido (7 a 15 dígitos)');
-                        return false;
-                    }
-            
-                    // Llamada a la ruta de edición
-                    return fetch('/editar_cliente', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: new URLSearchParams({
-                            cliente_id: id,
-                            edit_NameClient: nombres,
-                            edit_LastNameClient: apellidos,
-                            edit_addressClient: direccion,
-                            edit_phoneClient: telefono,
-                            edit_emailClient: correo,
-                            edit_cedulaClient: cedula,
-                        })
-                    }).then(response => {
-                        if (!response.ok) {
-                            throw new Error('Error al actualizar el Cliente');
-                        }
-                        return response.json(); 
-                    });
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    if (result.value.success) {
-                        Swal.fire('Éxito', 'Cliente actualizado correctamente', 'success').then(() => location.reload());
-                    } else {
-                        Swal.fire('Error', 'No se pudo actualizar el cliente', 'error');
-                    }
-                }
-            }).catch(error => {
-                Swal.fire('Error', error.message, 'error');
-            });
+function showEditClientModal(id, nombres, apellidos, direccion, telefono, correo, cedula) {
+    Swal.fire({
+        title: 'Editar Cliente',
+        html: `                 
+            <input id="edit_NameClient" class="swal2-input" placeholder="Nombres" value="${nombres}">
+            <input id="edit_LastNameClient" class="swal2-input" placeholder="Apellidos" value="${apellidos}">
+            <input id="edit_addressClient" class="swal2-input" placeholder="Dirección" value="${direccion}">
+            <input id="edit_phoneClient" type="tel" class="swal2-input" placeholder="Teléfono" value="${telefono}">
+            <input id="edit_emailClient" class="swal2-input" placeholder="Correo Electrónico" value="${correo}">
+            <input id="edit_cedulaClient" class="swal2-input" placeholder="Cédula" value="${cedula}">
+            `,
+        focusConfirm: false,
+        preConfirm: () => {
+            const nombres = document.getElementById('edit_NameClient').value;
+            const apellidos = document.getElementById('edit_LastNameClient').value;
+            const direccion = document.getElementById('edit_addressClient').value;
+            const telefono = document.getElementById('edit_phoneClient').value;
+            const correo = document.getElementById('edit_emailClient').value;
+            const cedula = document.getElementById('edit_cedulaClient').value;
+    
+            // Expresiones regulares para validar teléfono y correo electrónico
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            const phonePattern = /^[0-9]{7,15}$/;
+    
+            // Verificación para campos vacíos
+            if (!nombres || !apellidos || !direccion || !telefono || !correo || !cedula) {
+                Swal.showValidationMessage('Por favor, completa todos los campos');
+                return false;
             }
-                  
-                document.addEventListener("DOMContentLoaded", function() {
-                    // Obtener el icono de búsqueda
-                    var searchIcon = document.getElementById("searchIcon");
-                
-                    // Agregar evento click al icono de búsqueda
-                    searchIcon.addEventListener("click", function() {
-                        // Obtener la barra de navegación
-                        var navigationBar = document.querySelector(".mdl-navigation");
-                
-                        // Mostrar u ocultar la barra de navegación cambiando la clase CSS
-                        if (navigationBar.classList.contains("show-navigation")) {
-                            // Si la barra de navegación está visible, ocultarla
-                            navigationBar.classList.remove("show-navigation");
-                        } else {
-                            // Si la barra de navegación está oculta, mostrarla
-                            navigationBar.classList.add("show-navigation");
-                        }
-                    });
-                });            
-                // Agregar evento submit al formulario de edición
+            if (telefono < 0 || cedula < 0){
+                Swal.showValidationMessage("Solo puedes agregar numeros positivos")
+                return false
+            }
+    
+            // Validación del formato de correo electrónico
+            if (!emailPattern.test(correo)) {
+                Swal.showValidationMessage('Por favor, ingresa un correo electrónico válido');
+                return false;
+            }
+    
+            // Validación del formato de teléfono (solo números de 7 a 15 dígitos)
+            if (!phonePattern.test(telefono)) {
+                Swal.showValidationMessage('Por favor, ingresa un número de teléfono válido (7 a 15 dígitos)');
+                return false;
+            }
+    
+            // Llamada a la ruta de edición
+            return fetch('/editar_cliente', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: new URLSearchParams({
+                    cliente_id: id,
+                    edit_NameClient: nombres,
+                    edit_LastNameClient: apellidos,
+                    edit_addressClient: direccion,
+                    edit_phoneClient: telefono,
+                    edit_emailClient: correo,
+                    edit_cedulaClient: cedula,
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al actualizar el Cliente');
+                }
+                return response.json(); 
+            });
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (result.value.success) {
+                Swal.fire('Éxito', 'Cliente actualizado correctamente', 'success').then(() => location.reload());
+            } else {
+                Swal.fire('Error', 'No se pudo actualizar el cliente', 'error');
+            }
+        }
+    }).catch(error => {
+        Swal.fire('Error', error.message, 'error');
+    });
+    }          
+        // Agregar evento submit al formulario de edición
             document.addEventListener("DOMContentLoaded", function() {
                 var editForms = document.querySelectorAll('[id^="editForm"]');
                 editForms.forEach(function(form) {
