@@ -1,4 +1,4 @@
-// logout.js
+// HOME JS
 document.addEventListener("DOMContentLoaded", () => {
     const userRole = window.userRole || null; // Obtiene el rol del usuario actual
 
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });    
 
-
+//LOGOUT JS
 document.addEventListener('DOMContentLoaded', function() {
     var logoutLink = document.getElementById('logoutLink');
     if (logoutLink) {
@@ -39,9 +39,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 text: "¿Quieres cerrar sesión?",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#2a3743;',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, cerrar sesión'
+                confirmButtonText: 'Sí, cerrar sesión',
+                customClass: {
+                    confirmButton: 'my-confirm-button',
+                    cancelButton: 'my-cancel-button'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Redirigir a la ruta de logout después de confirmar
@@ -51,6 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+//CLIENTES JS
 // Agregar evento submit al formulario de edición
 document.addEventListener("DOMContentLoaded", function() {
     var editForms = document.querySelectorAll('[id^="editForm"]');
@@ -77,7 +83,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         title: 'Error',
                         text: 'Hubo un problema al actualizar el cliente. Por favor, inténtalo de nuevo.',
                         icon: 'error',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#2a3743;'
                     });
                 }
             })
@@ -88,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     title: 'Error',
                     text: 'Hubo un problema al actualizar el cliente. Por favor, inténtalo de nuevo.',
                     icon: 'error',
+                    confirmButtonColor: '#1d232e',
                     confirmButtonText: 'OK'
                 });
             });

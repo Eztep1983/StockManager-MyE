@@ -88,7 +88,7 @@ body {
 }
 
 .register {
-  background: #008cff;
+  background: #2a3743;;
   box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
   color: #F1F1F2;
   position: relative;
@@ -100,7 +100,7 @@ body {
 
 
 .right {
-  background: #008cff;
+  background: #2a3743;
   box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
   color: #F1F1F2;
   position: relative;
@@ -132,7 +132,7 @@ path {
   position: absolute;
 }
 label {
-  color:  #000000;
+  color:  #ffffff;
   display: block;
   font-size: 14px;
   height: 16px;
@@ -205,7 +205,7 @@ h1 {
 }
 
 nav {
-  background-color: #0066ff;
+  background-color: #2a323f;
   z-index: 2;
   border-bottom: 1px solid #000000;
   white-space: nowrap; /* Evita el salto de línea */
@@ -649,7 +649,7 @@ button {
 
 
 .no-clients-message {
-  background-color: #007bff; 
+  background-color: #2a323f;
   color: #ffffff; 
   font-size: 18px; 
   font-weight: bold; 
@@ -693,7 +693,7 @@ button {
 
 /* Estilo para las cabeceras de la tabla */
 .table th {
-  background: linear-gradient(145deg, #0e4a7e, #103638);
+  background: linear-gradient(145deg, #3d4042, #2a3743);
   color: white;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -758,7 +758,7 @@ button {
   display: inline-block;
   margin: 5px 10px;
   padding: 10px 15px;
-  background-color: #007bff; /* Color azul */
+  background-color: #1b344e; /* Color azul */
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -767,7 +767,7 @@ button {
 }
 
 .btn-enlace:hover {
-  background-color: #0056b3; /* Azul más oscuro al pasar el cursor */
+  background-color: #505b66; /* Azul más oscuro al pasar el cursor */
 }
 
 /* Estilo base para la imagen */
@@ -807,7 +807,7 @@ button {
   font-size: 18px;
   font-weight: bold;
   color: #fff;
-  background: linear-gradient(145deg, #4facfe, #0066ff); 
+  background: linear-gradient(145deg, #4d4d4d, #1d232e); 
   border-radius: 30px;
   text-decoration: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -818,7 +818,7 @@ button {
 /* Efecto al pasar el mouse sobre el enlace */
 .btn-enlace:hover {
   transform: scale(1.1) rotate(5deg); /* Escala y rota el botón */
-  background: linear-gradient(145deg, #00f2fe, #4facfe); /* Inversión de colores */
+  background: linear-gradient(145deg,  #1d232e, #979595); /* Inversión de colores */
   box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.2);
   color: #ffffff;
 }
@@ -855,7 +855,7 @@ button {
 
 /* Estilo de la cabecera de la tabla */
 .mdl-data-table thead th {
-  background: linear-gradient(145deg, #4facfe, #0066ff); 
+  background: linear-gradient(145deg, #c6cbce, #2a3743); 
   color: white;
   font-weight: bold;
   text-transform: uppercase;
