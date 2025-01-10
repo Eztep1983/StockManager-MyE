@@ -10,7 +10,7 @@ class ModelUser:
         """
         try:
             cursor = db.connection.cursor()
-            sql = """SELECT id_trabajador, identification, password, fullname, role 
+            sql = """SELECT id_trabajador, identification, password, fullname, role
                      FROM users 
                      WHERE identification = %s"""
             cursor.execute(sql, (user.identification,))

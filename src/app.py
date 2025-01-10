@@ -26,6 +26,7 @@ app = Flask(__name__)
 env = os.getenv("FLASK_ENV", "development")
 app.config.from_object(config[env])
 
+
 # Inicializar extensiones
 db = MySQL(app)
 csrf = CSRFProtect(app)
