@@ -1,6 +1,11 @@
 -- Crear base de datos
+DROP DATABASE IF EXISTS StockManager;
 CREATE DATABASE StockManager;
 USE StockManager;
+
+GRANT ALL PRIVILEGES ON StockManager.* TO 'root'@'%';
+FLUSH PRIVILEGES;
+
 
 -- Crear tabla `categorias_productos`
 DROP TABLE IF EXISTS `categorias_productos`;
@@ -57,8 +62,8 @@ CREATE TABLE `productos` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id_trabajador` int NOT NULL AUTO_INCREMENT,
-  `identification` int DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `identification` BIGINT NOT NULL,
+  `password` varchar(255) NOT NULL,
   `fullname` varchar(255) DEFAULT NULL,
   `role` enum('user','admin') DEFAULT 'user',
   `active` tinyint(1) DEFAULT NULL,

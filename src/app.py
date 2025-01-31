@@ -258,7 +258,6 @@ def home():
     Returns:
         - Renderiza el template `home.html` con las últimas ventas.
     """
-    print(f"Usuario autenticado: {current_user}")
     try:
         if current_user.is_authenticated():
             ultimos_productos = obtener_ultimas_ventas()
