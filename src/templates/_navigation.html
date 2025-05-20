@@ -1,0 +1,28 @@
+<!-- templates/_navigation.html -->
+<aside class="sidebar">
+    <div class="logo-container">
+        <img 
+            src="{{ url_for('static', filename='images/SetecoManager.webp') }}" 
+            alt="SetecoManager Logo" 
+            class="logo-animado">
+    </div>
+    <div class="user-info">
+        <span>{{ current_user.fullname }}</span>
+    </div>		
+    <nav class="main-nav">
+        <a href="/home" class="nav-link"><i class="fas fa-home"></i> Inicio</a>
+        <a href="/productos" class="nav-link"><i class="fas fa-boxes"></i> Productos</a>
+        <a href="/ventas" class="nav-link"><i class="fas fa-cash-register"></i> Ventas</a>
+        <a href="/proveedores" class="nav-link"><i class="fas fa-truck"></i> Proveedores</a>
+        <a href="/clientes" class="nav-link"><i class="fas fa-users"></i> Clientes</a>
+    </nav>
+</aside>
+
+<nav class="top-nav">
+    <button class="menu-toggle" title="Menú">
+        <i class="fas fa-bars"></i>
+    </button>
+    <a id="logoutLink" href="/logout" class="logout-btn" title="Cerrar sesión">  
+        <i class="fas fa-sign-out-alt"></i> Salir
+    </a>                
+</nav>

@@ -8,59 +8,74 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Inicio</title>
-        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     </head>
-    <body style="background-color: white;">
-        <div class="mdl-layout mdl-js-layout">
-            <!-- Navegación -->
-            <nav class="mdl-navigation">
-                <button class="mdl-button mdl-js-button mdl-button--icon mdl-layout__drawer-button" title="Cerrar Sesion">
-                    <span class="gg-menu"></span>
-                </button>
-                <a id="logoutLink" href="/logout" style="margin-left: auto;" title="Cerrar sesion">  
-                    <i class="fas fa-sign-out-alt"></i> Salir
-                </a>                
-            </nav>
-            <div class="mdl-layout__drawer">
+    <body>
+        <div class="app-container">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <div class="logo-container">
                     <img 
                         src="{{ url_for('static', filename='images/SetecoManager.webp') }}" 
                         alt="SetecoManager Logo" 
-                        class="logo-animado" style=" text-align: center;">
-                <center><span class="mdl-layout-title" style="margin-bottom:10px;">{{ current_user.fullname }}</span></center>		
-                <nav class="mdl-navigation">
-                    <a href="/home" class="btn-enlace">Inicio</a><br>
-                    <br>
-                    <a href="/productos" class="btn-enlace">Productos</a><br>
-                    <br>
-                    <a href="/ventas" class="btn-enlace">Ventas</a><br>
-                    <br>
-                    <a id="btnProveedores" href="/proveedores" class="btn-enlace">Proveedores</a><br>
-                    <br>
-                    <a href="/clientes" class="btn-enlace">Clientes</a><br>
-                    <br>
+                        class="logo-animado">
+                </div>
+                <div class="user-info">
+                    <span>{{ current_user.fullname }}</span>
+                </div>		
+                <nav class="main-nav">
+                    <a href="/home" class="nav-link"><i class="fas fa-home"></i> Inicio</a>
+                    <a href="/productos" class="nav-link"><i class="fas fa-boxes"></i> Productos</a>
+                    <a href="/ventas" class="nav-link"><i class="fas fa-cash-register"></i> Ventas</a>
+                    <a href="/proveedores" class="nav-link"><i class="fas fa-truck"></i> Proveedores</a>
+                    <a href="/clientes" class="nav-link"><i class="fas fa-users"></i> Clientess</a>
                 </nav>
-            </div>
-            <!-- Contenido principal -->
-            <main class="mdl-layout__content">
-                <section id="funciones-clave" style="text-align: center; margin: 20px 0;">
-                    <center>
-                        <h2 class="titulo-bienvenida">Bienvenido, {{ current_user.fullname }}!</h2>
-                    </center>
-                    <div id="logo-enlaces-container" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px; margin: 20px 0;">
-                        <div>
-                            <a href="/productos" class="btn-enlace">Gestión de Productos</a>
-                            <a href="/clientes" class="btn-enlace">Gestión de Clientes</a>
-                            <a href="/ventas" class="btn-enlace">Registro de Ventas</a>
-                            <a href="/proveedores" class="btn-enlace">Proveedores</a>
-                        </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Top Navigation -->
+                <nav class="top-nav">
+                    <button class="menu-toggle" title="Menú">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a id="logoutLink" href="/logout" class="logout-btn" title="Cerrar sesión">  
+                        <i class="fas fa-sign-out-alt"></i> Salir
+                    </a>                
+                </nav>
+
+                <!-- Welcome Section -->
+                <section class="welcome-section">
+                    <h1 class="welcome-title animate-pop-in">Bienvenido, <span>{{ current_user.fullname }}</span>!</h1>
+                    
+                    <div class="quick-actions">
+                        <a href="/productos" class="action-card animate-slide-up">
+                            <i class="fas fa-boxes"></i>
+                            <span>Gestión de Productos</span>
+                        </a>
+                        <a href="/clientes" class="action-card animate-slide-up">
+                            <i class="fas fa-users"></i>
+                            <span>Gestión de Clientes</span>
+                        </a>
+                        <a href="/ventas" class="action-card animate-slide-up">
+                            <i class="fas fa-cash-register"></i>
+                            <span>Registro de Ventas</span>
+                        </a>
+                        <a href="/proveedores" class="action-card animate-slide-up">
+                            <i class="fas fa-truck"></i>
+                            <span>Proveedores</span>
+                        </a>
                     </div>
                 </section>                
-            <h3 class="text-center">Últimos Productos Vendidos</h3>
-            {% if ultimas_ventas is not none and ultimas_ventas |length > 0 %}
-                <!-- Sección de Últimos Productos Vendidos -->
-                <section id="ultimos-productos">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
+                
+                <!-- Recent Sales Section -->
+                <section class="recent-sales">
+                    <h2 class="section-title">Últimos Productos Vendidos</h2>
+                    
+                    {% if ultimas_ventas is not none and ultimas_ventas |length > 0 %}
+                    <div class="table-container animate-fade-in">
+                        <table class="sales-table">
                             <thead>
                                 <tr>
                                     <th>Producto</th>
@@ -73,7 +88,7 @@
                             </thead>
                             <tbody id="ventas-body">
                                 {% for venta in ultimas_ventas %}
-                                <tr>
+                                <tr class="animate-row">
                                     <td>{{ venta.nombre_producto }}</td>
                                     <td>{{ venta.nombre_cliente }}</td>
                                     <td>{{ venta.cantidad }}</td>
@@ -85,19 +100,41 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- Controles de paginación -->
-                    <div id="pagination-controls" style="margin-top: 20px; text-align: center;"></div>
-                </section>                               
-                {%else%}
-                     <center> <p class="no-clients-message">Aun no hay productos vendidos.</p> </center>
-                {% endif %}                                                       
-                <footer>
+                    <div class="pagination-controls">
+                        <!-- Pagination will be added here -->
+                    </div>
+                    {% else %}
+                    <div class="empty-state animate-fade-in">
+                        <i class="fas fa-box-open"></i>
+                        <p>Aún no hay productos vendidos.</p>
+                    </div>
+                    {% endif %}
+                </section>
+                
+                <footer class="main-footer">
                     <p>&copy; 2024 StockManager MyE</p>
                 </footer>
-            </main>        
+            </div>
+        </div>
+
+        <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+        <script>
+            const userRole = '{{ current_user.role }}';
+            
+            // Toggle sidebar on mobile
+            document.querySelector('.menu-toggle').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('active');
+                document.querySelector('.main-content').classList.toggle('sidebar-active');
+            });
+            
+            // Add animation to table rows on load
+            document.addEventListener('DOMContentLoaded', function() {
+                const rows = document.querySelectorAll('.animate-row');
+                rows.forEach((row, index) => {
+                    row.style.animationDelay = `${index * 0.1}s`;
+                });
+            });
+        </script>
     </body>
-    <script>
-        const userRole = '{{ current_user.role }}';
-    </script>
 </html>
 {% endblock %}

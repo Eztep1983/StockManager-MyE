@@ -65,8 +65,8 @@ CREATE TABLE `users` (
   `identification` BIGINT NOT NULL,
   `password` varchar(255) NOT NULL,
   `fullname` varchar(255) DEFAULT NULL,
-  `role` enum('user','admin') DEFAULT 'user',
-  `active` tinyint(1) DEFAULT NULL,
+  `role` enum('user','admin') DEFAULT 'admin',
+  `active` tinyint(1) DEFAULT TRUE,
   PRIMARY KEY (`id_trabajador`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

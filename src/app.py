@@ -237,6 +237,8 @@ def admin_panel():
     Returns:
         - Renderiza el template `admin.html`.
     """
+    app.jinja_env.globals['now'] = datetime.datetime.now
+
     return render_template('admin.html')
 #_______________________________________________________________________________________________________
                                                  #Inicio

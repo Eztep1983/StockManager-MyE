@@ -1,5 +1,4 @@
 import bcrypt
-from flask import logging
 class User:
     """
     Representa un usuario del sistema.
@@ -31,10 +30,10 @@ class User:
         is_admin():
             Verifica si el usuario tiene el rol de administrador
         """
-    def __init__(self, id, identification, password, fullname="", active=True, role="user"):
+    def __init__(self, id, identification, password, fullname="", role="admin" ,active=True):
         self.id = id
         self.identification = identification
-        self.password = password  # Hash de la contraseña
+        self.password = password 
         self.fullname = fullname
         self.active = active
         self.role = role

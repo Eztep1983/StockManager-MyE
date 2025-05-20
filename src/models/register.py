@@ -25,23 +25,33 @@ class Register:
     def register(cls, db, user):
         try:
             cursor = db.connection.cursor()
+
             # Verificar si la identificación ya existe
             sql_check = "SELECT id_trabajador FROM users WHERE identification = %s"
             cursor.execute(sql_check, (user.identification,))
             if cursor.fetchone():
                 raise ValueError("La identificación ya está registrada.")
 
-            # Hash de la contraseña antes de almacenarla
+            # Hashear la contraseña
             hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-            # Insertar usuario
-            sql_insert = "INSERT INTO users (identification, password, fullname) VALUES (%s, %s, %s)"
-            cursor.execute(sql_insert, (user.identification, hashed_password, user.fullname))
+            # Insertar todos los campos relevantes
+            sql_insert = """
+                INSERT INTO users (identification, password, fullname, role, active)
+                VALUES (%s, %s, %s, %s, %s)
+            """
+            cursor.execute(sql_insert, (
+                user.identification,
+                hashed_password,
+                user.fullname,
+                user.role,
+                user.active
+            ))
+
             db.connection.commit()
 
-            # Retornar usuario registrado
             user_id = cursor.lastrowid
-            return User(user_id, user.identification, None, user.fullname)
+            return User(user_id, user.identification, None, user.fullname, user.role, user.active)
 
         except Exception as ex:
             db.connection.rollback()
@@ -50,4 +60,3 @@ class Register:
         finally:
             if 'cursor' in locals():
                 cursor.close()
-
